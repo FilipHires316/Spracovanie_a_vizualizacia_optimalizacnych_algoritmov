@@ -163,6 +163,7 @@ export default defineComponent({
   margin-left: 1vw;
   margin-top: 1vw;
   min-width: 260px;
+  max-width: 270px;
 }
 
 .menuButton {
@@ -174,6 +175,7 @@ export default defineComponent({
   margin-left: 1vw;
   text-align: left;
   min-width: 250px;
+  max-width: 250px;
 }
 
 .button {
