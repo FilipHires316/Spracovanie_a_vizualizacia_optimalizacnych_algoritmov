@@ -33,24 +33,32 @@
     <h5 class="subsection-title">Rozdelenie podľa jednoznačnosti</h5>
     <p class="section-paragraph">
       Algoritmy môžu byť deterministické alebo nedeterministické, teda stochastické.
+    </p>
+    <p class="section-paragraph">
       Algoritmus môžeme považovať za deterministický, pokiaľ neobsahuje žiadne prvky
       náhody. Teda algoritmus vždy dosiahne rovnaký výsledok za predpokladu, že mal
       rovnaký počiatočný stav. Príkladom deterministického algoritmu môže byť opäť
-      horolezecký algoritmus. Na druhú stranu algoritmy, ktoré obsahujú určité prvky
+      horolezecký algoritmus.
+    </p>
+    <p class="section-paragraph">
+      Na druhú stranu algoritmy, ktoré obsahujú určité prvky
       náhody, môžu z rovnakého počiatočného bodu dosiahnuť rôzne výsledky. Do tejto
       kategórie patria napríklad algoritmy skupinovej inteligencie.
     </p>
     <h5 class="subsection-title">Rozdelenie podľa prehľadávaného priestoru</h5>
     <p class="section-paragraph">
-        V tejto kategórii sú algoritmy rozdelené na tie, ktoré prehľadávajú priestor lokálne,
-      a na tie, ktoré priestor prehľadávajú globálne. Algoritmy lokálneho prehľadávania
+      V tejto kategórii sú algoritmy rozdelené na tie, ktoré prehľadávajú priestor lokálne,
+      a na tie, ktoré priestor prehľadávajú globálne.
+    </p>
+    <p class="section-paragraph">
+      Algoritmy lokálneho prehľadávania
       sú často zároveň deterministické a pokiaľ uviaznu v lokálnom optime, nedokážu
       ho opustiť. Pridanie náhodných prvkov do algoritmu dokáže pomôcť vyviaznuť z
       lokálneho optima a následne nájsť globálne optimum.
     </p>
     <p class="section-paragraph">
       Samozrejme nie všetky algoritmy dokážeme jednoznačne zaradiť do určitej kategórie. Takéto hybridné algoritmy môžu kombinovať prvky z viacerých kategórií
-      súčasne. V našej práci sa zameriame hlavne na stochastické algoritmy, ktoré
+      súčasne. Táto aplikácia je zameraná hlavne na stochastické algoritmy, ktoré
       prehľadávajú priestor globálne pomocou populácie viacerých agentov.
     </p>
     <h4 class="section-title">Algoritmy inšpirované prírodou</h4>
@@ -58,14 +66,19 @@
       Veľkú časť optimalizačných algoritmov tvoria algoritmy inšpirované prírodou. Tieto
       algoritmy simulujú určitý jav, ktorý sa dá sledovať v prírode. Môže sa jednať o
       črtu, ktorá je charakteristická pre konkrétnu skupinu živočíchov a ich kolektívne správanie, ale aj o nejaký biologický alebo chemický proces.
-      Všetky algoritmy z tejto kategórie majú podobný priebeh. Prvým krokom je inicializácia počiatočnej populácie. Počiatočná populácia obsahuje náhodne vytvorených jedincov. Následne sa pre každého jedinca vypočíta hodnota fitness funkcie.
+    </p>
+    <p class="section-paragraph">
+      Všetky algoritmy z tejto kategórie majú podobný priebeh, ktorý je zobrazený
+      na obrázku nižšie.
+    </p>
+    <img src="/images/nature_diagram.png" alt="Diagram priebehu algoritmov inšpirovaných prírodou" style="margin-left: 10vw; margin-bottom: 1vw" />
+    <p class="section-paragraph">
+      Prvým krokom je inicializácia počiatočnej populácie. Počiatočná populácia obsahuje náhodne vytvorených jedincov. Následne sa pre každého jedinca vypočíta hodnota fitness funkcie.
       Hodnota fitness funkcie udáva, ako dobre jedinec splnil danú úlohu. Pokiaľ nebola splnená podmienka, ktorá ukončí priebeh algoritmu, prejde sa na ďalší krok,
       ktorým je uskutočnenie operácií nad súčasnou generáciou a vytvorenie novej generácie. Tento krok sa líši podľa vybraného algoritmu. Po vytvorení novej generácie
       sa opäť pokračuje vyhodnotením úspešnosti pomocou fitness funkcie, až kým nie
-      je splnená podmienka ukončenia. Diagram priebehu tohto procesu je zobrazený
-      na obrázku nižšie.
+      je splnená podmienka ukončenia.
     </p>
-    <img class="info-image" src="/images/nature_diagram.png" alt="Diagram priebehu algoritmov inšpirovaných prírodou">
   </div>
 </template>
 
@@ -106,7 +119,7 @@ export default defineComponent({
 }
 
 .section-paragraph {
-  text-align: justify;
+  text-align: left;
   padding-left: 2.6vw;
   margin-bottom: 1vw;
   font-size: 16px;
@@ -114,7 +127,7 @@ export default defineComponent({
 }
 
 .section-list {
-  text-align: justify;
+  text-align: left;
   margin-bottom: 1vw;
   font-size: 16px;
   letter-spacing: 0.5px;

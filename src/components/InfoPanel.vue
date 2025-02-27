@@ -63,8 +63,15 @@ export default defineComponent({
   margin-bottom: 1vw;
 }
 
+.subsection-title {
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 1vw;
+}
+
 .section-paragraph {
-  text-align: justify;
+  text-align: left;
   padding-left: 2.6vw;
   margin-bottom: 1vw;
   font-size: 16px;
@@ -72,7 +79,7 @@ export default defineComponent({
 }
 
 .section-list {
-  text-align: justify;
+  text-align: left;
   margin-bottom: 1vw;
   font-size: 16px;
   letter-spacing: 0.5px;

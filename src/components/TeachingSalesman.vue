@@ -41,7 +41,7 @@ export default defineComponent({
 }
 
 .section-paragraph {
-  text-align: justify;
+  text-align: left;
   padding-left: 2.6vw;
   margin-bottom: 1vw;
   font-size: 16px;
@@ -49,7 +49,7 @@ export default defineComponent({
 }
 
 .section-list {
-  text-align: justify;
+  text-align: left;
   margin-bottom: 1vw;
   font-size: 16px;
   letter-spacing: 0.5px;
