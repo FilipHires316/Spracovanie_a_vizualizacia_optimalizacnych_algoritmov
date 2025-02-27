@@ -66,14 +66,14 @@ export default defineComponent({
 .section-paragraph {
   text-align: justify;
   padding-left: 2.6vw;
-  margin-bottom: 2vw;
+  margin-bottom: 1vw;
   font-size: 16px;
   letter-spacing: 0.5px;
 }
 
 .section-list {
   text-align: justify;
-  margin-bottom: 2vw;
+  margin-bottom: 1vw;
   font-size: 16px;
   letter-spacing: 0.5px;
 }

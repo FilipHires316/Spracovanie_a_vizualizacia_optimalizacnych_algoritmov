@@ -15,10 +15,16 @@
     </p>
     <h5 class="subsection-title">Rozdelenie podľa spôsobu vyhľadávania</h5>
     <p class="section-paragraph">
-      Optimalizačné algoritmy môžeme rozdeliť podľa spôsobu vyhľadávania na dve kategórie. Prvá kategória zahŕňa algoritmy, ktoré vyhľadávajú riešenie pomocou trajektórie. Tieto algoritmy využívajú len jedného agenta, ktorý postupne hľadá cestu
+      Optimalizačné algoritmy môžeme rozdeliť podľa spôsobu vyhľadávania na dve kategórie.
+    </p>
+    <p class="section-paragraph">
+      Prvá kategória zahŕňa algoritmy, ktoré vyhľadávajú riešenie pomocou trajektórie. Tieto algoritmy využívajú len jedného agenta, ktorý postupne hľadá cestu
       k optimálnemu riešeniu. Do tejto kategórie patria algoritmy ako horolezecký
       algoritmus alebo algoritmus simulovaného žíhania. Prehľadávanie okolia jedného
-      riešenia však môže viesť k problémom, ako je uviaznutie v lokálnom optime, pretože agent sa pohybuje len v rámci jedného miesta v riešení. Druhou kategóriou
+      riešenia však môže viesť k problémom, ako je uviaznutie v lokálnom optime, pretože agent sa pohybuje len v rámci jedného miesta v riešení.
+    </p>
+    <p class="section-paragraph">
+      Druhou kategóriou
       sú populačné algoritmy, ktoré využívajú viacero agentov naraz. Títo agenti medzi sebou spolupracujú a prehľadávajú viacero riešení súčasne, pričom každý agent
       prispôsobuje svoje správanie na základe výsledkov ostatných agentov. Známym
       príkladom algoritmu, ktorý využíva populáciu, je genetický algoritmus. Tieto algoritmy sú odolnejšie voči uviaznutiu v lokálnom optime, pretože prehľadávajú viac
@@ -59,6 +65,7 @@
       je splnená podmienka ukončenia. Diagram priebehu tohto procesu je zobrazený
       na obrázku nižšie.
     </p>
+    <img class="info-image" src="/images/nature_diagram.png" alt="Diagram priebehu algoritmov inšpirovaných prírodou">
   </div>
 </template>
 
@@ -101,14 +108,14 @@ export default defineComponent({
 .section-paragraph {
   text-align: justify;
   padding-left: 2.6vw;
-  margin-bottom: 2vw;
+  margin-bottom: 1vw;
   font-size: 16px;
   letter-spacing: 0.5px;
 }
 
 .section-list {
   text-align: justify;
-  margin-bottom: 2vw;
+  margin-bottom: 1vw;
   font-size: 16px;
   letter-spacing: 0.5px;
 }
