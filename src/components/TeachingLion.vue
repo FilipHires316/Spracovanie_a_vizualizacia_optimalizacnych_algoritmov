@@ -13,7 +13,7 @@
     <p class="section-paragraph">
       Počas vyhľadávacieho procesu si každý lev označuje svoju najlepšiu navštívenú
       pozíciu. Na základe týchto označených pozícií sa vytvára územie každej svorky.
-      Pre každú svorku platí, že územie tvoria najlepšie pozície označené jej členmi.
+      Pre každú svorku platí, že územie tvoria najlepšie pozície označené jej členmi [1].
       Tento mechanizmus napomáha udržiavať informácie o zatiaľ najlepších riešeniach
       a umožňuje prehľadávať ich okolie. Aby sa však predišlo uviaznutiu v lokálnom
       optime, nomádske levy prehľadávajú dosiaľ nepreskúmané oblasti.
@@ -22,23 +22,23 @@
     <p class="section-paragraph">
       Levy sú najspoločenskejšie zo všetkých voľne žijúcich druhov mačkovitých šeliem,
       pričom vykazujú vysokú mieru spolupráce pri aktivitách potrebných pre ich prežitie, ako sú lov alebo ochrana teritória. Levy sa vyznačujú dvoma typmi sociálnej
-      organizácie: rezidentskou a nomádskou.
+      organizácie: rezidentskou a nomádskou [23].
     </p>
     <p class="section-paragraph">
       Rezidenti žijú skupinovo v útvaroch nazývaných svorky. Svorka levov zvyčajne zahŕňa približne päť levíc, mláďatá oboch pohlaví a niekoľkých dospelých samcov.
       Na rozdiel od ostatných mačkovitých šeliem levy lovia spoločne ako skupina, pričom sa snažia korisť obklúčiť z rôznych strán. Koordinovaný skupinový lov výrazne
-      zvyšuje pravdepodobnosť úspechu. Medzitým samce levov a niektoré levice zvyčajne zostávajú a oddychujú, kým sa loviace levice vrátia s korisťou. Mladé
+      zvyšuje pravdepodobnosť úspechu. Medzitým samce levov a niektoré levice zvyčajne zostávajú a oddychujú, kým sa loviace levice vrátia s korisťou [23]. Mladé
       levy potrebujú 2-4 roky na dosiahnutie dospelosti. Keď mláďa dospeje, dochádza
       k súboju medzi starým samcom a novodospelým samcom. Ak je mladý lev silnejší,
       prevezme nadvládu nad svorkou, pričom pôvodný vodca svorky je buď zabitý,
-      alebo vyhnaný.
+      alebo vyhnaný [1].
     </p>
     <p class="section-paragraph">
       Druhým organizačným správaním je nomádstvo, pri ktorom levy žijú samotársky,
       buď jednotlivo, alebo v pároch. Páry sa často tvoria medzi príbuznými samcami,
-      ktorí boli vylúčení zo svojej rodnej svorky. Nomádske levy môžu napadnúť
+      ktorí boli vylúčení zo svojej rodnej svorky [23]. Nomádske levy môžu napadnúť
       svorku, a pokúsiť sa prebrať nadvládu. Ak nomádsky lev vyhrá, núti samice v
-      svorke do ruje a párenia, aby mohli porodiť jeho vlastné mláďatá.
+      svorke do ruje a párenia, aby mohli porodiť jeho vlastné mláďatá [1].
     </p>
     <p class="section-paragraph">
       Je dôležité poznamenať, že levy môžu meniť spôsob života. Rezidenti sa môžu stať
@@ -56,7 +56,7 @@
       svoriek je určený veľkosťou populácie. Každý lev má pridelené konkrétne pohlavie,
       ktoré zostáva počas optimalizačného procesu nemenné. Na simuláciu tohto faktu
       platí, že v každej svorke je 75–90% samíc a zvyšok sú samci. Pri nomádskych
-      levoch je tento pomer opačný. Samozrejme, ideálne nastavenie parametrov
+      levoch je tento pomer opačný [23]. Samozrejme, ideálne nastavenie parametrov
       ako celková veľkosť populácie, veľkosť a počet svoriek a percentuálne rozdelenie
       samcov a samíc záleží od riešeného problému.
     </p>
@@ -65,11 +65,11 @@
       V tomto kroku sa náhodne vyberú levice z každej svorky, ktoré sa zúčastnia lovu.
       Vybrané samice sa následne náhodne rozdelia do troch skupín: ľavé krídlo, stred a
       pravé krídlo. Skupina s najvyšším súčtom fitness hodnôt je považovaná za stred,
-      zatiaľ čo ostatné dve skupiny tvoria krídla.
+      zatiaľ čo ostatné dve skupiny tvoria krídla [1].
     </p>
     <p class="section-paragraph">
       Následne je potrebné určiť polohu koristi. Korisť predstavuje bod v prehľadávacom priestore, ku ktorému sa levice snažia priblížiť. Tento bod je umiestnený v
-      strede medzi levicami. Jeho polohu teda môžeme vypočítať nasledujúcim vzorcom:
+      strede medzi levicami [1]. Jeho polohu teda môžeme vypočítať nasledujúcim vzorcom:
     </p>
     <img src="/images/korist_vzorec.png" alt="Vzorec pre výpočet pozície koristi" style="margin-left: 15vw"/>
     <p class="section-paragraph">
@@ -96,19 +96,19 @@
       hodnotu, korisť ujde a jej nová pozícia je určená nasledujúcim vzorcom:
     </p>
     <p class="section-paragraph" style="margin-left: 5vw">
-      korist’ = korist + rand(0, 1) * percentualne zlepsenie fitness * (korist - lovec)
+      korist’ = korist + rand(0, 1) * percentualne zlepsenie fitness * (korist - lovec) [1]
     </p>
     <h5 class="subsection-title"> Presun do bezpečia</h5>
     <p class="section-paragraph">
       Samice, ktoré sa nezúčastnili lovu, sa presunú smerom k riešeniu, ktoré sa nachádza
       na území ich svorky (Jedná sa teda o jedno z najlepších riešení, ktoré bolo v danej
       svorke objavené). Toto riešenie je pre každú levicu vybrané pomocou turnajového
-      výberu, ktorý je popísaný v sekcii genetický algoritmus.
+      výberu [1], ktorý je popísaný v sekcii genetický algoritmus.
     </p>
     <h5 class="subsection-title">Potulovanie sa</h5>
     <p class="section-paragraph">
       Model potulovania sa je určený na silné lokálne vyhľadávanie v okolí územia svoriek. Každý rezidentný samec si náhodne vyberie náhodné územia v rámci teritória.
-      Následne sa postupne presúva medzi určenými miestami. Nakoniec sa samec presunie na svoju najlepšiu navštívenú pozíciu. Tento pohyb je znázornený na
+      Následne sa postupne presúva medzi určenými miestami. Nakoniec sa samec presunie na svoju najlepšiu navštívenú pozíciu [23]. Tento pohyb je znázornený na
       obrázku nižšie:
     </p>
     <img src="/images/roaming.png" alt="Lokálne prehľadávanie priestoru pohybom samca" style="margin-left: 7vw; margin-top: 1vw;" />
@@ -119,7 +119,7 @@
     <h5 class="subsection-title">Párenie</h5>
     <p class="section-paragraph">
       V každej svorke sa určité % samíc pári s jedným alebo viacerými samcami z rovnakej svorky. Nomádske samice sa pária iba s jedným náhodne vybraným samcom.
-      Pomocou lineárnej kombinácie a operátorov mutácie sú vytvorení dvaja noví potomkovia. Jeden z nich je samec a druhý samica.
+      Pomocou lineárnej kombinácie a operátorov mutácie sú vytvorení dvaja noví potomkovia. Jeden z nich je samec a druhý samica [23].
     </p>
     <h5 class="subsection-title">Obrana teritória</h5>
     <p class="section-paragraph">
@@ -140,7 +140,7 @@
       miesta v svorkách náhodne doplnené nomádskymi samicami, ktoré majú najlepšiefitness hodnoty (môžu to byť aj tie, ktoré práve opustili svorku).
     </p>
     <p class="section-paragraph">
-      Presun samíc medzi svorkami umožňuje výmenu informácií a prispieva k lepšiemu prehľadávaniu riešení.
+      Presun samíc medzi svorkami umožňuje výmenu informácií a prispieva k lepšiemu prehľadávaniu riešení [23].
     </p>
     <h5 class="subsection-title">Kontrola velkosti populácie</h5>
     <p class="section-paragraph">

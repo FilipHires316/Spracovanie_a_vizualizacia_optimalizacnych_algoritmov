@@ -104,6 +104,7 @@ export default defineComponent({
       'TeachingKnapsack',
       'TeachingBin',
       'TeachingSalesman'
+
     ];
 
     const showComponent = (componentName: string, index: number) => {
