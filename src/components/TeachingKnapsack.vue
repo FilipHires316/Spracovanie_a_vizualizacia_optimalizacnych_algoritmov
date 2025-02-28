@@ -1,6 +1,32 @@
 <template>
   <div class="content-container">
     <h4 class="section-title">Problém batohu</h4>
+    <p class="section-paragraph">
+      Problém batohu je typom optimalizačnej úlohy, ktorej cieľom je umiestniť predmety do batohu tak, aby hodnota vybraných predmetov bola čo najväčšia. Zároveň
+      nesmie dôjsť k porušeniu daných obmedzení, ako napríklad, že hmotnosť predmetov umiestnených v batohu nesmie prekročiť nosnosť batohu [17].
+    </p>
+    <p class="section-paragraph">
+      Existuje niekoľko alternatív tohto problému. Známymi príkladmi sú 0-1 batoh, obmedzený batoh a
+      neobmedzený batoh.
+    </p>
+    <h5 class="subsection-title">0-1 batoh</h5>
+    <p class="section-paragraph">
+      Táto verzia predstavuje najzákladnejšiu a najjednoduchšiu formu tohto problému.
+      Názov 0-1 je odvodený od spôsobu, ktorým sa s predmetmi zaobchádza. Každý
+      predmet je buď do batohu pridaný, teda 1, alebo je zamietnutý a do batohu sa
+      nepridá, teda 0 [17].
+    </p>
+    <h5 class="subsection-title">Obmedzený batoh</h5>
+    <p class="section-paragraph">
+      Obmedzený batoh je modifikáciou 0-1 batohu, v ktorej je možné umiestniť predmety rovnakého typu do batohu aj viackrát. Každý predmet môže mať určené
+      minimálne množstvo (spodné ohraničenie), teda koľkokrát sa predmet musí v batohu nachádzať. Okrem toho môže byť stanovené aj maximálne množstvo (horné
+      ohraničenie), ktoré obmedzuje, koľko kusov daného predmetu je možné do batohu
+      vložiť [17].
+    </p>
+    <h5 class="subsection-title">Neobmedzený batoh</h5>
+    <p class="section-paragraph">
+      V tomto type úlohy je jediným obmedzením kapacita batohu. Samotné počty predmetov nie sú nijako obmedzené [17].
+    </p>
   </div>
 </template>
 

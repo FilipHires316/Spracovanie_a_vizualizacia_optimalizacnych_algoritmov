@@ -15,8 +15,17 @@
       <li>[13] Brad L Miller, David E Goldberg et al. “Genetic algorithms, tournament
         selection, and the effects of noise”. In: Complex systems 9.3 (1995), s. 193–
         212.</li>
+      <li>[14] Seyedali Mirjalili a Andrew Lewis. “The whale optimization algorithm”. In:
+        Advances in engineering software 95 (2016), s. 51–67.</li>
+      <li>[15] Chanaleä Munien a Absalom E. Ezugwu. “Metaheuristic algorithms for onedimensional bin-packing problems: A survey of recent advances and app34
+        Literatúra
+        lications”. In: Journal of Intelligent Systems 30.1 (2021), s. 636–663. doi:
+        doi:10.1515/jisys-2020-0117. url: https://doi.org/10.1515/jisys2020-0117.</li>
       <li>[16] Gonçalo Neto. “From single-agent to multi-agent reinforcement learning:
         Foundational concepts and methods”. In: Learning theory course 2 (2005).</li>
+      <li>[17] Nikola Piskačová. “Úloha o batohu”. In: (2018).</li>
+      <li>[18] Petra Pokorná. “Problém obchodního cestujícího pomocí metody Mravenčí
+        kolonie”. In: (2008).</li>
       <li>[19] Robin C Purshouse a Peter J Fleming. “Why use elitism and sharing in a
         multi-objective genetic algorithm?” In: Proceedings of the 4th Annual Conference on Genetic and Evolutionary computation. 2002, s. 520–527.</li>
       <li>[21] Anant J Umbarkar a Pranali D Sheth. “Crossover operators in genetic algorithms: a review.” In: ICTACT journal on soft computing 6.1 (2015).</li>
@@ -32,7 +41,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Resources',
+  name: 'ResourcesAndLiterature',
   props: {
   },
 

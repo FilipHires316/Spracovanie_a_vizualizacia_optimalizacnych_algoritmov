@@ -1,6 +1,27 @@
 <template>
   <div class="content-container">
     <h4 class="section-title">Problém balenia košov</h4>
+    <p class="section-paragraph">
+      Problém balenia košov je optimalizačný problém založený na kombinatorike. Problém sa zaoberá balením zadaného počtu predmetov do kontajnerov. Kontajnery
+      majú zadanú jednotnú kapacitu. Cieľom úlohy je umiestniť všetky predmety do
+      kontajnerov, tak aby neprekročili ich nosnosť. Najoptimálnejšie riešenie je také, v
+      ktorom použijeme najmenší počet kontajnerov [15].
+    </p>
+    <p class="section-paragraph">
+      Opäť si predstavíme viacero variácií tohto problému, ktoré sa líšia typom obmedzení.
+    </p>
+    <h5 class="subsection-title">Dynamické balenie</h5>
+    <p class="section-paragraph">
+      V tejto variante problému majú predmety zadaný časový interval, v ktorom zaberajú miesto v kontajneroch. Teda po skončení tohto intervalu je miesto, do ktorého
+      boli pridelené, uvoľnené pre ďalšie predmety [15].
+    </p>
+    <h5 class="subsection-title">Viacrozmerné koše</h5>
+    <p class="section-paragraph">
+      Táto variácia úlohy pridáva kontajnerom, do ktorých sú predmety balené, rozmer
+      šírky, ak sa jedná o 2D koše, a taktiež rozmer hĺbky, ak sa jedná o 3D koše.
+      Teda okrem obmedzenia hmotnosti, treba pri riešení problému myslieť aj na tvar
+      predmetov [15].
+    </p>
   </div>
 </template>
 
