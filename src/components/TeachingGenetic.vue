@@ -107,7 +107,6 @@
       aby sme nestratili pôvodnú genetickú informáciu. Ak bit mutuje, jeho hodnota sa
       invertuje, takže nula sa stane jednotkou a jednotka nulou.
       <img src="/images/mutacia.png" alt="Príklad mutácie chromozómu" style="margin-left: 10vw; margin-top: 1vw;" />
-
     </p>
   </div>
 </template>
