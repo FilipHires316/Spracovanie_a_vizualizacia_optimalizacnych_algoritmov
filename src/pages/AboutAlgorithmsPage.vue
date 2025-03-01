@@ -51,6 +51,17 @@
           <q-btn class="menuButton" label="Problém balenia košov" icon="delete" stack @click="showComponent('TeachingBin', 5)"/>
           <q-btn class="menuButton" label="Problém obchodného cestujúceho" icon="flight_takeoff" stack @click="showComponent('TeachingSalesman', 6)"/>
         </q-expansion-item>
+        <q-expansion-item
+          class="MenuBanner"
+          expand-separator
+          label="ZDROJE"
+          default-opened
+          header-style="border-radius: 20px"
+          expand-icon-class="text-white"
+          header-class="bg-primary"
+        >
+          <q-btn class="menuButton" label="Použitá literatúra" icon="book" stack @click="showComponent('ResourcesAndLiterature', 4)"/>
+        </q-expansion-item>
       </div>
     </q-scroll-area>
   </q-drawer>
@@ -65,7 +76,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue';
+import { defineComponent, ref, onMounted, onBeforeUnmount} from 'vue';
 import TeachingAlgorithms from 'components/TeachingAlgorithms.vue';
 import TeachingGenetic from 'components/TeachingGenetic.vue';
 import TeachingLion from 'components/TeachingLion.vue';
@@ -73,6 +84,7 @@ import TeachingWhale from 'components/TeachingWhales.vue';
 import TeachingKnapsack from 'components/TeachingKnapsack.vue';
 import TeachingBin from 'components/TeachingBin.vue';
 import TeachingSalesman from 'components/TeachingSalesman.vue';
+import ResourcesAndLiterature from 'components/ResourcesAndLiterature.vue';
 
 export default defineComponent({
   name: 'AboutAlgorithmsPage',
@@ -85,6 +97,7 @@ export default defineComponent({
     TeachingKnapsack,
     TeachingBin,
     TeachingSalesman,
+    ResourcesAndLiterature
   },
 
   setup() {
@@ -110,11 +123,13 @@ export default defineComponent({
     const showComponent = (componentName: string, index: number) => {
       visibleComponent.value = componentName;
       componentIndex.value = index;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const changeComponent = (direction: number) => {
       componentIndex.value = (componentIndex.value + direction + components.length) % components.length;
       visibleComponent.value = components[componentIndex.value]!;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // Reactive value for screen size detection
