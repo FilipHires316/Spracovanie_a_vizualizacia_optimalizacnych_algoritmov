@@ -60,7 +60,7 @@
           expand-icon-class="text-white"
           header-class="bg-primary"
         >
-          <q-btn class="menuButton" label="Použitá literatúra" icon="book" stack @click="showComponent('ResourcesAndLiterature', 4)"/>
+          <q-btn class="menuButton" label="Použitá literatúra" icon="book" stack @click="showComponent('ResourcesAndLiterature', 7)"/>
         </q-expansion-item>
       </div>
     </q-scroll-area>
@@ -116,8 +116,8 @@ export default defineComponent({
       'TeachingWhale',
       'TeachingKnapsack',
       'TeachingBin',
-      'TeachingSalesman'
-
+      'TeachingSalesman',
+      'ResourcesAndLiterature',
     ];
 
     const showComponent = (componentName: string, index: number) => {

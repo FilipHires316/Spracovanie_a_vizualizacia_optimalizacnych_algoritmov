@@ -20,7 +20,7 @@
       lovom kôrovcov a malých rýb. Tieto veľryby majú jedinečný štýl lovu potravy.
       Najprv sa potopia približne 12 metrov hlboko. Následne začnú vytvárať bubliny v
       tvare špirály okolo koristi a pomaly sa k nej približujú. Tento spôsob kŕmenia sa
-      nazýva metóda kŕmenia bublinovou sieťou [14].
+      nazýva metóda kŕmenia bublinovou sieťou {{cite7.index}}.
     </p>
     <h5 class="subsection-title">Priebeh algoritmu</h5>
     <p class="section-paragraph">
@@ -65,7 +65,7 @@
     <p class="section-paragraph">
       Ak je |A| &lt; 1, veľryba vykoná pohyb
       smerom ku koristi. V opačnom prípade bude hľadať novú korisť v prehľadávacom
-      priestore [14].
+      priestore {{cite7.index}}.
     </p>
     <ul class="section-list">
       <li>
@@ -81,7 +81,7 @@
         </p>
         <p class="section-paragraph">
           D′ vyjadruje vzdialenosť veľryby od koristi, t je aktuálna iterácia, b je konštanta pre definovanie logaritmickej špirály a l je náhodná hodnota v intervale &lt;-1,1&gt;. X∗(t)
-          predstavuje najlepšie riešenie v práve prebiehajúcej iterácii [14].
+          predstavuje najlepšie riešenie v práve prebiehajúcej iterácii {{cite7.index}}.
         </p>
       </li>
       <li>
@@ -102,7 +102,7 @@
           C = 2 ∗ r
         </p>
         <p class="section-paragraph">
-          Hodnoty A a r sú popisáne vyššie [14].
+          Hodnoty A a r sú popisáne vyššie {{cite7.index}}.
         </p>
       </li>
       <li>
@@ -114,7 +114,7 @@
         <p class="section-paragraph">
           Teda tento náhodný pohyb sa vykoná podobne ako v prípade priblíženia sa
           ku koristi, s tým rozdielom, že sa nepohybujeme k najlepšiemu riešeniu ale
-          k náhodne vybranému riešeniu z aktuálnej iterácie [14].
+          k náhodne vybranému riešeniu z aktuálnej iterácie {{cite7.index}}.
         </p>
       </li>
     </ul>
@@ -123,6 +123,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'TeachingWhales',
@@ -130,7 +131,23 @@ export default defineComponent({
   },
 
   setup() {
+    const cite = useNumberCites();
     return {
+      cite1: cite.Cite1,
+      cite2: cite.Cite2,
+      cite3: cite.Cite3,
+      cite4: cite.Cite4,
+      cite5: cite.Cite5,
+      cite6: cite.Cite6,
+      cite7: cite.Cite7,
+      cite8: cite.Cite8,
+      cite9: cite.Cite9,
+      cite10: cite.Cite10,
+      cite11: cite.Cite11,
+      cite12: cite.Cite12,
+      cite13: cite.Cite13,
+      cite14: cite.Cite14,
+      cite15: cite.Cite15,
     };
   }
 });

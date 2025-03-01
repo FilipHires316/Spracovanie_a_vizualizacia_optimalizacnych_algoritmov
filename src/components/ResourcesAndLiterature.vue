@@ -2,54 +2,54 @@
   <div class="content-container">
     <h4 class="section-title">Zdroje a použitá literatúra</h4>
     <ul class="section-list">
-      <li class="citation">[1] Saman M Almufti. “Lion algorithm: Overview, modifications and applications”. In: International Research Journal on Science, Technology, Education,
-        and Management 2.2 (2022).</li>
-      <li class="citation">[2] V Anusuya a R Kavitha. “Roulette ant wheel selection (RAWS) for genetic
-        algorithm–fuzzy shortest path problem”. In: International Journal of Mathematics and Computer Applications Research 5 (2015), s. 1–14.</li>
-      <li class="citation">[7] Lingaraj Haldurai, T Madhubala a R Rajalakshmi. “A study on genetic
-        algorithm and its applications”. In: Int. J. Comput. Sci. Eng 4.10 (2016),
-        s. 139–143.</li>
-      <li class="citation">[10] Manoj Kumar et al. “Genetic algorithm: Review and application”. In: Available at SSRN 3529843 (2010).</li>
-      <li class="citation">[12] Tom V Mathew. “Genetic algorithm”. In: Report submitted at IIT Bombay
-        53 (2012).</li>
-      <li class="citation">[13] Brad L Miller, David E Goldberg et al. “Genetic algorithms, tournament
-        selection, and the effects of noise”. In: Complex systems 9.3 (1995), s. 193–
-        212.</li>
-      <li class="citation">[14] Seyedali Mirjalili a Andrew Lewis. “The whale optimization algorithm”. In:
-        Advances in engineering software 95 (2016), s. 51–67.</li>
-      <li class="citation">[15] Chanaleä Munien a Absalom E. Ezugwu. “Metaheuristic algorithms for onedimensional bin-packing problems: A survey of recent advances and app34
-        Literatúra
-        lications”. In: Journal of Intelligent Systems 30.1 (2021), s. 636–663. doi:
-        doi:10.1515/jisys-2020-0117. url: https://doi.org/10.1515/jisys2020-0117.</li>
-      <li class="citation">[16] Gonçalo Neto. “From single-agent to multi-agent reinforcement learning:
-        Foundational concepts and methods”. In: Learning theory course 2 (2005).</li>
-      <li class="citation">[17] Nikola Piskačová. “Úloha o batohu”. In: (2018).</li>
-      <li class="citation">[18] Petra Pokorná. “Problém obchodního cestujícího pomocí metody Mravenčí
-        kolonie”. In: (2008).</li>
-      <li class="citation">[19] Robin C Purshouse a Peter J Fleming. “Why use elitism and sharing in a
-        multi-objective genetic algorithm?” In: Proceedings of the 4th Annual Conference on Genetic and Evolutionary computation. 2002, s. 520–527.</li>
-      <li class="citation">[21] Anant J Umbarkar a Pranali D Sheth. “Crossover operators in genetic algorithms: a review.” In: ICTACT journal on soft computing 6.1 (2015).</li>
-      <li class="citation">[22] X. Yang. “Metaheuristic Optimization”. In: Scholarpedia 6.8 (2011). revision
-        #91488, s. 11472. doi: 10.4249/scholarpedia.11472.</li>
-      <li class="citation">[23] Maziar Yazdani a Fariborz Jolai. “Lion optimization algorithm (LOA): a
-        nature-inspired metaheuristic algorithm”. In: Journal of computational design and engineering 3.1 (2016), s. 24–36.</li>
+      <li class="citation">{{cite1.index}} {{cite1.text}}</li>
+      <li class="citation">{{cite2.index}} {{cite2.text}} </li>
+      <li class="citation">{{cite3.index}} {{cite3.text}} </li>
+      <li class="citation">{{cite4.index}} {{cite4.text}} </li>
+      <li class="citation">{{cite5.index}} {{cite5.text}} </li>
+      <li class="citation">{{cite6.index}} {{cite6.text}} </li>
+      <li class="citation">{{cite7.index}} {{cite7.text}} </li>
+      <li class="citation">{{cite8.index}} {{cite8.text}} </li>
+      <li class="citation">{{cite9.index}} {{cite9.text}} </li>
+      <li class="citation">{{cite10.index}} {{cite10.text}} </li>
+      <li class="citation">{{cite11.index}} {{cite11.text}} </li>
+      <li class="citation">{{cite12.index}} {{cite12.text}} </li>
+      <li class="citation">{{cite13.index}} {{cite13.text}} </li>
+      <li class="citation">{{cite14.index}} {{cite14.text}} </li>
+      <li class="citation">{{cite15.index}} {{cite15.text}} </li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'ResourcesAndLiterature',
-  props: {
-  },
 
   setup() {
+    const cite = useNumberCites();
     return {
+      cite1: cite.Cite1,
+      cite2: cite.Cite2,
+      cite3: cite.Cite3,
+      cite4: cite.Cite4,
+      cite5: cite.Cite5,
+      cite6: cite.Cite6,
+      cite7: cite.Cite7,
+      cite8: cite.Cite8,
+      cite9: cite.Cite9,
+      cite10: cite.Cite10,
+      cite11: cite.Cite11,
+      cite12: cite.Cite12,
+      cite13: cite.Cite13,
+      cite14: cite.Cite14,
+      cite15: cite.Cite15,
     };
   }
 });
+
 </script>
 
 <style lang="scss" scoped>

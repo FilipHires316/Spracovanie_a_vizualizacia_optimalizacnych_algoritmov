@@ -10,7 +10,7 @@
     <p class="section-paragraph">
       Optimalizácia je proces, ktorého cieľom je nájsť optimum funkcie, pričom toto optimum môže predstavovať maximum alebo minimum. Riešenie nelineárnych problémov je však často náročné, najmä z dôvodu rozsiahleho vyhľadávacieho priestoru.
       Na zvládnutie takýchto úloh je nevyhnutné využiť optimalizačné algoritmy, ktoré
-      umožňujú systematické hľadanie optimálnych riešení [22]. Tieto algoritmy je možné
+      umožňujú systematické hľadanie optimálnych riešení {{cite14.index}}. Tieto algoritmy je možné
       klasifikovať do viacerých kategórií na základe rôznych kritérií.
     </p>
     <h5 class="subsection-title">Rozdelenie podľa spôsobu vyhľadávania</h5>
@@ -19,14 +19,14 @@
     </p>
     <p class="section-paragraph">
       Prvá kategória zahŕňa algoritmy, ktoré vyhľadávajú riešenie pomocou trajektórie. Tieto algoritmy využívajú len jedného agenta, ktorý postupne hľadá cestu
-      k optimálnemu riešeniu [22]. Do tejto kategórie patria algoritmy ako horolezecký
+      k optimálnemu riešeniu {{cite14.index}}. Do tejto kategórie patria algoritmy ako horolezecký
       algoritmus alebo algoritmus simulovaného žíhania. Prehľadávanie okolia jedného
       riešenia však môže viesť k problémom, ako je uviaznutie v lokálnom optime, pretože agent sa pohybuje len v rámci jedného miesta v riešení.
     </p>
     <p class="section-paragraph">
       Druhou kategóriou
       sú populačné algoritmy, ktoré využívajú viacero agentov naraz. Títo agenti medzi sebou spolupracujú a prehľadávajú viacero riešení súčasne, pričom každý agent
-      prispôsobuje svoje správanie na základe výsledkov ostatných agentov [16]. Známym
+      prispôsobuje svoje správanie na základe výsledkov ostatných agentov {{cite9.index}}. Známym
       príkladom algoritmu, ktorý využíva populáciu, je genetický algoritmus. Tieto algoritmy sú odolnejšie voči uviaznutiu v lokálnom optime, pretože prehľadávajú viac
       častí vyhľadávacieho priestoru súčasne, avšak bývajú výpočtovo zložitejšie.
     </p>
@@ -54,11 +54,11 @@
       Algoritmy lokálneho prehľadávania
       sú často zároveň deterministické a pokiaľ uviaznu v lokálnom optime, nedokážu
       ho opustiť. Pridanie náhodných prvkov do algoritmu dokáže pomôcť vyviaznuť z
-      lokálneho optima a následne nájsť globálne optimum [22].
+      lokálneho optima a následne nájsť globálne optimum {{cite14.index}}.
     </p>
     <p class="section-paragraph">
       Samozrejme nie všetky algoritmy dokážeme jednoznačne zaradiť do určitej kategórie. Takéto hybridné algoritmy môžu kombinovať prvky z viacerých kategórií
-      súčasne [22]. Táto aplikácia je zameraná hlavne na stochastické algoritmy, ktoré
+      súčasne {{cite14.index}}. Táto aplikácia je zameraná hlavne na stochastické algoritmy, ktoré
       prehľadávajú priestor globálne pomocou populácie viacerých agentov.
     </p>
     <h4 class="section-title">Algoritmy inšpirované prírodou</h4>
@@ -77,13 +77,14 @@
       Hodnota fitness funkcie udáva, ako dobre jedinec splnil danú úlohu. Pokiaľ nebola splnená podmienka, ktorá ukončí priebeh algoritmu, prejde sa na ďalší krok,
       ktorým je uskutočnenie operácií nad súčasnou generáciou a vytvorenie novej generácie. Tento krok sa líši podľa vybraného algoritmu. Po vytvorení novej generácie
       sa opäť pokračuje vyhodnotením úspešnosti pomocou fitness funkcie, až kým nie
-      je splnená podmienka ukončenia [7].
+      je splnená podmienka ukončenia {{cite3.index}}.
     </p>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'TeachingAlgorithms',
@@ -91,7 +92,23 @@ export default defineComponent({
   },
 
   setup() {
+    const cite = useNumberCites();
     return {
+      cite1: cite.Cite1,
+      cite2: cite.Cite2,
+      cite3: cite.Cite3,
+      cite4: cite.Cite4,
+      cite5: cite.Cite5,
+      cite6: cite.Cite6,
+      cite7: cite.Cite7,
+      cite8: cite.Cite8,
+      cite9: cite.Cite9,
+      cite10: cite.Cite10,
+      cite11: cite.Cite11,
+      cite12: cite.Cite12,
+      cite13: cite.Cite13,
+      cite14: cite.Cite14,
+      cite15: cite.Cite15,
     };
   }
 });

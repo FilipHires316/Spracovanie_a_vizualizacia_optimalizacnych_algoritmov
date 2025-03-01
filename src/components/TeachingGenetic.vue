@@ -10,7 +10,7 @@
       Každý jedinec (označovaný ako chromozóm) predstavuje jedno možné riešenie problému a skladá
       sa z reťazca génov. Chromozóm je často reprezentovaný bitovou sekvenciou (napr.
       101101), kde každý bit predstavuje jeden gén. Kvalita chromozómov je meraná
-      pomocou fitness funkcie, ktorá je prispôsobená pre potreby konkrétneho problému [7]. Napríklad pri probléme, v ktorom by sme sa snažili o maximalizáciu profitu,
+      pomocou fitness funkcie, ktorá je prispôsobená pre potreby konkrétneho problému {{cite3.index}}. Napríklad pri probléme, v ktorom by sme sa snažili o maximalizáciu profitu,
       by funkcia mohla vyjadrovať celkový profit, ktorý reprezentované riešenie získalo.
       Teda vyššia hodnota fitness znamená lepšie riešenie.
     </p>
@@ -18,7 +18,7 @@
     <p class="section-paragraph">
       V prírode dokážu silnejší a lepšie prispôsobení jedinci prežiť dlhšie. To má za
       následok zvýšenie šancí na reprodukciu a zachovanie genetického materiálu. V konečnom dôsledku teda populácia nesie viac génov od silnejších jedincov a menej od
-      tých slabších [12]. Javy, ktoré môžeme pozorovať v prírode pri evolúcii živočíchov,
+      tých slabších {{cite5.index}}. Javy, ktoré môžeme pozorovať v prírode pri evolúcii živočíchov,
       sa stali inšpiráciou pre genetický algoritmus, ktorý je založený na princípoch prirodzeného výberu jedincov a prenose genetickej informácie medzi generáciami.
     </p>
     <h5 class="subsection-title">Priebeh algoritmu</h5>
@@ -31,12 +31,12 @@
       Prvou fázou genetického algoritmu je vytvorenie počiatočnej populácie. Veľkosť
       tejto populácie závisí od charakteru problému, ale zvyčajne obsahuje stovky až
       tisíce možných riešení. Obvykle sa populácia generuje náhodne, aby pokryla celý
-      prehľadávací priestor možných riešení [10].
+      prehľadávací priestor možných riešení {{cite4.index}}.
     </p>
     <h5 class="subsection-title">Ohodnotenie jedincov pomocou fitness funkcie</h5>
     <p class="section-paragraph">
       Pre každý chromozóm je vypočítaná jeho fitness hodnota prostredníctvom fitness
-      funkcie. Chromozómy s vyššou fitness hodnotou predstavujú lepšie riešenia problému. Táto hodnota bude zohľadnená pri vytváraní novej generácie [7].
+      funkcie. Chromozómy s vyššou fitness hodnotou predstavujú lepšie riešenia problému. Táto hodnota bude zohľadnená pri vytváraní novej generácie {{cite3.index}}.
     </p>
     <h5 class="subsection-title">Kontrola splnenia podmienky ukončenia algoritmu</h5>
     <p class="section-paragraph">
@@ -48,7 +48,7 @@
     <p class="section-paragraph">
       Z potenciálnych riešení je metódami výberu zvolená podmnožina, ktorá sa bude podielať na tvorbe novej generácie jedincov. Chromozómy s vyššou fitness hodnotou
       majú väčšiu pravdepodobnosť na prenos genetickej informácie medzi generáciami,
-      avšak zaručené to nie je [7]. Medzi najznámejšie metódy výberu patrí napríklad
+      avšak zaručené to nie je {{cite3.index}}. Medzi najznámejšie metódy výberu patrí napríklad
       elitizmus, ruleta alebo turnaj.
     </p>
     <ul class="section-list">
@@ -56,40 +56,40 @@
         Tieto riešenia sú jednoducho prenesené bez zmeny do ďalšej generácie. Pokiaľ
         je však počet zachovaných riešení, ktoré sa automaticky dostanú do ďalšej
         generácie privysoký, môže dôjsť k strate diverzity a začnú sa generovať len
-        lokálne optimálne riešenia [19]. Preto je dôležité správne nastaviť pomer, v
+        lokálne optimálne riešenia {{cite12.index}}. Preto je dôležité správne nastaviť pomer, v
         ktorom bude elitizmus aplikovaný.</li>
       <li style="margin-bottom: 1vw"><strong>Ruleta -</strong> Táto metóda výberu funguje na princípe ruletovej hry. Hodnota
         fitness každého chromozómu je úmerná pravdepodobnosti, že tento jedinec
         bude vybraný. Teda čím väčšiu fitness hodnotu chromozóm má, tým mu patrí
         väčší rozsah čísel na rulete. Následne sa vygeneruje náhodné číslo, ktoré sa
-        použije na výber rodiča [2]. Na rozdiel od elitizmu, ruleta ponecháva pri výbere prvok náhody, čo znamená, že aj jedinci s nižšou fitness hodnotou
+        použije na výber rodiča {{cite2.index}}. Na rozdiel od elitizmu, ruleta ponecháva pri výbere prvok náhody, čo znamená, že aj jedinci s nižšou fitness hodnotou
         môžu byť vybraní, čím sa podporuje väčšia diverzita v populácii.</li>
       <li style="margin-bottom: 1vw"><strong>Turnaj -</strong> Metóda turnaja vytvorý náhodnú skupinu chromozómov, ktoré sa
         zúčastnia turnaja. Víťazom turnaja je jedinec s najvyššou fitness hodnotou
-        zo súťažiacich [13].</li>
+        zo súťažiacich {{cite6.index}}.</li>
     </ul>
     <h5 class="subsection-title">Kríženie</h5>
     <p class="section-paragraph">
       Cieľom kríženia je vytvorenie nových jedincov kombináciou dvoch rodičovských
       chromozómov. Métódami výberu, ktoré sme popísali vyššie, sú vybrané dva rodičovské chromozómy. Následne je vytvorený nový chromozóm, ktorý obsahuje
-      genetické informácie z oboch rodičovských chromozómov [7]. Známymi metódami
+      genetické informácie z oboch rodičovských chromozómov {{cite3.index}}. Známymi metódami
       kríženia sú jednobodové kríženie, dvojbodové kríženie a uniformné kríženie.
     </p>
     <ul class="section-list">
       <li style="margin-bottom: 1vw"><strong>Jednobodové kríženie -</strong> Pri tomto type kríženia sa náhodne vyberie bod,
         v ktorom sa oba rodičovské chromozómy rozdelia na dve časti. Potom sa
         vytvorí nový chromozóm, ktorý pozostáva z prvej časti prvého rodičovského
-        chromozómu a druhej časti druhého rodičovského chromozómu [21].
+        chromozómu a druhej časti druhého rodičovského chromozómu {{cite13.index}}.
         <img src="/images/jednobodove_krizenie.png" alt="Príklad jednobodového kríženia" style="margin-left: 1.5vw; width: 45vw" />
       </li>
       <li style="margin-bottom: 1vw"><strong>Dvojbodové kríženie -</strong> TFunguje podobne ako jednobodové kríženie. Rozdiel
         spočíva v tom, že sú vybrané dva náhodné body. Týmto spôsobom sú rodičovské chromozómy rozdelené na tri časti. Nový chromozóm sa následne
         vytvorí kombinovaním centrálnej časti jedného rodičovského chromozómu a
-        okrajových častí druhého rodičovského chromozómu [21].
+        okrajových častí druhého rodičovského chromozómu {{cite13.index}}.
         <img src="/images/dvojbodove_krizenie.png" alt="Príklad dvojbodového kríženia" style="margin-left: 1.5vw; width: 45vw"/>
       </li>
       <li style="margin-bottom: 1vw"><strong>Uniformné kríženie -</strong> Každý gén v novom jedincovi je náhodne vybraný z
-        prvého, alebo druhého rodiča na rovnakej pozícii [21].
+        prvého, alebo druhého rodiča na rovnakej pozícii {{cite13.index}}.
         <img src="/images/uniformne_krizenie.png" alt="Príklad uniformného kríženia" style="margin-left: 1.5vw; margin-top: 1vw; width: 45vw" />
       </li>
     </ul>
@@ -105,7 +105,7 @@
     <p class="section-paragraph">
       Pre každý bit existuje pravdepodobnosť, že prejde mutáciou. Táto pravdepodobnosť je zvyčajne veľmi malá,
       aby sme nestratili pôvodnú genetickú informáciu. Ak bit mutuje, jeho hodnota sa
-      invertuje, takže nula sa stane jednotkou a jednotka nulou [12].
+      invertuje, takže nula sa stane jednotkou a jednotka nulou {{cite5.index}}.
       <img src="/images/mutacia.png" alt="Príklad mutácie chromozómu" style="margin-left: 10vw; margin-top: 1vw;" />
     </p>
   </div>
@@ -113,6 +113,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'TeachingGenetic',
@@ -120,7 +121,23 @@ export default defineComponent({
   },
 
   setup() {
+    const cite = useNumberCites();
     return {
+      cite1: cite.Cite1,
+      cite2: cite.Cite2,
+      cite3: cite.Cite3,
+      cite4: cite.Cite4,
+      cite5: cite.Cite5,
+      cite6: cite.Cite6,
+      cite7: cite.Cite7,
+      cite8: cite.Cite8,
+      cite9: cite.Cite9,
+      cite10: cite.Cite10,
+      cite11: cite.Cite11,
+      cite12: cite.Cite12,
+      cite13: cite.Cite13,
+      cite14: cite.Cite14,
+      cite15: cite.Cite15,
     };
   }
 });
