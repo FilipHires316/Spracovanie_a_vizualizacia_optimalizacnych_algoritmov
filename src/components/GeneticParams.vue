@@ -5,6 +5,7 @@
       class="my-custom-toggle"
       spread
       no-caps
+      glossy
       unelevated
       toggle-color="primary"
       color="white"
@@ -12,7 +13,7 @@
       :options="[
           {label: 'Optimálne', icon: 'check', value: 'optimum'},
           {label: 'Velká populácia', icon: 'trending_up', value: 'big'},
-          {label: 'Rýchli výpočet', icon: 'timer', value: 'small'},
+          {label: 'Rýchly výpočet', icon: 'timer', value: 'small'},
           {label: 'vlastné', icon: 'tuned', value: 'own'},
         ]"
       ></q-btn-toggle>
@@ -28,7 +29,7 @@
       <q-input
         filled
         v-model="population"
-        label="Veľkosť populácie"
+        label="Veľkosť počiatočnej populácie"
         stack-label
         dense
         class="bg-white text-primary"
@@ -37,7 +38,7 @@
       <q-input
         filled
         v-model="mutation"
-        label="Ďalší parameter"
+        label="Pravdepodobnosť mutácie v %"
         stack-label
         dense
         class="bg-white text-primary"
@@ -66,6 +67,7 @@
         v-model="choose"
         class="my-custom-toggle"
         spread
+        glossy
         no-caps
         unelevated
         toggle-color="primary"
@@ -84,13 +86,14 @@
         stack-label
         dense
         class="bg-white text-primary"
-        style="margin-top: 0; width: 100%; margin-left: 1vw"
+        style="margin-top: 0; width: 100%; margin-left: 1vw;"
       />
     </div>
     <q-btn-toggle
       v-model="crossing"
       class="my-custom-toggle"
       spread
+      glossy
       no-caps
       unelevated
       toggle-color="primary"
@@ -112,15 +115,15 @@ import { defineComponent, ref } from 'vue';
 export default defineComponent({
   name: 'GeneticParams',
   setup() {
-    const model = ref();
+    const model = ref("optimum");
     const iterations = ref(20);
     const population = ref(100);
     const mutation = ref(0.3);
     const showNewInput = ref(false); // false means hidden, true means shown
     const elitism = ref(3);
-    const choose = ref();
+    const choose = ref("roulette");
     const tournamentSize = ref(3);
-    const crossing = ref(3);
+    const crossing = ref("one");
 
     return {
       model,
