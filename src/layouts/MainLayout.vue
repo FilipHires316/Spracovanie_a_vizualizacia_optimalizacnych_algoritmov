@@ -2,7 +2,7 @@
   <q-layout view="hHh LpR fFf">
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-toolbar-title style="margin-left: 40px">
+        <q-toolbar-title>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
           </q-avatar>
