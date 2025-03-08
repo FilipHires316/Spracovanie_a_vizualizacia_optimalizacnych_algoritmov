@@ -29,7 +29,7 @@
     <q-input
       filled
       v-model="population"
-      label="Počet svoriek"
+      label="Veľkosť populácie"
       stack-label
       dense
       class="bg-white text-primary"
@@ -39,14 +39,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue'
+import { whalePresets } from 'stores/presets/whalePresets'
 
 export default defineComponent({
   name: 'WhaleParams',
   setup() {
-    const model = ref("optimum");
-    const iterations = ref(20);
-    const population = ref(80);
+    const model = ref<string | null>(null);
+    const iterations = ref<number | null>(null);
+    const population = ref<number | null>(null);
+
+    watch(model, (newVal) => {
+      const preset = whalePresets[newVal as keyof typeof whalePresets];
+      if (preset) {
+        iterations.value = preset.iterations;
+        population.value = preset.population;
+      }
+    });
 
     return {
       model,

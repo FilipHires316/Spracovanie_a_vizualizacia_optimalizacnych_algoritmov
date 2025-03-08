@@ -1,0 +1,42 @@
+export const geneticPresets = {
+  optimum: {
+    iterations: 20,
+    population: 100,
+    mutation: 0.3,
+    showNewInput: true,
+    elitism: 3,
+    choose: "tournament",
+    tournamentSize: 2,
+    crossing: "two",
+  },
+  big: {
+    iterations: 40,
+    population: 200,
+    mutation: 0.2,
+    showNewInput: true,
+    elitism: 4,
+    choose: "roulette",
+    tournamentSize: 0,
+    crossing: "uni",
+  },
+  small: {
+    iterations: 15,
+    population: 80,
+    mutation: 0.3,
+    showNewInput: false,
+    elitism: 0,
+    choose: "tournament",
+    tournamentSize: 2,
+    crossing: "one",
+  },
+  own: {
+    iterations: 0,
+    population: 0,
+    mutation: 0,
+    showNewInput: false,
+    elitism: 0,
+    choose: null,
+    tournamentSize: 0,
+    crossing: null,
+  }
+};

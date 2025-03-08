@@ -110,20 +110,36 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
+import { geneticPresets } from 'stores/presets/geneticPresets'; // Import the config
 
 export default defineComponent({
   name: 'GeneticParams',
   setup() {
-    const model = ref("optimum");
-    const iterations = ref(20);
-    const population = ref(100);
-    const mutation = ref(0.3);
-    const showNewInput = ref(false); // false means hidden, true means shown
-    const elitism = ref(3);
-    const choose = ref("roulette");
-    const tournamentSize = ref(3);
-    const crossing = ref("one");
+    const model = ref<string | null>(null);
+    const iterations = ref<number | null>(null);
+    const population = ref<number | null>(null);
+    const mutation = ref<number | null>(null);
+    const showNewInput = ref<boolean>(false);
+    const elitism = ref<number | null>(null);
+    const choose = ref<string | null>(null);
+    const tournamentSize = ref<number | null>(null);
+    const crossing = ref<string | null>(null);
+
+    // Watch for changes in model and apply preset values
+    watch(model, (newVal) => {
+      const preset = geneticPresets[newVal as keyof typeof geneticPresets];
+      if (preset) {
+        iterations.value = preset.iterations;
+        population.value = preset.population;
+        mutation.value = preset.mutation;
+        showNewInput.value = preset.showNewInput;
+        elitism.value = preset.elitism;
+        choose.value = preset.choose;
+        tournamentSize.value = preset.tournamentSize;
+        crossing.value = preset.crossing;
+    }
+  });
 
     return {
       model,

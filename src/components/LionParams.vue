@@ -66,17 +66,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue'
+import { lionPresets } from 'stores/presets/lionPresets'
 
 export default defineComponent({
   name: 'LionParams',
   setup() {
-    const model = ref("optimum");
-    const iterations = ref(20);
-    const packs = ref(15);
-    const females = ref(8);
-    const males = ref(2); // false means hidden, true means shown
-    const hunters = ref(75);
+    const model = ref<string | null>(null);
+    const iterations = ref<number | null>(null);
+    const packs = ref<number | null>(null);
+    const females = ref<number | null>(null);
+    const males = ref<number | null>(null);// false means hidden, true means shown
+    const hunters = ref<number | null>(null);
+
+    watch(model, (newVal) => {
+      const preset = lionPresets[newVal as keyof typeof lionPresets];
+      if (preset) {
+        iterations.value = preset.iterations;
+        packs.value = preset.packs;
+        males.value = preset.males;
+        females.value = preset.females;
+        hunters.value = preset.hunters;
+      }
+    });
 
     return {
       model,
