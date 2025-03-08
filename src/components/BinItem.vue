@@ -22,16 +22,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, toRefs } from 'vue';
 
 export default defineComponent({
   name: 'BinItem',
   props: {
-    itemId: Number
+    itemId: { type: Number, required: true }, // Unique ID for the item
+    initSize: { type: Number, default: 0 },
   },
   setup(props, { emit }) {
-    const size = ref(0);
-    const price = ref(0);
+    const { initSize } = toRefs(props); // Convert props to reactive
+    const size = ref(initSize.value);
 
     // Emit event to parent when delete button is clicked
     const deleteItem = () => {
@@ -40,12 +41,12 @@ export default defineComponent({
 
     return {
       size,
-      price,
       deleteItem
     };
   }
 });
 </script>
+
 
 <style lang="scss" scoped>
 </style>

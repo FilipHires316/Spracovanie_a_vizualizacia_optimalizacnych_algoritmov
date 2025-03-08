@@ -16,7 +16,7 @@
         { label: 'Rýchly výpočet', icon: 'timer', value: 'small' },
         { label: 'Vlastné', icon: 'tuned', value: 'own' },
       ]"
-    ></q-btn-toggle>
+    />
 
     <q-input
       filled
@@ -31,7 +31,12 @@
     <h5 class="subsection-title">Predmety:</h5>
 
     <div v-for="(item) in items" :key="item.id">
-      <KnapsackItem :itemId="item.id" @delete="removeItem" />
+      <KnapsackItem
+        :itemId="item.id"
+        :initSize="item.size"
+        :initPrice="item.price"
+        @delete="removeItem"
+      />
     </div>
 
     <q-btn
@@ -41,14 +46,15 @@
       size="lg"
       class="q-mb-md custom-button"
       style="margin-top: 1vw; margin-left: 41%"
-      @click="addItem"
+      @click="addItem()"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import KnapsackItem from 'components/KnapsackItem.vue';
+import { knapsackPresets } from 'stores/presets/knapsackPresets';
 
 export default defineComponent({
   name: 'KnapsackParams',
@@ -57,20 +63,32 @@ export default defineComponent({
   },
 
   setup() {
-    const model = ref("optimum");
-    const capacity = ref(100);
-    const items = ref<{ id: number }[]>([]); // Array to track added items
+    const model = ref<string | null>(null);
+    const capacity = ref<number | null>(null);
+    const items = ref<{ id: number; size: number; price: number }[]>([]); // Adding size and price to the item object
     let idCounter = 0; // Unique ID counter
 
     // Function to add a new item
-    const addItem = () => {
-      items.value.push({ id: idCounter++ });
+    const addItem = (size: number = 0, price: number = 0) => {
+      items.value.push({ id: idCounter++, size, price });
     };
 
     // Function to remove an item based on ID
     const removeItem = (id: number) => {
       items.value = items.value.filter(item => item.id !== id);
     };
+
+    // Watch for changes in the selected preset
+    watch(model, (newVal) => {
+      const preset = knapsackPresets[newVal as keyof typeof knapsackPresets];
+      if (preset) {
+        capacity.value = preset.capacity;
+        items.value = [];
+        preset.items.forEach(([ size, price ]) => {
+          addItem(size, price);
+        });
+      }
+    });
 
     return {
       model,

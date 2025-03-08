@@ -18,24 +18,25 @@
       ]"
     ></q-btn-toggle>
 
-    <q-input
-      filled
-      v-model="capacity"
-      label="Kapacita batohu"
-      stack-label
-      dense
-      class="bg-white text-primary"
-      style="margin-top: 10px;"
-    />
-
     <h5 class="subsection-title">Počiatočné / Koncové mesto:</h5>
 
-    <CityItem :show-button="false"/>
+    <div v-for="item in start" :key="item.id">
+      <CityItem
+        :itemId="item.id"
+        :initX="item.x"
+        :initY="item.y"
+      />
+    </div>
 
-    <h5 class="subsection-title">Ostatné body:</h5>
+    <h5 class="subsection-title">Ostatné mestá:</h5>
 
-    <div v-for="(item) in items" :key="item.id">
-      <CityItem :itemId="item.id" @delete="removeItem" />
+    <div v-for="item in items" :key="item.id">
+      <CityItem
+        :itemId="item.id"
+        :initX="item.x"
+        :initY="item.y"
+        @delete="removeItem"
+      />
     </div>
 
     <q-btn
@@ -45,46 +46,69 @@
       size="lg"
       class="q-mb-md custom-button"
       style="margin-top: 1vw; margin-left: 41%"
-      @click="addItem"
+      @click="addItem()"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import CityItem from 'components/CityItem.vue';
+import { defineComponent, ref, watch } from 'vue'
+import CityItem from 'components/CityItem.vue'
+import { salesmanPresets } from 'stores/presets/salesmanPresets'
 
 export default defineComponent({
   name: 'SalesmanParams',
   components: {
-    CityItem
+    CityItem,
   },
 
   setup() {
-    const model = ref("optimum");
-    const capacity = ref(100);
-    const items = ref<{ id: number }[]>([]); // Array to track added items
-    let idCounter = 0; // Unique ID counter
+    const model = ref<string | null>(null)
+    const items = ref<{ id: number; x: number; y: number }[]>([])
+    const start = ref<{ id: number; x: number; y: number }[]>([])
+    let idCounter = 0 // Unique ID counter
 
     // Function to add a new item
-    const addItem = () => {
-      items.value.push({ id: idCounter++ });
-    };
+    const addItem = (x: number = 0, y: number = 0) => {
+      items.value.push({ id: idCounter++, x, y })
+    }
+
+    const addStart = (x: number = 0, y: number = 0) => {
+      start.value.push({ id: idCounter++, x, y })
+    }
 
     // Function to remove an item based on ID
     const removeItem = (id: number) => {
-      items.value = items.value.filter(item => item.id !== id);
-    };
+      items.value = items.value.filter((item) => item.id !== id)
+    }
+
+    // Watch for changes in the selected preset
+    watch(model, (newVal) => {
+      const preset = salesmanPresets[newVal as keyof typeof salesmanPresets]
+      if (preset) {
+        items.value = []
+        start.value = []
+        preset.cities.forEach(([x, y]) => {
+          addItem(x, y)
+        })
+        preset.start.forEach(([x, y]) => {
+         addStart(x, y)
+        })
+      }
+    })
+
+    addStart(0, 0)
 
     return {
       model,
-      capacity,
       items,
+      start,
       addItem,
-      removeItem
-    };
-  }
-});
+      removeItem,
+      addStart,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>

@@ -2,7 +2,7 @@
   <div style="margin-top: 10px; display: flex; align-items: center;">
     <q-input
       filled
-      v-model="size"
+      v-model="x"
       label="Súradnica X"
       stack-label
       dense
@@ -11,7 +11,7 @@
     />
     <q-input
       filled
-      v-model="price"
+      v-model="y"
       label="Súradnica Y"
       stack-label
       dense
@@ -19,7 +19,6 @@
       style="margin-top: 0; width: 48%"
     />
     <q-btn
-      v-if="showButton"
       icon="remove"
       color="red"
       text-color="white"
@@ -32,20 +31,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, toRefs } from 'vue';
 
 export default defineComponent({
   name: 'CityItem',
   props: {
-    showButton: {
-      type: Boolean,
-      default: true,
-    },
-    itemId: Number // Unique ID for the item
+    itemId: { type: Number, required: true }, // Unique ID for the item
+    initX: { type: Number, default: 0 },
+    initY: { type: Number, default: 0 }
   },
   setup(props, { emit }) {
-    const size = ref(0);
-    const price = ref(0);
+    const { initX, initY } = toRefs(props); // Convert props to reactive
+    const x = ref(initX.value);
+    const y = ref(initY.value);
 
     // Emit event to parent when delete button is clicked
     const deleteItem = () => {
@@ -53,8 +51,8 @@ export default defineComponent({
     };
 
     return {
-      size,
-      price,
+      x,
+      y,
       deleteItem
     };
   }
