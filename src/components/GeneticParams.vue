@@ -5,8 +5,7 @@
       class="my-custom-toggle"
       spread
       no-caps
-      glossy
-      unelevated
+      elevated
       toggle-color="primary"
       color="white"
       text-color="primary"
@@ -67,9 +66,8 @@
         v-model="choose"
         class="my-custom-toggle"
         spread
-        glossy
         no-caps
-        unelevated
+        elevated
         toggle-color="primary"
         color="white"
         text-color="primary"
@@ -93,9 +91,8 @@
       v-model="crossing"
       class="my-custom-toggle"
       spread
-      glossy
       no-caps
-      unelevated
+      elevated
       toggle-color="primary"
       color="white"
       text-color="primary"

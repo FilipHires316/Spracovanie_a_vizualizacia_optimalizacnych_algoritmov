@@ -5,8 +5,7 @@
       class="my-custom-toggle"
       spread
       no-caps
-      glossy
-      unelevated
+      elevated
       toggle-color="primary"
       color="white"
       text-color="primary"
