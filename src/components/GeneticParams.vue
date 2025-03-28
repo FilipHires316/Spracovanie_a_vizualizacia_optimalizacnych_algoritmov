@@ -108,7 +108,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
-import { geneticPresets } from 'stores/presets/geneticPresets'; // Import the config
+import { geneticPresets } from 'stores/presets/geneticPresets';
+import { useParamStore } from 'stores/paramStore' // Import the config
 
 export default defineComponent({
   name: 'GeneticParams',
@@ -122,6 +123,7 @@ export default defineComponent({
     const choose = ref<string | null>(null);
     const tournamentSize = ref<number | null>(null);
     const crossing = ref<string | null>(null);
+    const paramStore = useParamStore
 
     // Watch for changes in model and apply preset values
     watch(model, (newVal) => {
@@ -148,6 +150,7 @@ export default defineComponent({
       choose,
       tournamentSize,
       crossing,
+      paramStore,
     };
   }
 });

@@ -67,6 +67,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
 import { lionPresets } from 'stores/presets/lionPresets'
+import { useParamStore } from 'stores/paramStore'
 
 export default defineComponent({
   name: 'LionParams',
@@ -77,6 +78,7 @@ export default defineComponent({
     const females = ref<number | null>(null);
     const males = ref<number | null>(null);// false means hidden, true means shown
     const hunters = ref<number | null>(null);
+    const paramStore = useParamStore
 
     watch(model, (newVal) => {
       const preset = lionPresets[newVal as keyof typeof lionPresets];
@@ -96,6 +98,7 @@ export default defineComponent({
       females,
       males,
       hunters,
+      paramStore,
     };
   }
 });

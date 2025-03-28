@@ -54,6 +54,7 @@
 import { defineComponent, ref, watch } from 'vue'
 import CityItem from 'components/CityItem.vue'
 import { salesmanPresets } from 'stores/presets/salesmanPresets'
+import { useParamStore } from 'stores/paramStore'
 
 export default defineComponent({
   name: 'SalesmanParams',
@@ -65,7 +66,8 @@ export default defineComponent({
     const model = ref<string | null>(null)
     const items = ref<{ id: number; x: number; y: number }[]>([])
     const start = ref<{ id: number; x: number; y: number }[]>([])
-    let idCounter = 0 // Unique ID counter
+    let idCounter = 0
+    const paramStore = useParamStore
 
     // Function to add a new item
     const addItem = (x: number = 0, y: number = 0) => {
@@ -105,6 +107,7 @@ export default defineComponent({
       addItem,
       removeItem,
       addStart,
+      paramStore,
     }
   },
 })

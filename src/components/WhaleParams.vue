@@ -40,6 +40,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
 import { whalePresets } from 'stores/presets/whalePresets'
+import { useParamStore } from 'stores/paramStore'
 
 export default defineComponent({
   name: 'WhaleParams',
@@ -47,6 +48,7 @@ export default defineComponent({
     const model = ref<string | null>(null);
     const iterations = ref<number | null>(null);
     const population = ref<number | null>(null);
+    const paramStore = useParamStore
 
     watch(model, (newVal) => {
       const preset = whalePresets[newVal as keyof typeof whalePresets];
@@ -60,6 +62,7 @@ export default defineComponent({
       model,
       iterations,
       population,
+      paramStore,
     };
   }
 });

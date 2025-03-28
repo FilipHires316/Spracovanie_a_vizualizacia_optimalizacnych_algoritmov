@@ -53,6 +53,7 @@
 import { defineComponent, ref, watch } from 'vue'
 import BinItem from 'components/BinItem.vue'
 import { binPresets } from 'stores/presets/binPresets'
+import { useParamStore } from 'stores/paramStore'
 
 export default defineComponent({
   name: 'BinParams',
@@ -64,7 +65,8 @@ export default defineComponent({
     const model = ref<string | null>(null)
     const capacity = ref<number | null>(null)
     const items = ref<{ id: number; size: number }[]>([]) // Adding size and price to the item object
-    let idCounter = 0 // Unique ID counter
+    let idCounter = 0
+    const paramStore = useParamStore
 
     // Function to add a new item
     const addItem = (size: number = 0) => {
@@ -94,6 +96,7 @@ export default defineComponent({
       items,
       addItem,
       removeItem,
+      paramStore,
     }
   },
 })

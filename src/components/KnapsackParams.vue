@@ -54,6 +54,7 @@
 import { defineComponent, ref, watch } from 'vue';
 import KnapsackItem from 'components/KnapsackItem.vue';
 import { knapsackPresets } from 'stores/presets/knapsackPresets';
+import { useParamStore } from 'stores/paramStore'
 
 export default defineComponent({
   name: 'KnapsackParams',
@@ -65,7 +66,8 @@ export default defineComponent({
     const model = ref<string | null>(null);
     const capacity = ref<number | null>(null);
     const items = ref<{ id: number; size: number; price: number }[]>([]); // Adding size and price to the item object
-    let idCounter = 0; // Unique ID counter
+    let idCounter = 0;
+    const paramStore = useParamStore
 
     // Function to add a new item
     const addItem = (size: number = 0, price: number = 0) => {
@@ -94,7 +96,8 @@ export default defineComponent({
       capacity,
       items,
       addItem,
-      removeItem
+      removeItem,
+      paramStore,
     };
   }
 });
