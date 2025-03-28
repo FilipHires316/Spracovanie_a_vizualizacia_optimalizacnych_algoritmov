@@ -24,6 +24,7 @@
         :itemId="item.id"
         :initX="item.x"
         :initY="item.y"
+        :showButton="false"
       />
     </div>
 

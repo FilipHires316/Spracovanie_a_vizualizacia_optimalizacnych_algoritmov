@@ -19,6 +19,7 @@
       style="margin-top: 0; width: 48%"
     />
     <q-btn
+      v-if="props.showButton"
       icon="remove"
       color="red"
       text-color="white"
@@ -38,7 +39,8 @@ export default defineComponent({
   props: {
     itemId: { type: Number, required: true },
     initX: { type: Number, default: 0 },
-    initY: { type: Number, default: 0 }
+    initY: { type: Number, default: 0 },
+    showButton: { type: Boolean, default: true }
   },
   setup(props, { emit }) {
     const { initX, initY } = toRefs(props);
@@ -52,11 +54,9 @@ export default defineComponent({
     return {
       x,
       y,
-      deleteItem
+      deleteItem,
+      props
     };
   }
 });
 </script>
-
-<style lang="scss" scoped>
-</style>
