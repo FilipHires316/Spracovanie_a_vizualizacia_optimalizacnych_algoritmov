@@ -88,8 +88,6 @@ import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'TeachingAlgorithms',
-  props: {
-  },
 
   setup() {
     const cite = useNumberCites();

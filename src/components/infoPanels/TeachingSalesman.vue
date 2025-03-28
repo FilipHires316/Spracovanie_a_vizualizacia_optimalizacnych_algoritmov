@@ -46,8 +46,6 @@ import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'TeachingSalesman',
-  props: {
-  },
 
   setup() {
     const cite = useNumberCites();

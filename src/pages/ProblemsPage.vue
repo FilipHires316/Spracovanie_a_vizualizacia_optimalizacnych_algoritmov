@@ -77,8 +77,8 @@ export default defineComponent({
   },
 
   setup() {
-    const selectedOptimization = ref('Genetic'); // Default selection for optimization algorithm
-    const selectedProblem = ref('Knapsack'); // Default selection for problem
+    const selectedOptimization = ref('Genetic');
+    const selectedProblem = ref('Knapsack');
     const paramStore = useParamStore();
     const checkInputs = paramStore.checkInputs;
 

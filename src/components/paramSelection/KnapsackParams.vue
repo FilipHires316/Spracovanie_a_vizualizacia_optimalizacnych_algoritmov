@@ -65,21 +65,18 @@ export default defineComponent({
   setup() {
     const model = ref<string | null>(null);
     const capacity = ref<number | null>(null);
-    const items = ref<{ id: number; size: number; price: number }[]>([]); // Adding size and price to the item object
+    const items = ref<{ id: number; size: number; price: number }[]>([]);
     let idCounter = 0;
     const paramStore = useParamStore
 
-    // Function to add a new item
     const addItem = (size: number = 0, price: number = 0) => {
       items.value.push({ id: idCounter++, size, price });
     };
 
-    // Function to remove an item based on ID
     const removeItem = (id: number) => {
       items.value = items.value.filter(item => item.id !== id);
     };
 
-    // Watch for changes in the selected preset
     watch(model, (newVal) => {
       const preset = knapsackPresets[newVal as keyof typeof knapsackPresets];
       if (preset) {

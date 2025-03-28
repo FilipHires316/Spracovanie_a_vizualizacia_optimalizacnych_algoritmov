@@ -31,8 +31,6 @@ import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'TeachingBin',
-  props: {
-  },
 
   setup() {
     const cite = useNumberCites();

@@ -39,8 +39,6 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'InfoPanel',
-  props: {
-  },
 
   setup() {
     return {

@@ -132,21 +132,17 @@ export default defineComponent({
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // Reactive value for screen size detection
     const isMobile = ref(false);
 
-    // Function to check screen width
     const checkMobile = () => {
       isMobile.value = window.innerWidth <= 768; // Adjust the breakpoint if necessary
     };
 
-    // Check the screen width when component is mounted
     onMounted(() => {
       checkMobile();
       window.addEventListener('resize', checkMobile);
     });
 
-    // Cleanup event listener when component is unmounted
     onBeforeUnmount(() => {
       window.removeEventListener('resize', checkMobile);
     });

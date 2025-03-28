@@ -36,8 +36,6 @@ import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'TeachingKnapsack',
-  props: {
-  },
 
   setup() {
     const cite = useNumberCites();

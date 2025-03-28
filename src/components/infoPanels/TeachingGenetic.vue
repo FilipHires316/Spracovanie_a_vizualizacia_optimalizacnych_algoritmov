@@ -117,8 +117,6 @@ import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'TeachingGenetic',
-  props: {
-  },
 
   setup() {
     const cite = useNumberCites();

@@ -69,7 +69,6 @@ export default defineComponent({
     let idCounter = 0
     const paramStore = useParamStore
 
-    // Function to add a new item
     const addItem = (x: number = 0, y: number = 0) => {
       items.value.push({ id: idCounter++, x, y })
     }
@@ -78,12 +77,10 @@ export default defineComponent({
       start.value.push({ id: idCounter++, x, y })
     }
 
-    // Function to remove an item based on ID
     const removeItem = (id: number) => {
       items.value = items.value.filter((item) => item.id !== id)
     }
 
-    // Watch for changes in the selected preset
     watch(model, (newVal) => {
       const preset = salesmanPresets[newVal as keyof typeof salesmanPresets]
       if (preset) {

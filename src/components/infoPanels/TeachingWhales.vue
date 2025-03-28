@@ -127,8 +127,6 @@ import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'TeachingWhales',
-  props: {
-  },
 
   setup() {
     const cite = useNumberCites();

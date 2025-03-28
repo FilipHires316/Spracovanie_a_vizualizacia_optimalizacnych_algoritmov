@@ -160,8 +160,6 @@ import { useNumberCites } from 'stores/citationsNumbers';
 
 export default defineComponent({
   name: 'TeachingLion',
-  props: {
-  },
 
   setup() {
     const cite = useNumberCites();

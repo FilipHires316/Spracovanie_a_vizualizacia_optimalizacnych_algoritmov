@@ -36,16 +36,15 @@ import { defineComponent, ref, toRefs } from 'vue';
 export default defineComponent({
   name: 'CityItem',
   props: {
-    itemId: { type: Number, required: true }, // Unique ID for the item
+    itemId: { type: Number, required: true },
     initX: { type: Number, default: 0 },
     initY: { type: Number, default: 0 }
   },
   setup(props, { emit }) {
-    const { initX, initY } = toRefs(props); // Convert props to reactive
+    const { initX, initY } = toRefs(props);
     const x = ref(initX.value);
     const y = ref(initY.value);
 
-    // Emit event to parent when delete button is clicked
     const deleteItem = () => {
       emit('delete', props.itemId);
     };

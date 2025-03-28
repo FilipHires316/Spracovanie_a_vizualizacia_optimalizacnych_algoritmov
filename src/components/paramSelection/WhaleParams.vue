@@ -63,7 +63,6 @@ export default defineComponent({
       population,
     } = storeToRefs(paramStore);
 
-    // Watch for model changes and apply preset values
     watch(model, (newVal) => {
       const preset = whalePresets[newVal as keyof typeof whalePresets];
       if (preset) {

@@ -87,7 +87,6 @@ export default defineComponent({
     reset()
     const model = ref<string | null>(null);
 
-    // Store references to ensure reactivity
     const {
       iterations,
       packs,
@@ -96,7 +95,6 @@ export default defineComponent({
       hunters,
     } = storeToRefs(paramStore);
 
-    // Watch for model changes and apply preset values
     watch(model, (newVal) => {
       const preset = lionPresets[newVal as keyof typeof lionPresets];
       if (preset) {

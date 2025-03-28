@@ -131,7 +131,6 @@ export default defineComponent({
     };
     reset()
     const model = ref<string | null>(null);
-    // Store references to ensure reactivity
     const {
       iterations,
       population,
@@ -143,7 +142,6 @@ export default defineComponent({
       crossing,
     } = storeToRefs(paramStore);
 
-    // Watch for changes in model and apply preset values
     watch(model, (newVal) => {
       const preset = geneticPresets[newVal as keyof typeof geneticPresets];
       if (preset) {

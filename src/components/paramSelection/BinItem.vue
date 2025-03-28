@@ -27,14 +27,13 @@ import { defineComponent, ref, toRefs } from 'vue';
 export default defineComponent({
   name: 'BinItem',
   props: {
-    itemId: { type: Number, required: true }, // Unique ID for the item
+    itemId: { type: Number, required: true },
     initSize: { type: Number, default: 0 },
   },
   setup(props, { emit }) {
-    const { initSize } = toRefs(props); // Convert props to reactive
+    const { initSize } = toRefs(props);
     const size = ref(initSize.value);
 
-    // Emit event to parent when delete button is clicked
     const deleteItem = () => {
       emit('delete', props.itemId);
     };

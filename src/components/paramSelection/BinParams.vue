@@ -64,21 +64,18 @@ export default defineComponent({
   setup() {
     const model = ref<string | null>(null)
     const capacity = ref<number | null>(null)
-    const items = ref<{ id: number; size: number }[]>([]) // Adding size and price to the item object
+    const items = ref<{ id: number; size: number }[]>([])
     let idCounter = 0
     const paramStore = useParamStore
 
-    // Function to add a new item
     const addItem = (size: number = 0) => {
       items.value.push({ id: idCounter++, size })
     }
 
-    // Function to remove an item based on ID
     const removeItem = (id: number) => {
       items.value = items.value.filter((item) => item.id !== id)
     }
 
-    // Watch for changes in the selected preset
     watch(model, (newVal) => {
       const preset = binPresets[newVal as keyof typeof binPresets]
       if (preset) {

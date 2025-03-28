@@ -36,16 +36,15 @@ import { defineComponent, ref, toRefs } from 'vue';
 export default defineComponent({
   name: 'KnapsackItem',
   props: {
-    itemId: { type: Number, required: true }, // Unique ID for the item
+    itemId: { type: Number, required: true },
     initSize: { type: Number, default: 0 },
     initPrice: { type: Number, default: 0 }
   },
   setup(props, { emit }) {
-    const { initSize, initPrice } = toRefs(props); // Convert props to reactive
+    const { initSize, initPrice } = toRefs(props);
     const size = ref(initSize.value);
     const price = ref(initPrice.value);
 
-    // Emit event to parent when delete button is clicked
     const deleteItem = () => {
       emit('delete', props.itemId);
     };
