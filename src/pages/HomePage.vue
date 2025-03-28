@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import InfoPanel from 'components/InfoPanel.vue';
+import InfoPanel from 'components/infoPanels/InfoPanel.vue';
 
 export default defineComponent({
   name: 'HomePage',

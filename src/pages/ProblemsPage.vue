@@ -55,12 +55,12 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import GeneticParams from 'components/GeneticParams.vue';
-import LionParams from 'components/LionParams.vue'
-import WhaleParams from 'components/WhaleParams.vue'
-import KnapsackParams from 'components/KnapsackParams.vue'
-import BinParams from 'components/BinParams.vue'
-import SalesmanParams from 'components/SalesmanParams.vue'
+import GeneticParams from 'components/paramSelection/GeneticParams.vue';
+import LionParams from 'components/paramSelection/LionParams.vue'
+import WhaleParams from 'components/paramSelection/WhaleParams.vue'
+import KnapsackParams from 'components/paramSelection/KnapsackParams.vue'
+import BinParams from 'components/paramSelection/BinParams.vue'
+import SalesmanParams from 'components/paramSelection/SalesmanParams.vue'
 
 export default defineComponent({
   name: 'ProblemsPage',

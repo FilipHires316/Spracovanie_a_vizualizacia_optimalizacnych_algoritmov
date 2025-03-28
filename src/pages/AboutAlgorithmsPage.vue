@@ -77,14 +77,14 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, onBeforeUnmount} from 'vue';
-import TeachingAlgorithms from 'components/TeachingAlgorithms.vue';
-import TeachingGenetic from 'components/TeachingGenetic.vue';
-import TeachingLion from 'components/TeachingLion.vue';
-import TeachingWhale from 'components/TeachingWhales.vue';
-import TeachingKnapsack from 'components/TeachingKnapsack.vue';
-import TeachingBin from 'components/TeachingBin.vue';
-import TeachingSalesman from 'components/TeachingSalesman.vue';
-import ResourcesAndLiterature from 'components/ResourcesAndLiterature.vue';
+import TeachingAlgorithms from 'components/infoPanels/TeachingAlgorithms.vue';
+import TeachingGenetic from 'components/infoPanels/TeachingGenetic.vue';
+import TeachingLion from 'components/infoPanels/TeachingLion.vue';
+import TeachingWhale from 'components/infoPanels/TeachingWhales.vue';
+import TeachingKnapsack from 'components/infoPanels/TeachingKnapsack.vue';
+import TeachingBin from 'components/infoPanels/TeachingBin.vue';
+import TeachingSalesman from 'components/infoPanels/TeachingSalesman.vue';
+import ResourcesAndLiterature from 'components/infoPanels/ResourcesAndLiterature.vue';
 
 export default defineComponent({
   name: 'AboutAlgorithmsPage',

@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
-import BinItem from 'components/BinItem.vue'
+import BinItem from 'components/paramSelection/BinItem.vue'
 import { binPresets } from 'stores/presets/binPresets'
 import { useParamStore } from 'stores/paramStore'
 

@@ -15,25 +15,25 @@
         { label: 'Rýchly výpočet', icon: 'timer', value: 'small' },
         { label: 'Vlastné', icon: 'tuned', value: 'own' },
       ]"
-    ></q-btn-toggle>
+    />
 
-    <h5 class="subsection-title">Počiatočné / Koncové mesto:</h5>
+    <q-input
+      filled
+      v-model="capacity"
+      label="Kapacita batohu"
+      stack-label
+      dense
+      class="bg-white text-primary"
+      style="margin-top: 10px;"
+    />
 
-    <div v-for="item in start" :key="item.id">
-      <CityItem
+    <h5 class="subsection-title">Predmety:</h5>
+
+    <div v-for="(item) in items" :key="item.id">
+      <KnapsackItem
         :itemId="item.id"
-        :initX="item.x"
-        :initY="item.y"
-      />
-    </div>
-
-    <h5 class="subsection-title">Ostatné mestá:</h5>
-
-    <div v-for="item in items" :key="item.id">
-      <CityItem
-        :itemId="item.id"
-        :initX="item.x"
-        :initY="item.y"
+        :initSize="item.size"
+        :initPrice="item.price"
         @delete="removeItem"
       />
     </div>
@@ -51,66 +51,56 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
-import CityItem from 'components/CityItem.vue'
-import { salesmanPresets } from 'stores/presets/salesmanPresets'
+import { defineComponent, ref, watch } from 'vue';
+import KnapsackItem from 'components/paramSelection/KnapsackItem.vue';
+import { knapsackPresets } from 'stores/presets/knapsackPresets';
 import { useParamStore } from 'stores/paramStore'
 
 export default defineComponent({
-  name: 'SalesmanParams',
+  name: 'KnapsackParams',
   components: {
-    CityItem,
+    KnapsackItem
   },
 
   setup() {
-    const model = ref<string | null>(null)
-    const items = ref<{ id: number; x: number; y: number }[]>([])
-    const start = ref<{ id: number; x: number; y: number }[]>([])
-    let idCounter = 0
+    const model = ref<string | null>(null);
+    const capacity = ref<number | null>(null);
+    const items = ref<{ id: number; size: number; price: number }[]>([]); // Adding size and price to the item object
+    let idCounter = 0;
     const paramStore = useParamStore
 
     // Function to add a new item
-    const addItem = (x: number = 0, y: number = 0) => {
-      items.value.push({ id: idCounter++, x, y })
-    }
-
-    const addStart = (x: number = 0, y: number = 0) => {
-      start.value.push({ id: idCounter++, x, y })
-    }
+    const addItem = (size: number = 0, price: number = 0) => {
+      items.value.push({ id: idCounter++, size, price });
+    };
 
     // Function to remove an item based on ID
     const removeItem = (id: number) => {
-      items.value = items.value.filter((item) => item.id !== id)
-    }
+      items.value = items.value.filter(item => item.id !== id);
+    };
 
     // Watch for changes in the selected preset
     watch(model, (newVal) => {
-      const preset = salesmanPresets[newVal as keyof typeof salesmanPresets]
+      const preset = knapsackPresets[newVal as keyof typeof knapsackPresets];
       if (preset) {
-        items.value = []
-        start.value = []
-        preset.cities.forEach(([x, y]) => {
-          addItem(x, y)
-        })
-        preset.start.forEach(([x, y]) => {
-         addStart(x, y)
-        })
+        capacity.value = preset.capacity;
+        items.value = [];
+        preset.items.forEach(([ size, price ]) => {
+          addItem(size, price);
+        });
       }
-    })
-
-    addStart(0, 0)
+    });
 
     return {
       model,
+      capacity,
       items,
-      start,
       addItem,
       removeItem,
-      addStart,
       paramStore,
-    }
-  },
-})
+    };
+  }
+});
 </script>
 
 <style lang="scss" scoped>
