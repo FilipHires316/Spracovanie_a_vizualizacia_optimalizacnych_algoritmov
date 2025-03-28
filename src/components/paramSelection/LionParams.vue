@@ -11,17 +11,19 @@
       text-color="primary"
       :options="[
           {label: 'Optimálne', icon: 'check', value: 'optimum'},
-          {label: 'Velká populácia', icon: 'trending_up', value: 'big'},
+          {label: 'Veľká populácia', icon: 'trending_up', value: 'big'},
           {label: 'Rýchly výpočet', icon: 'timer', value: 'small'},
-          {label: 'vlastné', icon: 'tuned', value: 'own'},
+          {label: 'Vlastné', icon: 'tuned', value: 'own'},
         ]"
     ></q-btn-toggle>
+
     <q-input
       filled
       v-model="iterations"
       label="Počet iterácií"
       stack-label
       dense
+      type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
     />
@@ -31,6 +33,7 @@
       label="Počet svoriek"
       stack-label
       dense
+      type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
     />
@@ -40,6 +43,7 @@
       label="Počet samíc v svorke"
       stack-label
       dense
+      type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
     />
@@ -49,6 +53,7 @@
       label="Počet samcov v svorke"
       stack-label
       dense
+      type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
     />
@@ -58,6 +63,7 @@
       label="Percento loviacich samíc"
       stack-label
       dense
+      type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
     />
@@ -68,18 +74,29 @@
 import { defineComponent, ref, watch } from 'vue'
 import { lionPresets } from 'stores/presets/lionPresets'
 import { useParamStore } from 'stores/paramStore'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'LionParams',
   setup() {
+    const paramStore = useParamStore();
+    const reset = () => {
+      paramStore.resetStore();
+      paramStore.algorithm = 'lion';
+    };
+    reset()
     const model = ref<string | null>(null);
-    const iterations = ref<number | null>(null);
-    const packs = ref<number | null>(null);
-    const females = ref<number | null>(null);
-    const males = ref<number | null>(null);// false means hidden, true means shown
-    const hunters = ref<number | null>(null);
-    const paramStore = useParamStore
 
+    // Store references to ensure reactivity
+    const {
+      iterations,
+      packs,
+      females,
+      males,
+      hunters,
+    } = storeToRefs(paramStore);
+
+    // Watch for model changes and apply preset values
     watch(model, (newVal) => {
       const preset = lionPresets[newVal as keyof typeof lionPresets];
       if (preset) {
@@ -98,7 +115,6 @@ export default defineComponent({
       females,
       males,
       hunters,
-      paramStore,
     };
   }
 });

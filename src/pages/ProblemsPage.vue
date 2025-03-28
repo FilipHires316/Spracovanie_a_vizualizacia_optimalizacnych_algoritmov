@@ -48,6 +48,7 @@
         size="20px"
         class="q-mb-md"
         style="margin-top: 1vw"
+        @click="checkInputs"
       />
     </div>
   </div>
@@ -61,6 +62,7 @@ import WhaleParams from 'components/paramSelection/WhaleParams.vue'
 import KnapsackParams from 'components/paramSelection/KnapsackParams.vue'
 import BinParams from 'components/paramSelection/BinParams.vue'
 import SalesmanParams from 'components/paramSelection/SalesmanParams.vue'
+import { useParamStore } from 'stores/paramStore'
 
 export default defineComponent({
   name: 'ProblemsPage',
@@ -77,8 +79,10 @@ export default defineComponent({
   setup() {
     const selectedOptimization = ref('Genetic'); // Default selection for optimization algorithm
     const selectedProblem = ref('Knapsack'); // Default selection for problem
+    const paramStore = useParamStore();
+    const checkInputs = paramStore.checkInputs;
 
-    return { selectedOptimization, selectedProblem };
+    return { selectedOptimization, selectedProblem, checkInputs };
   }
 });
 </script>

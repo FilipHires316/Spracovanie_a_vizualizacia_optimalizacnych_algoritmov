@@ -1,7 +1,6 @@
 <template>
   <q-page class="items-center">
     <h5>Posledné parametre</h5>
-    <p>model: {{ paramStore.model }}</p>
     <p>iterations: {{ paramStore.iterations }}</p>
     <p>population: {{ paramStore.population }}</p>
     <p>mutation: {{ paramStore.mutation }}</p>
