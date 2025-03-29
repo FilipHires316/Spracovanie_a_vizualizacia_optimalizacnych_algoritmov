@@ -13,7 +13,7 @@
         { label: 'Optimálne', icon: 'check', value: 'optimum' },
         { label: 'Veľa možností', icon: 'trending_up', value: 'big' },
         { label: 'Rýchly výpočet', icon: 'timer', value: 'small' },
-        { label: 'Vlastné', icon: 'tuned', value: 'own' },
+        { label: 'Vlastné', icon: 'tuned', value: 'own' }
       ]"
     />
 
@@ -29,12 +29,11 @@
 
     <h5 class="subsection-title">Predmety:</h5>
 
-    <div v-for="(item) in knapsackItems" :key="item.id">
+    <div v-for="item in knapsackItems" :key="item.id">
       <KnapsackItem
-        :itemId="item.id"
-        :initSize="item.size"
-        :initPrice="item.price"
+        :item="item"
         @delete="removeItem"
+        @update="updateItem"
       />
     </div>
 
@@ -54,15 +53,14 @@
 import { defineComponent, ref, watch } from 'vue';
 import KnapsackItem from 'components/paramSelection/KnapsackItem.vue';
 import { knapsackPresets } from 'stores/presets/knapsackPresets';
-import { useParamStore } from 'stores/paramStore'
-import { storeToRefs } from 'pinia'
+import { useParamStore } from 'stores/paramStore';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
   name: 'KnapsackParams',
   components: {
     KnapsackItem
   },
-
   setup() {
     let idCounter = 0;
     const paramStore = useParamStore();
@@ -70,19 +68,21 @@ export default defineComponent({
       paramStore.resetStore();
       paramStore.problem = 'knapsack';
     };
-    reset()
+    reset();
     const model = ref<string | null>(null);
-    const {
-      capacity,
-      knapsackItems,
-    } = storeToRefs(paramStore);
-
+    const { capacity, knapsackItems } = storeToRefs(paramStore);
     const addItem = (size: number = 0, price: number = 0) => {
       knapsackItems.value.push({ id: idCounter++, size, price });
     };
-
     const removeItem = (id: number) => {
       knapsackItems.value = knapsackItems.value.filter(item => item.id !== id);
+    };
+    const updateItem = (updatedItem: { id: number; size: number; price: number }) => {
+      const item = knapsackItems.value.find(i => i.id === updatedItem.id);
+      if (item) {
+        item.size = updatedItem.size;
+        item.price = updatedItem.price;
+      }
     };
 
     watch(model, (newVal) => {
@@ -102,6 +102,7 @@ export default defineComponent({
       knapsackItems,
       addItem,
       removeItem,
+      updateItem,
       paramStore,
     };
   }

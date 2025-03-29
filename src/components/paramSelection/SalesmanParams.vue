@@ -13,30 +13,18 @@
         { label: 'Optimálne', icon: 'check', value: 'optimum' },
         { label: 'Veľa možností', icon: 'trending_up', value: 'big' },
         { label: 'Rýchly výpočet', icon: 'timer', value: 'small' },
-        { label: 'Vlastné', icon: 'tuned', value: 'own' },
+        { label: 'Vlastné', icon: 'tuned', value: 'own' }
       ]"
     ></q-btn-toggle>
 
     <h5 class="subsection-title">Počiatočné / Koncové mesto:</h5>
-
     <div v-for="item in start" :key="item.id">
-      <CityItem
-        :itemId="item.id"
-        :initX="item.x"
-        :initY="item.y"
-        :showButton="false"
-      />
+      <CityItem :item="item" :showButton="false" />
     </div>
 
     <h5 class="subsection-title">Ostatné mestá:</h5>
-
     <div v-for="item in cities" :key="item.id">
-      <CityItem
-        :itemId="item.id"
-        :initX="item.x"
-        :initY="item.y"
-        @delete="removeItem"
-      />
+      <CityItem :item="item" @delete="removeItem" @update="updateCity" />
     </div>
 
     <q-btn
@@ -52,18 +40,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
-import CityItem from 'components/paramSelection/CityItem.vue'
-import { salesmanPresets } from 'stores/presets/salesmanPresets'
-import { useParamStore } from 'stores/paramStore'
-import { storeToRefs } from 'pinia'
+import { defineComponent, ref, watch } from 'vue';
+import CityItem from 'components/paramSelection/CityItem.vue';
+import { salesmanPresets } from 'stores/presets/salesmanPresets';
+import { useParamStore } from 'stores/paramStore';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
   name: 'SalesmanParams',
-  components: {
-    CityItem,
-  },
-
+  components: { CityItem },
   setup() {
     let idCounter = 0;
     const paramStore = useParamStore();
@@ -71,12 +56,9 @@ export default defineComponent({
       paramStore.resetStore();
       paramStore.problem = 'salesman';
     };
-    reset()
+    reset();
     const model = ref<string | null>(null);
-    const {
-      start,
-      cities,
-    } = storeToRefs(paramStore);
+    const { start, cities } = storeToRefs(paramStore);
 
     const addItem = (x: number = 0, y: number = 0) => {
       cities.value.push({ id: idCounter++, x, y });
@@ -86,37 +68,43 @@ export default defineComponent({
       cities.value = cities.value.filter(item => item.id !== id);
     };
 
+    const updateCity = (updatedCity: { id: number; x: number; y: number }) => {
+      const city = cities.value.find(i => i.id === updatedCity.id);
+      if (city) {
+        city.x = updatedCity.x;
+        city.y = updatedCity.y;
+      }
+    };
+
     const addStart = (x: number = 0, y: number = 0) => {
-      start.value.push({ id: idCounter++, x, y })
-    }
+      start.value.push({ id: idCounter++, x, y });
+    };
 
     watch(model, (newVal) => {
       const preset = salesmanPresets[newVal as keyof typeof salesmanPresets];
       if (preset) {
         start.value = [];
-        preset.start.forEach(([ x, y ]) => {
-          addStart(x, y);
-        });
+        preset.start.forEach(([ x, y ]) => addStart(x, y));
         cities.value = [];
-        preset.cities.forEach(([ x, y ]) => {
-          addItem(x, y);
-        });
+        preset.cities.forEach(([ x, y ]) => addItem(x, y));
       }
     });
 
-    addStart(0, 0)
+    if (!start.value.length) {
+      addStart(0, 0);
+    }
 
     return {
       model,
-      cities,
       start,
+      cities,
       addItem,
       removeItem,
-      addStart,
+      updateCity,
       paramStore,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

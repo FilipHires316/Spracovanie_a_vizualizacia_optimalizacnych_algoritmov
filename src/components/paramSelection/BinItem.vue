@@ -2,7 +2,7 @@
   <div style="margin-top: 10px; display: flex; align-items: center;">
     <q-input
       filled
-      v-model="size"
+      v-model="localSize"
       label="Veľkosť predmetu"
       stack-label
       dense
@@ -23,30 +23,39 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRefs } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'BinItem',
   props: {
-    itemId: { type: Number, required: true },
-    initSize: { type: Number, default: 0 },
+    item: { type: Object, required: true },
   },
   setup(props, { emit }) {
-    const { initSize } = toRefs(props);
-    const size = ref(initSize.value);
+    const localSize = ref(props.item.size);
+
+    watch(localSize, (newVal) => {
+      emit('update', { id: props.item.id, size: Number(newVal) });
+    });
+
+    watch(
+      () => props.item,
+      (newItem) => {
+        localSize.value = newItem.size;
+      },
+      { deep: true }
+    );
 
     const deleteItem = () => {
-      emit('delete', props.itemId);
+      emit('delete', props.item.id);
     };
 
     return {
-      size,
-      deleteItem
+      localSize,
+      deleteItem,
     };
-  }
+  },
 });
 </script>
-
 
 <style lang="scss" scoped>
 </style>

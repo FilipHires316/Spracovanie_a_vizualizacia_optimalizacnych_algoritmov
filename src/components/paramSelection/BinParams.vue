@@ -13,7 +13,7 @@
         { label: 'Optimálne', icon: 'check', value: 'optimum' },
         { label: 'Veľa možností', icon: 'trending_up', value: 'big' },
         { label: 'Rýchly výpočet', icon: 'timer', value: 'small' },
-        { label: 'Vlastné', icon: 'tuned', value: 'own' },
+        { label: 'Vlastné', icon: 'tuned', value: 'own' }
       ]"
     ></q-btn-toggle>
 
@@ -31,9 +31,9 @@
 
     <div v-for="item in binItems" :key="item.id">
       <BinItem
-        :itemId="item.id"
-        :initSize="item.size"
+        :item="item"
         @delete="removeItem"
+        @update="updateItem"
       />
     </div>
 
@@ -50,11 +50,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
-import BinItem from 'components/paramSelection/BinItem.vue'
-import { binPresets } from 'stores/presets/binPresets'
-import { useParamStore } from 'stores/paramStore'
-import { storeToRefs } from 'pinia'
+import { defineComponent, ref, watch } from 'vue';
+import BinItem from 'components/paramSelection/BinItem.vue';
+import { binPresets } from 'stores/presets/binPresets';
+import { useParamStore } from 'stores/paramStore';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
   name: 'BinParams',
@@ -69,14 +69,12 @@ export default defineComponent({
       paramStore.resetStore();
       paramStore.problem = 'bin';
     };
-    reset()
-    const model = ref<string | null>(null);
-    const {
-      capacity,
-      binItems,
-    } = storeToRefs(paramStore);
+    reset();
 
-    const addItem = (size: number = 0,) => {
+    const model = ref<string | null>(null);
+    const { capacity, binItems } = storeToRefs(paramStore);
+
+    const addItem = (size: number = 0) => {
       binItems.value.push({ id: idCounter++, size });
     };
 
@@ -84,12 +82,19 @@ export default defineComponent({
       binItems.value = binItems.value.filter(item => item.id !== id);
     };
 
+    const updateItem = (updatedItem: { id: number; size: number }) => {
+      const item = binItems.value.find(i => i.id === updatedItem.id);
+      if (item) {
+        item.size = updatedItem.size;
+      }
+    };
+
     watch(model, (newVal) => {
       const preset = binPresets[newVal as keyof typeof binPresets];
       if (preset) {
         capacity.value = preset.capacity;
         binItems.value = [];
-        preset.items.forEach(([ size, ]) => {
+        preset.items.forEach(([ size ]) => {
           addItem(size);
         });
       }
@@ -101,10 +106,11 @@ export default defineComponent({
       binItems,
       addItem,
       removeItem,
+      updateItem,
       paramStore,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

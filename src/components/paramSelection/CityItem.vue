@@ -2,26 +2,26 @@
   <div style="margin-top: 10px; display: flex; align-items: center;">
     <q-input
       filled
-      v-model="x"
-      label="Súradnica X"
+      v-model="localX"
+      label="X"
       stack-label
       dense
       type="number"
       class="bg-white text-primary"
-      style="margin-top: 0; margin-right: 1vw; width: 48%"
+      style="margin-top: 0; margin-right: 1vw; width: 45%"
     />
     <q-input
       filled
-      v-model="y"
-      label="Súradnica Y"
+      v-model="localY"
+      label="Y"
       stack-label
       dense
       type="number"
       class="bg-white text-primary"
-      style="margin-top: 0; width: 48%"
+      style="margin-top: 0; width: 45%"
     />
     <q-btn
-      v-if="props.showButton"
+      v-if="showButton"
       icon="remove"
       color="red"
       text-color="white"
@@ -34,31 +34,43 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRefs } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'CityItem',
   props: {
-    itemId: { type: Number, required: true },
-    initX: { type: Number, default: 0 },
-    initY: { type: Number, default: 0 },
-    showButton: { type: Boolean, default: true }
+    item: { type: Object, required: true },
+    showButton: { type: Boolean, default: true },
   },
   setup(props, { emit }) {
-    const { initX, initY } = toRefs(props);
-    const x = ref(initX.value);
-    const y = ref(initY.value);
+    const localX = ref(props.item.x);
+    const localY = ref(props.item.y);
+
+    watch([localX, localY], ([newX, newY]) => {
+      emit('update', { id: props.item.id, x: Number(newX), y: Number(newY) });
+    });
+
+    watch(
+      () => props.item,
+      (newItem) => {
+        localX.value = newItem.x;
+        localY.value = newItem.y;
+      },
+      { deep: true }
+    );
 
     const deleteItem = () => {
-      emit('delete', props.itemId);
+      emit('delete', props.item.id);
     };
 
     return {
-      x,
-      y,
+      localX,
+      localY,
       deleteItem,
-      props
     };
-  }
+  },
 });
 </script>
+
+<style lang="scss" scoped>
+</style>

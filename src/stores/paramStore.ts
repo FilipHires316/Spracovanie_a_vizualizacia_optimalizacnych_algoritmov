@@ -97,7 +97,7 @@ export const useParamStore = defineStore('paramStore', () => {
         check = false;
       }
       binItems.value.forEach((item) => {
-        if (item['size'] === null || item['size']) {
+        if (item['size'] === null || item['size'] < 0) {
           check = false;
         }
       });

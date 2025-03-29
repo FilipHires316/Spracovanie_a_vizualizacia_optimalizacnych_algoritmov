@@ -2,7 +2,7 @@
   <div style="margin-top: 10px; display: flex; align-items: center;">
     <q-input
       filled
-      v-model="size"
+      v-model="localSize"
       label="Veľkosť predmetu"
       stack-label
       dense
@@ -12,7 +12,7 @@
     />
     <q-input
       filled
-      v-model="price"
+      v-model="localPrice"
       label="Cena predmetu"
       stack-label
       dense
@@ -33,27 +33,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRefs } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'KnapsackItem',
   props: {
-    itemId: { type: Number, required: true },
-    initSize: { type: Number, default: 0 },
-    initPrice: { type: Number, default: 0 }
+    item: { type: Object, required: true }
   },
   setup(props, { emit }) {
-    const { initSize, initPrice } = toRefs(props);
-    const size = ref(initSize.value);
-    const price = ref(initPrice.value);
+    // Create local reactive copies of the prop values
+    const localSize = ref(props.item.size);
+    const localPrice = ref(props.item.price);
+
+    // Watch local changes and emit update to parent
+    watch([localSize, localPrice], ([newSize, newPrice]) => {
+      emit('update', { id: props.item.id, size: Number(newSize), price: Number(newPrice) });
+    });
+
+    // If parent updates the item externally, sync local values
+    watch(
+      () => props.item,
+      (newItem) => {
+        localSize.value = newItem.size;
+        localPrice.value = newItem.price;
+      },
+      { deep: true }
+    );
 
     const deleteItem = () => {
-      emit('delete', props.itemId);
+      emit('delete', props.item.id);
     };
 
     return {
-      size,
-      price,
+      localSize,
+      localPrice,
       deleteItem
     };
   }
@@ -61,4 +74,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+/* Add any required styles here */
 </style>
