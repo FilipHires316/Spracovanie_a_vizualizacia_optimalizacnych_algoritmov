@@ -23,7 +23,6 @@ export const useParamStore = defineStore('paramStore', () => {
   const cities = ref<{id: number; x: number; y: number }[]>([]);
   const start = ref<{ id: number; x: number; y: number }[]>([]);
 
-  // Add the reset function
   const resetStore = () => {
     iterations.value = null;
     population.value = null;
@@ -43,7 +42,9 @@ export const useParamStore = defineStore('paramStore', () => {
     cities.value = [];
     start.value = [];
   };
+
   const router = useRouter();
+
   const checkInputs = () => {
     let check = true;
     if (algorithm.value === 'genetic') {
@@ -76,6 +77,42 @@ export const useParamStore = defineStore('paramStore', () => {
       ) {
         check = false;
       }
+    }
+    if (problem.value === 'knapsack') {
+      if (
+        (capacity.value === null || capacity.value < 1)
+      ) {
+        check = false;
+      }
+      knapsackItems.value.forEach((item) => {
+        if (item['size'] === null || item['size'] < 0 || item['price'] === null || item['price'] < 0) {
+          check = false;
+        }
+      });
+    }
+    if (problem.value === 'bin') {
+      if (
+        (capacity.value === null || capacity.value < 1)
+      ) {
+        check = false;
+      }
+      binItems.value.forEach((item) => {
+        if (item['size'] === null || item['size']) {
+          check = false;
+        }
+      });
+    }
+    if (problem.value === 'salesman') {
+      start.value.forEach((item) => {
+        if (item['x'] === null || item['x'] < 0 || item['y'] === null || item['y'] < 0) {
+          check = false;
+        }
+      });
+      cities.value.forEach((item) => {
+        if (item['x'] === null || item['x'] < 0 || item['y'] === null || item['y'] < 0) {
+          check = false;
+        }
+      });
     }
     if (check && algorithm.value !== null && problem.value !== null) {
       void router.push('/History');

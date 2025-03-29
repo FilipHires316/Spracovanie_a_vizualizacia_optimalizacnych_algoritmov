@@ -6,6 +6,7 @@
       label="Veľkosť predmetu"
       stack-label
       dense
+      type="number"
       class="bg-white text-primary"
       style="margin-top: 0; margin-right: 1vw; width: 99%"
     />
