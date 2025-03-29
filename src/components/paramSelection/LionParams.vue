@@ -80,11 +80,8 @@ export default defineComponent({
   name: 'LionParams',
   setup() {
     const paramStore = useParamStore();
-    const reset = () => {
-      paramStore.resetStore();
-      paramStore.algorithm = 'lion';
-    };
-    reset()
+    paramStore.resetStore(['iterations', 'packs', 'females', 'males', 'hunters']);
+    paramStore.algorithm = 'lion';
     const model = ref<string | null>(null);
 
     const {

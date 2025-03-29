@@ -52,11 +52,8 @@ export default defineComponent({
   setup() {
     let idCounter = 0;
     const paramStore = useParamStore();
-    const reset = () => {
-      paramStore.resetStore();
-      paramStore.problem = 'salesman';
-    };
-    reset();
+    paramStore.resetStore(['start', 'cities']);
+    paramStore.problem = 'salesman';
     const model = ref<string | null>(null);
     const { start, cities } = storeToRefs(paramStore);
 

@@ -51,11 +51,8 @@ export default defineComponent({
   name: 'WhaleParams',
   setup() {
     const paramStore = useParamStore();
-    const reset = () => {
-      paramStore.resetStore();
-      paramStore.algorithm = 'whale';
-    };
-    reset()
+    paramStore.resetStore(['iterations', 'population']);
+    paramStore.algorithm = 'whale';
     const model = ref<string | null>(null);
 
     const {

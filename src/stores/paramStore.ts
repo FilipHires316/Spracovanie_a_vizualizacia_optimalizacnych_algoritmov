@@ -1,6 +1,25 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
+
+type ResettableKey =
+  | 'iterations'
+  | 'population'
+  | 'mutation'
+  | 'showNewInput'
+  | 'elitism'
+  | 'choose'
+  | 'tournamentSize'
+  | 'crossing'
+  | 'packs'
+  | 'females'
+  | 'males'
+  | 'hunters'
+  | 'capacity'
+  | 'knapsackItems'
+  | 'binItems'
+  | 'cities'
+  | 'start';
 
 export const useParamStore = defineStore('paramStore', () => {
   const algorithm = ref<string | null>(null);
@@ -15,32 +34,32 @@ export const useParamStore = defineStore('paramStore', () => {
   const crossing = ref<string | null>(null);
   const packs = ref<number | null>(null);
   const females = ref<number | null>(null);
-  const males = ref<number | null>(null); // false means hidden, true means shown
+  const males = ref<number | null>(null);
   const hunters = ref<number | null>(null);
   const capacity = ref<number | null>(null);
   const knapsackItems = ref<{ id: number; size: number; price: number }[]>([]);
   const binItems = ref<{ id: number; size: number }[]>([]);
-  const cities = ref<{id: number; x: number; y: number }[]>([]);
+  const cities = ref<{ id: number; x: number; y: number }[]>([]);
   const start = ref<{ id: number; x: number; y: number }[]>([]);
 
-  const resetStore = () => {
-    iterations.value = null;
-    population.value = null;
-    mutation.value = null;
-    showNewInput.value = false;
-    elitism.value = null;
-    choose.value = null;
-    tournamentSize.value = null;
-    crossing.value = null;
-    packs.value = null;
-    females.value = null;
-    males.value = null;
-    hunters.value = null;
-    capacity.value = null;
-    knapsackItems.value = [];
-    binItems.value = [];
-    cities.value = [];
-    start.value = [];
+  const resetStore = (keysToReset: ResettableKey[] = []) => {
+    if (keysToReset.includes('iterations')) iterations.value = null;
+    if (keysToReset.includes('population')) population.value = null;
+    if (keysToReset.includes('mutation')) mutation.value = null;
+    if (keysToReset.includes('showNewInput')) showNewInput.value = false;
+    if (keysToReset.includes('elitism')) elitism.value = null;
+    if (keysToReset.includes('choose')) choose.value = null;
+    if (keysToReset.includes('tournamentSize')) tournamentSize.value = null;
+    if (keysToReset.includes('crossing')) crossing.value = null;
+    if (keysToReset.includes('packs')) packs.value = null;
+    if (keysToReset.includes('females')) females.value = null;
+    if (keysToReset.includes('males')) males.value = null;
+    if (keysToReset.includes('hunters')) hunters.value = null;
+    if (keysToReset.includes('capacity')) capacity.value = null;
+    if (keysToReset.includes('knapsackItems')) knapsackItems.value = [];
+    if (keysToReset.includes('binItems')) binItems.value = [];
+    if (keysToReset.includes('cities')) cities.value = [];
+    if (keysToReset.includes('start')) start.value = [];
   };
 
   const router = useRouter();
@@ -85,7 +104,7 @@ export const useParamStore = defineStore('paramStore', () => {
         check = false;
       }
       knapsackItems.value.forEach((item) => {
-        if (item['size'] === null || item['size'] < 0 || item['price'] === null || item['price'] < 0) {
+        if (item.size === null || item.size < 0 || item.price === null || item.price < 0) {
           check = false;
         }
       });
@@ -97,19 +116,19 @@ export const useParamStore = defineStore('paramStore', () => {
         check = false;
       }
       binItems.value.forEach((item) => {
-        if (item['size'] === null || item['size'] < 0) {
+        if (item.size === null || item.size < 0) {
           check = false;
         }
       });
     }
     if (problem.value === 'salesman') {
       start.value.forEach((item) => {
-        if (item['x'] === null || item['x'] < 0 || item['y'] === null || item['y'] < 0) {
+        if (item.x === null || item.x < 0 || item.y === null || item.y < 0) {
           check = false;
         }
       });
       cities.value.forEach((item) => {
-        if (item['x'] === null || item['x'] < 0 || item['y'] === null || item['y'] < 0) {
+        if (item.x === null || item.x < 0 || item.y === null || item.y < 0) {
           check = false;
         }
       });

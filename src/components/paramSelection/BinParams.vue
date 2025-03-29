@@ -65,11 +65,8 @@ export default defineComponent({
   setup() {
     let idCounter = 0;
     const paramStore = useParamStore();
-    const reset = () => {
-      paramStore.resetStore();
-      paramStore.problem = 'bin';
-    };
-    reset();
+    paramStore.resetStore(['capacity', 'binItems']);
+    paramStore.problem = 'bin';
 
     const model = ref<string | null>(null);
     const { capacity, binItems } = storeToRefs(paramStore);

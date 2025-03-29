@@ -125,11 +125,8 @@ export default defineComponent({
   name: 'GeneticParams',
   setup() {
     const paramStore = useParamStore();
-    const reset = () => {
-      paramStore.resetStore();
-      paramStore.algorithm = 'genetic';
-    };
-    reset()
+    paramStore.resetStore(['iterations', 'population', 'mutation', 'elitism', 'choose', 'crossing']);
+    paramStore.algorithm = 'genetic';
     const model = ref<string | null>(null);
     const {
       iterations,

@@ -64,11 +64,8 @@ export default defineComponent({
   setup() {
     let idCounter = 0;
     const paramStore = useParamStore();
-    const reset = () => {
-      paramStore.resetStore();
-      paramStore.problem = 'knapsack';
-    };
-    reset();
+    paramStore.resetStore(['capacity', 'knapsackItems']);
+    paramStore.problem = 'knapsack';
     const model = ref<string | null>(null);
     const { capacity, knapsackItems } = storeToRefs(paramStore);
     const addItem = (size: number = 0, price: number = 0) => {
