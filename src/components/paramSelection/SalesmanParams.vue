@@ -30,7 +30,7 @@
 
     <h5 class="subsection-title">Ostatné mestá:</h5>
 
-    <div v-for="item in items" :key="item.id">
+    <div v-for="item in cities" :key="item.id">
       <CityItem
         :itemId="item.id"
         :initX="item.x"
@@ -56,6 +56,7 @@ import { defineComponent, ref, watch } from 'vue'
 import CityItem from 'components/paramSelection/CityItem.vue'
 import { salesmanPresets } from 'stores/presets/salesmanPresets'
 import { useParamStore } from 'stores/paramStore'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'SalesmanParams',
@@ -64,43 +65,50 @@ export default defineComponent({
   },
 
   setup() {
-    const model = ref<string | null>(null)
-    const items = ref<{ id: number; x: number; y: number }[]>([])
-    const start = ref<{ id: number; x: number; y: number }[]>([])
-    let idCounter = 0
-    const paramStore = useParamStore
+    let idCounter = 0;
+    const paramStore = useParamStore();
+    const reset = () => {
+      paramStore.resetStore();
+      paramStore.problem = 'salesman';
+    };
+    reset()
+    const model = ref<string | null>(null);
+    const {
+      start,
+      cities,
+    } = storeToRefs(paramStore);
 
     const addItem = (x: number = 0, y: number = 0) => {
-      items.value.push({ id: idCounter++, x, y })
-    }
+      cities.value.push({ id: idCounter++, x, y });
+    };
+
+    const removeItem = (id: number) => {
+      cities.value = cities.value.filter(item => item.id !== id);
+    };
 
     const addStart = (x: number = 0, y: number = 0) => {
       start.value.push({ id: idCounter++, x, y })
     }
 
-    const removeItem = (id: number) => {
-      items.value = items.value.filter((item) => item.id !== id)
-    }
-
     watch(model, (newVal) => {
-      const preset = salesmanPresets[newVal as keyof typeof salesmanPresets]
+      const preset = salesmanPresets[newVal as keyof typeof salesmanPresets];
       if (preset) {
-        items.value = []
-        start.value = []
-        preset.cities.forEach(([x, y]) => {
-          addItem(x, y)
-        })
-        preset.start.forEach(([x, y]) => {
-         addStart(x, y)
-        })
+        start.value = [];
+        preset.start.forEach(([ x, y ]) => {
+          addStart(x, y);
+        });
+        cities.value = [];
+        preset.cities.forEach(([ x, y ]) => {
+          addItem(x, y);
+        });
       }
-    })
+    });
 
     addStart(0, 0)
 
     return {
       model,
-      items,
+      cities,
       start,
       addItem,
       removeItem,

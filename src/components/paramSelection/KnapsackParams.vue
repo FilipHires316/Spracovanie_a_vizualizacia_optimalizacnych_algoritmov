@@ -29,7 +29,7 @@
 
     <h5 class="subsection-title">Predmety:</h5>
 
-    <div v-for="(item) in items" :key="item.id">
+    <div v-for="(item) in knapsackItems" :key="item.id">
       <KnapsackItem
         :itemId="item.id"
         :initSize="item.size"
@@ -55,6 +55,7 @@ import { defineComponent, ref, watch } from 'vue';
 import KnapsackItem from 'components/paramSelection/KnapsackItem.vue';
 import { knapsackPresets } from 'stores/presets/knapsackPresets';
 import { useParamStore } from 'stores/paramStore'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'KnapsackParams',
@@ -63,25 +64,32 @@ export default defineComponent({
   },
 
   setup() {
-    const model = ref<string | null>(null);
-    const capacity = ref<number | null>(null);
-    const items = ref<{ id: number; size: number; price: number }[]>([]);
     let idCounter = 0;
-    const paramStore = useParamStore
+    const paramStore = useParamStore();
+    const reset = () => {
+      paramStore.resetStore();
+      paramStore.problem = 'knapsack';
+    };
+    reset()
+    const model = ref<string | null>(null);
+    const {
+      capacity,
+      knapsackItems,
+    } = storeToRefs(paramStore);
 
     const addItem = (size: number = 0, price: number = 0) => {
-      items.value.push({ id: idCounter++, size, price });
+      knapsackItems.value.push({ id: idCounter++, size, price });
     };
 
     const removeItem = (id: number) => {
-      items.value = items.value.filter(item => item.id !== id);
+      knapsackItems.value = knapsackItems.value.filter(item => item.id !== id);
     };
 
     watch(model, (newVal) => {
       const preset = knapsackPresets[newVal as keyof typeof knapsackPresets];
       if (preset) {
         capacity.value = preset.capacity;
-        items.value = [];
+        knapsackItems.value = [];
         preset.items.forEach(([ size, price ]) => {
           addItem(size, price);
         });
@@ -91,7 +99,7 @@ export default defineComponent({
     return {
       model,
       capacity,
-      items,
+      knapsackItems,
       addItem,
       removeItem,
       paramStore,

@@ -18,13 +18,13 @@ export const useParamStore = defineStore('paramStore', () => {
   const males = ref<number | null>(null); // false means hidden, true means shown
   const hunters = ref<number | null>(null);
   const capacity = ref<number | null>(null);
-  const items = ref<{ id: number; size: number; price: number }[]>([]);
+  const knapsackItems = ref<{ id: number; size: number; price: number }[]>([]);
+  const binItems = ref<{ id: number; size: number }[]>([]);
+  const cities = ref<{id: number; x: number; y: number }[]>([]);
   const start = ref<{ id: number; x: number; y: number }[]>([]);
 
   // Add the reset function
   const resetStore = () => {
-    algorithm.value = null;
-    problem.value = null;
     iterations.value = null;
     population.value = null;
     mutation.value = null;
@@ -38,7 +38,9 @@ export const useParamStore = defineStore('paramStore', () => {
     males.value = null;
     hunters.value = null;
     capacity.value = null;
-    items.value = [];
+    knapsackItems.value = [];
+    binItems.value = [];
+    cities.value = [];
     start.value = [];
   };
   const router = useRouter();
@@ -75,7 +77,7 @@ export const useParamStore = defineStore('paramStore', () => {
         check = false;
       }
     }
-    if (check) {
+    if (check && algorithm.value !== null && problem.value !== null) {
       void router.push('/History');
     }
   };
@@ -96,7 +98,9 @@ export const useParamStore = defineStore('paramStore', () => {
     males,
     hunters,
     capacity,
-    items,
+    knapsackItems,
+    binItems,
+    cities,
     start,
     resetStore,
     checkInputs,

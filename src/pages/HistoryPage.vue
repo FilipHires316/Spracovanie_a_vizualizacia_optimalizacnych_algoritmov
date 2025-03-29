@@ -16,7 +16,9 @@
     <p>males: {{ paramStore.males }}</p>
     <p>hunters: {{ paramStore.hunters }}</p>
     <p>capacity: {{ paramStore.capacity }}</p>
-    <p>items: {{ paramStore.items }}</p>
+    <p>knapsackItems: {{ paramStore.knapsackItems }}</p>
+    <p>binItems: {{ paramStore.binItems }}</p>
+    <p>cities: {{ paramStore.cities }}</p>
     <p>start: {{ paramStore.start }}</p>
   </q-page>
 </template>

@@ -29,7 +29,7 @@
 
     <h5 class="subsection-title">Predmety:</h5>
 
-    <div v-for="item in items" :key="item.id">
+    <div v-for="item in binItems" :key="item.id">
       <BinItem
         :itemId="item.id"
         :initSize="item.size"
@@ -54,6 +54,7 @@ import { defineComponent, ref, watch } from 'vue'
 import BinItem from 'components/paramSelection/BinItem.vue'
 import { binPresets } from 'stores/presets/binPresets'
 import { useParamStore } from 'stores/paramStore'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'BinParams',
@@ -62,35 +63,42 @@ export default defineComponent({
   },
 
   setup() {
-    const model = ref<string | null>(null)
-    const capacity = ref<number | null>(null)
-    const items = ref<{ id: number; size: number }[]>([])
-    let idCounter = 0
-    const paramStore = useParamStore
+    let idCounter = 0;
+    const paramStore = useParamStore();
+    const reset = () => {
+      paramStore.resetStore();
+      paramStore.problem = 'bin';
+    };
+    reset()
+    const model = ref<string | null>(null);
+    const {
+      capacity,
+      binItems,
+    } = storeToRefs(paramStore);
 
-    const addItem = (size: number = 0) => {
-      items.value.push({ id: idCounter++, size })
-    }
+    const addItem = (size: number = 0,) => {
+      binItems.value.push({ id: idCounter++, size });
+    };
 
     const removeItem = (id: number) => {
-      items.value = items.value.filter((item) => item.id !== id)
-    }
+      binItems.value = binItems.value.filter(item => item.id !== id);
+    };
 
     watch(model, (newVal) => {
-      const preset = binPresets[newVal as keyof typeof binPresets]
+      const preset = binPresets[newVal as keyof typeof binPresets];
       if (preset) {
-        capacity.value = preset.capacity
-        items.value = []
-        preset.items.forEach(([size]) => {
-          addItem(size)
-        })
+        capacity.value = preset.capacity;
+        binItems.value = [];
+        preset.items.forEach(([ size, ]) => {
+          addItem(size);
+        });
       }
-    })
+    });
 
     return {
       model,
       capacity,
-      items,
+      binItems,
       addItem,
       removeItem,
       paramStore,
