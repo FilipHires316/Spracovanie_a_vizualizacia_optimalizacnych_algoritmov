@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { solve } from './starter'
 
 type ResettableKey =
   | 'iterations'
@@ -135,6 +136,7 @@ export const useParamStore = defineStore('paramStore', () => {
       });
     }
     if (check && algorithm.value !== null && problem.value !== null) {
+      solve()
       void router.push('/History');
     }
   };
