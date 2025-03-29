@@ -26,6 +26,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
+      :rules="[val => (val !== null && val >= 1) || 'Počet iterácií musí byť aspoň 1']"
+      hide-bottom-space
     />
     <q-input
       filled
@@ -36,6 +38,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
+      :rules="[val => (val !== null && val >= 5) || 'Počet svoriek musí byť aspoň 5']"
+      hide-bottom-space
     />
     <q-input
       filled
@@ -46,6 +50,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
+      :rules="[val => (val !== null && val >= 3) || 'Počet samíc musí byť aspoň 3']"
+      hide-bottom-space
     />
     <q-input
       filled
@@ -56,6 +62,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
+      :rules="[val => (val !== null && val >= 1) || 'Počet samcov musí byť aspoň 1']"
+      hide-bottom-space
     />
     <q-input
       filled
@@ -66,6 +74,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
+      :rules="[val => (val !== null && val >= 20) || 'Percento loviacich samíc musí byť aspoň 20']"
+      hide-bottom-space
     />
   </div>
 </template>

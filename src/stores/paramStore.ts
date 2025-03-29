@@ -70,7 +70,8 @@ export const useParamStore = defineStore('paramStore', () => {
       if (
         (iterations.value === null || iterations.value < 1) ||
         (population.value === null || population.value < 20) ||
-        mutation.value === null ||
+        (mutation.value === null || mutation.value < 0) ||
+        (elitism.value === null || elitism.value < 0) ||
         choose.value === null ||
         (choose.value === 'tournament' && (tournamentSize.value === null || tournamentSize.value < 2)) ||
         crossing.value === null

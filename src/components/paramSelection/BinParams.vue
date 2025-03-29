@@ -23,8 +23,11 @@
       label="Kapacita koša"
       stack-label
       dense
+      type="number"
       class="bg-white text-primary"
       style="margin-top: 10px"
+      :rules="[val => (val !== null && val >= 1) || 'Kapacita musí byť aspoň 1']"
+      hide-bottom-space
     />
 
     <h5 class="subsection-title">Predmety:</h5>

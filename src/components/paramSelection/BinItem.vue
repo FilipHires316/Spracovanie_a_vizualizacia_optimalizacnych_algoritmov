@@ -9,6 +9,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 0; margin-right: 1vw; width: 99%"
+      :rules="[val => (val !== null && val >= 0) || 'Veľkosť nesmie byť záporná']"
+      hide-bottom-space
     />
     <q-btn
       icon="remove"

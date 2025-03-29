@@ -24,8 +24,10 @@
       stack-label
       dense
       type="number"
-      class="bg-white text-primary"
+      class="bg-white"
       style="margin-top: 10px;"
+      :rules="[val => (val !== null && val >= 1) || 'Počet iterácií musí byť aspoň 1']"
+      hide-bottom-space
     />
     <q-input
       filled
@@ -36,6 +38,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
+      :rules="[val => (val !== null && val >= 20) || 'Velkosť populácie musí byť aspoň 20']"
+      hide-bottom-space
     />
     <q-input
       filled
@@ -46,6 +50,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
+      :rules="[val => (val !== null && val >= 0) || 'Pravdepodobnosť mutácie nesmie byť záporná']"
+      hide-bottom-space
     />
 
     <div style="margin-top: 10px; display: flex; align-items: center;">
@@ -65,6 +71,8 @@
         type="number"
         class="bg-white text-primary"
         style="margin-top: 0; width: 100%"
+        :rules="[val => (val !== null && val >= 0) || 'Miera elitizmu nesmie byť záporná']"
+        hide-bottom-space
       />
     </div>
 
@@ -93,6 +101,8 @@
         type="number"
         class="bg-white text-primary"
         style="margin-top: 0; width: 100%; margin-left: 1vw;"
+        :rules="[val => (val !== null && val >= 2) || 'Velkosť turnaju musí byť aspoň 2']"
+        hide-bottom-space
       />
     </div>
 
@@ -125,7 +135,7 @@ export default defineComponent({
   name: 'GeneticParams',
   setup() {
     const paramStore = useParamStore();
-    paramStore.resetStore(['iterations', 'population', 'mutation', 'elitism', 'choose', 'crossing']);
+    paramStore.resetStore(['iterations', 'population', 'mutation', 'showNewInput', 'elitism', 'choose', 'crossing']);
     paramStore.algorithm = 'genetic';
     const model = ref<string | null>(null);
     const {

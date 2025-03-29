@@ -26,6 +26,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
+      :rules="[val => (val !== null && val >= 1) || 'Počet iterácií musí byť aspoň 1']"
+      hide-bottom-space
     />
 
     <q-input
@@ -37,6 +39,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
+      :rules="[val => (val !== null && val >= 2) || 'Velkosť populácie musí byť aspoň 2']"
+      hide-bottom-space
     />
   </div>
 </template>

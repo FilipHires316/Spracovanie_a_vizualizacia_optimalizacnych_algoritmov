@@ -9,6 +9,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 0; margin-right: 1vw; width: 45%"
+      :rules="[val => (val !== null && val >= 1) || 'Súradnica nesmie byť záporná']"
+      hide-bottom-space
     />
     <q-input
       filled
@@ -19,6 +21,8 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 0; width: 45%"
+      :rules="[val => (val !== null && val >= 1) || 'Súradnica nesmie byť záporná']"
+      hide-bottom-space
     />
     <q-btn
       v-if="showButton"
