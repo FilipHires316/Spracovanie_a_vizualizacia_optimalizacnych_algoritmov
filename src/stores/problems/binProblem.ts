@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 export const useBinProblem = defineStore('binProblem', () => {
 
-  const createPopulation = () => {
+  const createSolutions = () => {
     return
   };
 
@@ -10,8 +10,13 @@ export const useBinProblem = defineStore('binProblem', () => {
     return
   };
 
+  const getProblemType = () => {
+    return 'bin'
+  };
+
   return {
-    createPopulation,
+    createSolutions,
     calculateFitness,
+    getProblemType,
   };
 });

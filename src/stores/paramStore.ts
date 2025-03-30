@@ -90,6 +90,9 @@ export const useParamStore = defineStore('paramStore', () => {
       ) {
         check = false;
       }
+      else {
+        population.value = (males.value + females.value) * (packs.value + 1)
+      }
     }
     if (algorithm.value === 'whale') {
       if (
