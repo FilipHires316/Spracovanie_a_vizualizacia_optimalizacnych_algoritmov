@@ -29,9 +29,24 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return solutions;
   };
 
-  const calculateFitness = () => {
-    return
+  const calculateFitness = (solution: number[]) => {
+    if (!paramStore.knapsackItems) {
+      throw new Error("knapsackItems is undefined");
+    }
+    let totalSize = 0;
+    let totalPrice = 0;
+    for (let i = 0; i < solution.length; i++) {
+      if (solution[i] === 1) {
+        totalSize += paramStore.knapsackItems[i]?.size ?? 0;
+        totalPrice += paramStore.knapsackItems[i]?.price ?? 0;
+      }
+    }
+    if (paramStore.capacity && totalSize > paramStore.capacity) {
+      return 0;
+    }
+    return totalPrice * 100 - totalSize;
   };
+
 
   const getProblemType = () => {
     return 'knapsack'

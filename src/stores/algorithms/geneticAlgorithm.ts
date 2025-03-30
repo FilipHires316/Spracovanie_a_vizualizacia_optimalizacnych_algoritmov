@@ -27,7 +27,10 @@ const evaluateIndividuals = (problemToSolve:
                                | ReturnType<typeof useSalesmanProblem>,
                              population: Chromosome[]) => {
   population.forEach(individual => {
-    individual.fitness = 400;
+    const fitness = problemToSolve.calculateFitness(individual.solution)
+    if (fitness) {
+      individual.fitness = fitness
+    }
   });
   return population;
 }
