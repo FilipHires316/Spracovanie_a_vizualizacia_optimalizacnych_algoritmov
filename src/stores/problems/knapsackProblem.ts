@@ -29,7 +29,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return solutions;
   };
 
-  const calculateFitness = (solution: number[]) => {
+  const calculateFitness = (solution: number[], iteration: number) => {
     if (!paramStore.knapsackItems) {
       throw new Error("knapsackItems is undefined");
     }
@@ -42,7 +42,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
       }
     }
     if (paramStore.capacity && totalSize > paramStore.capacity) {
-      return 0;
+      return totalPrice * 100 - totalSize - (totalSize - paramStore.capacity * iteration * 50);
     }
     return totalPrice * 100 - totalSize;
   };

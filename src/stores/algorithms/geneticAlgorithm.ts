@@ -25,14 +25,28 @@ const evaluateIndividuals = (problemToSolve:
                                | ReturnType<typeof useKnapsackProblem>
                                | ReturnType<typeof useBinProblem>
                                | ReturnType<typeof useSalesmanProblem>,
-                             population: Chromosome[]) => {
+                             population: Chromosome[], iteration: number) => {
   population.forEach(individual => {
-    const fitness = problemToSolve.calculateFitness(individual.solution)
+    const fitness = problemToSolve.calculateFitness(individual.solution, iteration)
     if (fitness) {
       individual.fitness = fitness
     }
   });
   return population;
+}
+
+const applyElitism = (population: Chromosome[], elitismRate: number) => {
+  const eliteNumber = population.length / 100 * elitismRate
+  population.sort((a, b) => b.fitness - a.fitness);
+  return population.slice(0, eliteNumber);
+}
+
+const createNewGeneration = (population: Chromosome[], elitism: boolean, elitismRate: number) => {
+  let newGeneration: Chromosome[] = []
+  if (elitism) {
+    newGeneration = applyElitism(population, elitismRate)
+  }
+  return newGeneration;
 }
 
 const savePopulation = (populationHistory: Chromosome[][], population: Chromosome[]) => {
@@ -59,11 +73,12 @@ export const geneticAlgorithm = (problemToSolve:
   let populationHistory: Chromosome[][] = []
 
   let population = createPopulation(problemToSolve)
-  population = evaluateIndividuals(problemToSolve, population)
-  if (paramStore.iterations) {
-    for (let i = 1; i < paramStore.iterations; i++) {
+  population = evaluateIndividuals(problemToSolve, population, 1)
+  if (paramStore.iterations && paramStore.elitism) {
+    for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
-      population = evaluateIndividuals(problemToSolve, population)
+      population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism)
+      population = evaluateIndividuals(problemToSolve, population, i + 2)
     }
     saveResult(problemToSolve, populationHistory)
   }
