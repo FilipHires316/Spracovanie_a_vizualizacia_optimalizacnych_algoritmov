@@ -2,7 +2,7 @@ export const geneticPresets = {
   optimum: {
     iterations: 20,
     population: 100,
-    mutation: 0.3,
+    mutation: 1,
     showNewInput: true,
     elitism: 3,
     choose: "tournament",
@@ -12,7 +12,7 @@ export const geneticPresets = {
   big: {
     iterations: 40,
     population: 200,
-    mutation: 0.2,
+    mutation: 2,
     showNewInput: true,
     elitism: 4,
     choose: "roulette",
@@ -22,7 +22,7 @@ export const geneticPresets = {
   small: {
     iterations: 15,
     population: 80,
-    mutation: 0.3,
+    mutation: 1,
     showNewInput: false,
     elitism: 0,
     choose: "tournament",

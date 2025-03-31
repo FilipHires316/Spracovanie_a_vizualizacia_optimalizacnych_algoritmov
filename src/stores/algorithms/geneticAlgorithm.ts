@@ -49,6 +49,17 @@ const createNewGeneration = (population: Chromosome[], elitism: boolean, elitism
   return newGeneration;
 }
 
+const mutate = (population: Chromosome[], mutationRate: number) => {
+  population.forEach(individual => {
+    for (let index = 0; index < individual.solution.length; index++) {
+      if (Math.random() * 100 < mutationRate) {
+        individual.solution[index] = individual.solution[index] === 0 ? 1 : 0;
+      }
+    }
+  });
+  return population;
+};
+
 const savePopulation = (populationHistory: Chromosome[][], population: Chromosome[]) => {
   populationHistory.push(population)
   return populationHistory;
@@ -74,10 +85,11 @@ export const geneticAlgorithm = (problemToSolve:
 
   let population = createPopulation(problemToSolve)
   population = evaluateIndividuals(problemToSolve, population, 1)
-  if (paramStore.iterations && paramStore.elitism) {
+  if (paramStore.iterations && paramStore.elitism && paramStore.mutation) {
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
       population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism)
+      population = mutate(population, paramStore.mutation)
       population = evaluateIndividuals(problemToSolve, population, i + 2)
     }
     saveResult(problemToSolve, populationHistory)
