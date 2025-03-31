@@ -85,7 +85,8 @@ export const geneticAlgorithm = (problemToSolve:
 
   let population = createPopulation(problemToSolve)
   population = evaluateIndividuals(problemToSolve, population, 1)
-  if (paramStore.iterations && paramStore.elitism && paramStore.mutation) {
+  console.log(populationHistory)
+  if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation) {
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
       population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism)

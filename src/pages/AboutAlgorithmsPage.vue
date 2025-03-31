@@ -135,7 +135,7 @@ export default defineComponent({
     const isMobile = ref(false);
 
     const checkMobile = () => {
-      isMobile.value = window.innerWidth <= 768; // Adjust the breakpoint if necessary
+      isMobile.value = window.innerWidth <= 768;
     };
 
     onMounted(() => {
