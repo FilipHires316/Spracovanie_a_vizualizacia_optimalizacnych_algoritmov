@@ -41,10 +41,27 @@ const applyElitism = (population: Chromosome[], elitismRate: number) => {
   return population.slice(0, eliteNumber);
 }
 
-const createNewGeneration = (population: Chromosome[], elitism: boolean, elitismRate: number) => {
+const crossover = (population: Chromosome[], newGeneration: Chromosome[], choose: string, tournamentSize: number | null, crossing: string) => {
+  if (choose && tournamentSize && crossing) {
+    console.log("tepes")
+  }
+  while (newGeneration.length != population.length) {
+    const parent1 = population[Math.floor(Math.random() * population.length)]
+    const parent2 = population[Math.floor(Math.random() * population.length)]
+    if (parent1 && parent2) {
+      const child = new Chromosome(parent1.solution)
+      newGeneration.push(child)
+    }
+  }
+  console.log(newGeneration)
+  return newGeneration
+}
+
+const createNewGeneration = (population: Chromosome[], elitism: boolean, elitismRate: number, choose: string, tournamentSize: number | null , crossing: string) => {
   let newGeneration: Chromosome[] = []
   if (elitism) {
     newGeneration = applyElitism(population, elitismRate)
+    newGeneration = crossover(population, newGeneration, choose, tournamentSize, crossing)
   }
   return newGeneration;
 }
@@ -86,10 +103,10 @@ export const geneticAlgorithm = (problemToSolve:
   let population = createPopulation(problemToSolve)
   population = evaluateIndividuals(problemToSolve, population, 1)
   console.log(populationHistory)
-  if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation) {
+  if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation && paramStore.choose && paramStore.crossing) {
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
-      population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism)
+      population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism, paramStore.choose, paramStore.tournamentSize, paramStore.crossing)
       population = mutate(population, paramStore.mutation)
       population = evaluateIndividuals(problemToSolve, population, i + 2)
     }

@@ -30,9 +30,6 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
   };
 
   const calculateFitness = (solution: number[], iteration: number) => {
-    if (!paramStore.knapsackItems) {
-      throw new Error("knapsackItems is undefined");
-    }
     let totalSize = 0;
     let totalPrice = 0;
     for (let i = 0; i < solution.length; i++) {
