@@ -215,6 +215,13 @@ export default defineComponent({
       window.removeEventListener('resize', checkMobile)
     })
 
+    onMounted(() => {
+      checkMobile()
+      window.addEventListener('resize', checkMobile)
+      leftDrawerOpen.value = false;
+      rightDrawerOpen.value = false;
+    })
+
     return {
       history,
       toggleLeftDrawer,
