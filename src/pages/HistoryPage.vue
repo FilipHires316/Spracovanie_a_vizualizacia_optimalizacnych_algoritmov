@@ -71,7 +71,7 @@
   </q-drawer>
 
   <div class="page-container">
-    <div style="padding-left: 5vw; padding-right: 5vw;">
+    <div style="padding-left: 5vw; padding-right: 5vw; height: 85vh; overflow: hidden; overflow-y: scroll; scrollbar-width: none;">
       <q-page class="column items-center justify-evenly page">
         <div>
           {{ entries[leftSolutionIndex] }}
@@ -102,7 +102,7 @@
       </q-page>
     </div>
 
-    <div style="padding-left: 5vw; padding-right: 5vw;" v-show="!screenSplit">
+    <div style="padding-left: 5vw; padding-right: 5vw; height: 85vh; overflow: hidden; overflow-y: scroll; scrollbar-width: none;" v-show="!screenSplit">
       <q-page class="column items-center justify-evenly page">
         <div>
           {{ entries[rightSolutionIndex] }}
@@ -296,6 +296,6 @@ export default defineComponent({
 .page-container {
   display: flex;
   width: 100vw;
-  height: 100vh;
+  height: 85vh;
 }
 </style>
