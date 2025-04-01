@@ -174,30 +174,36 @@ export default defineComponent({
       leftSolutionIndex.value++
       if (leftSolutionIndex.value > history.entries.length - 1)
         leftSolutionIndex.value = 0
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     const leftSolutionIndexDecrement = () => {
       leftSolutionIndex.value--
       if (leftSolutionIndex.value < 0)
         leftSolutionIndex.value = history.entries.length - 1
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     const leftSolutionIndexSet = (index: number) => {
       leftSolutionIndex.value = index
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     const rightSolutionIndexIncrement = () => {
       rightSolutionIndex.value++
       if (rightSolutionIndex.value > history.entries.length - 1)
         rightSolutionIndex.value = 0
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     const rightSolutionIndexDecrement = () => {
       rightSolutionIndex.value--
       if (rightSolutionIndex.value < 0)
         rightSolutionIndex.value = history.entries.length - 1
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     const rightSolutionIndexSet = (index: number) => {
       rightSolutionIndex.value = index
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     const isMobile = ref(false)
