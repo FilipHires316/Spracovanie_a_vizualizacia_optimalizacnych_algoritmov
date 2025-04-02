@@ -297,5 +297,8 @@ export default defineComponent({
   display: flex;
   width: 100vw;
   height: 85vh;
+  overflow: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
 }
 </style>

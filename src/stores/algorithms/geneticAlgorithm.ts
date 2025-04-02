@@ -41,19 +41,55 @@ const applyElitism = (population: Chromosome[], elitismRate: number) => {
   return population.slice(0, eliteNumber);
 }
 
+const tournamentSelection = (population: Chromosome[], tournamentSize: number) => {
+  const available = population.filter(chromosome => chromosome.timesCrossed < 4);
+  const shuffled = [...available].sort(() => Math.random() - 0.5);
+  const selected = shuffled.slice(0, tournamentSize);
+  const parent = selected.reduce((best, current) => (current.fitness > best.fitness ? current : best));
+  parent.timesCrossed++;
+  return parent;
+};
+
+const rouletteSelection = (population: Chromosome[]) => {
+  const available = population.filter(chromosome => chromosome.timesCrossed < 4);
+  const totalFitness = available.reduce((sum, chromosome) => sum + chromosome.fitness, 0);
+  const threshold = Math.random() * totalFitness;
+  let cumulativeFitness = 0;
+  for (const chromosome of population) {
+    cumulativeFitness += chromosome.fitness;
+    if (cumulativeFitness >= threshold) {
+      chromosome.timesCrossed++;
+      return chromosome;
+    }
+  }
+};
+
 const crossover = (population: Chromosome[], newGeneration: Chromosome[], choose: string, tournamentSize: number | null, crossing: string) => {
-  if (choose && tournamentSize && crossing) {
+  let parent1 = null
+  let parent2 = null
+  if (crossing) {
     console.log("tepes")
   }
   while (newGeneration.length != population.length) {
-    const parent1 = population[Math.floor(Math.random() * population.length)]
-    const parent2 = population[Math.floor(Math.random() * population.length)]
+    if (choose == 'tournament' && tournamentSize) {
+      parent1 = tournamentSelection(population, tournamentSize)
+    }
+    else if (choose == 'roulette') {
+      parent1 = rouletteSelection(population)
+    }
+    while (parent2 == null || parent2 == parent1) {
+      if (choose == 'tournament' && tournamentSize) {
+        parent2 = tournamentSelection(population, tournamentSize)
+      }
+      else if (choose == 'roulette') {
+        parent2 = rouletteSelection(population)
+      }
+    }
     if (parent1 && parent2) {
       const child = new Chromosome(parent1.solution)
       newGeneration.push(child)
     }
   }
-  console.log(newGeneration)
   return newGeneration
 }
 
