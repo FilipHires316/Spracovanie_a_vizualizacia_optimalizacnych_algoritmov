@@ -57,7 +57,7 @@ export const useBinProblem = defineStore('binProblem', () => {
         }
       }
     }
-    return (solution.length - Math.max(...solution)) * 100 - totalOverflow * iteration;
+    return (solution.length - Math.max(...solution)) * 100 - totalOverflow * iteration * 50;
   }
 
   const getProblemType = () => {
