@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Chromosome } from 'stores/individuals/chromosome'
+import type { Chromosome } from 'stores/individuals/chromosome'
 
 export const useSalesmanProblem = defineStore('salesmanProblem', () => {
 

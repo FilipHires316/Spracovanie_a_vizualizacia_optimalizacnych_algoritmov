@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useParamStore } from 'stores/paramStore'
-import { Chromosome } from 'stores/individuals/chromosome'
+import type { Chromosome } from 'stores/individuals/chromosome'
 
 export const useKnapsackProblem = defineStore('knapsackProblem', () => {
 
