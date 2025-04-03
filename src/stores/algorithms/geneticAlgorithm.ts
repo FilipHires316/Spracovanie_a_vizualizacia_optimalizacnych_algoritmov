@@ -64,12 +64,44 @@ const rouletteSelection = (population: Chromosome[]) => {
   }
 };
 
-const crossover = (population: Chromosome[], newGeneration: Chromosome[], choose: string, tournamentSize: number | null, crossing: string) => {
+const onePointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
+  const crossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 2)) + 1;
+  const firstBreed = [...parent1.solution.slice(0, crossoverPoint), ...parent2.solution.slice(crossoverPoint)]
+  const secondBreed = [...parent2.solution.slice(0, crossoverPoint), ...parent1.solution.slice(crossoverPoint)]
+  return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
+};
+
+const twoPointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
+  const firstCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 3)) + 1;
+  let secondCrossoverPoint = 0
+  while (secondCrossoverPoint > firstCrossoverPoint) {
+    secondCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 2)) + 1;
+  }
+  const firstBreed = [...parent1.solution.slice(0, firstCrossoverPoint), ...parent2.solution.slice(firstCrossoverPoint, secondCrossoverPoint), ...parent1.solution.slice(secondCrossoverPoint)]
+  const secondBreed = [...parent2.solution.slice(0, firstCrossoverPoint), ...parent1.solution.slice(firstCrossoverPoint, secondCrossoverPoint), ...parent2.solution.slice(secondCrossoverPoint)]
+  return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
+};
+
+const uniformCrossover = (parent1: Chromosome, parent2: Chromosome) => {
+  const firstBreed = []
+  const secondBreed = []
+  for (let i = 0; i < parent1.solution.length; i++) {
+    const uniform = Math.floor(Math.random() * 2);
+    if (uniform === 0) {
+      firstBreed.push(parent1.solution[i])
+      secondBreed.push(parent2.solution[i])
+    }
+    else {
+      firstBreed.push(parent2.solution[i])
+      secondBreed.push(parent1.solution[i])
+    }
+  }
+  return [new Chromosome(firstBreed as number[]), new Chromosome(secondBreed as number[])]
+};
+
+const crossover = (population: Chromosome[], newGeneration: Chromosome[], choose: string, tournamentSize: number | null, crossing: string, size: number) => {
   let parent1 = null
   let parent2 = null
-  if (crossing) {
-    console.log("tepes")
-  }
   while (newGeneration.length != population.length) {
     if (choose == 'tournament' && tournamentSize) {
       parent1 = tournamentSelection(population, tournamentSize)
@@ -86,18 +118,31 @@ const crossover = (population: Chromosome[], newGeneration: Chromosome[], choose
       }
     }
     if (parent1 && parent2) {
-      const child = new Chromosome(parent1.solution)
-      newGeneration.push(child)
+      let breeds: Chromosome[] = []
+      if (crossing == 'one') {
+        breeds = onePointCrossover(parent1, parent2)
+      }
+      else if (crossing == 'two') {
+        breeds = twoPointCrossover(parent1, parent2)
+      }
+      else if (crossing == 'uni') {
+        breeds = uniformCrossover(parent1, parent2)
+      }
+      for (let i = 0; i < breeds.length; i++) {
+        if (newGeneration.length != size) {
+          newGeneration.push(breeds[i] as Chromosome)
+        }
+      }
     }
   }
   return newGeneration
 }
 
-const createNewGeneration = (population: Chromosome[], elitism: boolean, elitismRate: number, choose: string, tournamentSize: number | null , crossing: string) => {
+const createNewGeneration = (population: Chromosome[], elitism: boolean, elitismRate: number, choose: string, tournamentSize: number | null , crossing: string, size: number) => {
   let newGeneration: Chromosome[] = []
   if (elitism) {
     newGeneration = applyElitism(population, elitismRate)
-    newGeneration = crossover(population, newGeneration, choose, tournamentSize, crossing)
+    newGeneration = crossover(population, newGeneration, choose, tournamentSize, crossing, size)
   }
   return newGeneration;
 }
@@ -139,10 +184,10 @@ export const geneticAlgorithm = (problemToSolve:
   let population = createPopulation(problemToSolve)
   population = evaluateIndividuals(problemToSolve, population, 1)
   console.log(populationHistory)
-  if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation && paramStore.choose && paramStore.crossing) {
+  if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation && paramStore.choose && paramStore.crossing && paramStore.population) {
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
-      population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism, paramStore.choose, paramStore.tournamentSize, paramStore.crossing)
+      population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism, paramStore.choose, paramStore.tournamentSize, paramStore.crossing, paramStore.population)
       population = mutate(population, paramStore.mutation)
       population = evaluateIndividuals(problemToSolve, population, i + 2)
     }
