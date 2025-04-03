@@ -7,7 +7,6 @@ export const useBinProblem = defineStore('binProblem', () => {
   const paramStore = useParamStore();
 
   const rearrange = (solution: number[]): number[] => {
-    console.log("Initial solution:", solution);
     let maxNumber = Math.max(...solution);
     for (let i = 1; i <= maxNumber; i++) {
       if (!solution.includes(i)) {
@@ -15,7 +14,6 @@ export const useBinProblem = defineStore('binProblem', () => {
         maxNumber = Math.max(...solution);
       }
     }
-    console.log("Transformed solution:", solution);
     return solution;
   };
 
