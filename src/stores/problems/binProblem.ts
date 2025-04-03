@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { Chromosome } from 'stores/individuals/chromosome'
 
 export const useBinProblem = defineStore('binProblem', () => {
 
@@ -14,7 +15,13 @@ export const useBinProblem = defineStore('binProblem', () => {
     return 'bin'
   };
 
+  const mutate = (population: Chromosome[], mutationRate: number) => {
+    console.log(mutationRate)
+    return population
+  };
+
   return {
+    mutate,
     createSolutions,
     calculateFitness,
     getProblemType,
