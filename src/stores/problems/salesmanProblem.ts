@@ -83,9 +83,9 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
           let j = index
           while (index == j)
           j = Math.floor(Math.random() * (index + 1));
-          const valueI = solution[index] ?? 0;
-          const valueJ = solution[j] ?? 0;
-          [solution[index], solution[j]] = [valueJ, valueI];
+          const valueI = individual.solution[index] ?? 0;
+          const valueJ = individual.solution[j] ?? 0;
+          [individual.solution[index], individual.solution[j]] = [valueJ, valueI];
         }
       }
     });
