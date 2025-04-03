@@ -74,7 +74,7 @@ const onePointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
 const twoPointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
   const firstCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 3)) + 1;
   let secondCrossoverPoint = 0
-  while (secondCrossoverPoint > firstCrossoverPoint) {
+  while (secondCrossoverPoint < firstCrossoverPoint) {
     secondCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 2)) + 1;
   }
   const firstBreed = [...parent1.solution.slice(0, firstCrossoverPoint), ...parent2.solution.slice(firstCrossoverPoint, secondCrossoverPoint), ...parent1.solution.slice(secondCrossoverPoint)]
@@ -172,7 +172,6 @@ export const geneticAlgorithm = (problemToSolve:
 
   let population = createPopulation(problemToSolve)
   population = evaluateIndividuals(problemToSolve, population, 1)
-  console.log(populationHistory)
   if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation && paramStore.choose && paramStore.crossing && paramStore.population) {
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
