@@ -163,7 +163,7 @@ export default defineComponent({
 
     const leftSolutionIndex = ref(history.entries.length - 1)
     const rightSolutionIndex = ref(history.entries.length - 1)
-    const screenSplit = ref(true)
+    const screenSplit = ref(false)
 
     const toggleLeftDrawer = () => (leftDrawerOpen.value = !leftDrawerOpen.value)
     const toggleRightDrawer = () => (rightDrawerOpen.value = !rightDrawerOpen.value)
