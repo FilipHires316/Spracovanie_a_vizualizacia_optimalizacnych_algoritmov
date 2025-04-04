@@ -71,6 +71,13 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
         previousCity = paramStore.cities[i]
       }
     }
+    const currentCity = paramStore.start[0]
+    if (currentCity && previousCity) {
+      const deltaX = currentCity.x - previousCity.x;
+      const deltaY = currentCity.y - previousCity.y;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      fitness += distance
+    }
     return Math.floor(1 / (fitness + 0.0001))
   }
 
