@@ -26,9 +26,9 @@ const evaluateIndividuals = (problemToSolve:
                                | ReturnType<typeof useKnapsackProblem>
                                | ReturnType<typeof useBinProblem>
                                | ReturnType<typeof useSalesmanProblem>,
-                             population: Chromosome[], iteration: number) => {
+                             population: Chromosome[]) => {
   population.forEach(individual => {
-    const fitness = problemToSolve.calculateFitness(individual.solution, iteration)
+    const fitness = problemToSolve.calculateFitness(individual.solution)
     if (fitness) {
       individual.fitness = fitness
     }
@@ -173,13 +173,13 @@ export const geneticAlgorithm = (problemToSolve:
   let populationHistory: Chromosome[][] = []
 
   let population = createPopulation(problemToSolve, paramStore.population as number)
-  population = evaluateIndividuals(problemToSolve, population, 1)
+  population = evaluateIndividuals(problemToSolve, population)
   if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation !== null && paramStore.choose && paramStore.crossing && paramStore.population) {
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
       population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism, paramStore.choose, paramStore.tournamentSize, paramStore.crossing, paramStore.population)
       population = problemToSolve.mutate(population, paramStore.mutation) as Chromosome[]
-      population = evaluateIndividuals(problemToSolve, population, i + 2)
+      population = evaluateIndividuals(problemToSolve, population)
     }
     saveResult(problemToSolve, populationHistory)
   }

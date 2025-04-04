@@ -29,7 +29,8 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return solutions;
   };
 
-  const calculateFitness = (solution: number[], iteration: number) => {
+  const calculateFitness = (solution: number[]) => {
+    let fitness = 0;
     let totalSize = 0;
     let totalPrice = 0;
     for (let i = 0; i < solution.length; i++) {
@@ -38,10 +39,13 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
         totalPrice += paramStore.knapsackItems[i]?.price ?? 0;
       }
     }
-    if (paramStore.capacity && totalSize > paramStore.capacity) {
-      return totalPrice * 100 - totalSize - ((totalSize - paramStore.capacity) * iteration * 10);
+    if (paramStore.capacity) {
+     fitness = totalPrice * 100 + ((paramStore.capacity - totalSize) * 50);
     }
-    return totalPrice * 100 - totalSize;
+    if (fitness < 1) {
+      return 1
+    }
+    return fitness
   };
 
 

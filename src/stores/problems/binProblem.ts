@@ -41,7 +41,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return solutions;
   };
 
-  const calculateFitness = (solution: number[], iteration: number) => {
+  const calculateFitness = (solution: number[]) => {
     const sizes = new Array(Math.max(...solution)).fill(0);
     for (let i = 0; i < solution.length; i++) {
       sizes[solution[i] as number - 1] += paramStore.binItems[i]?.size ?? 0;
@@ -58,7 +58,7 @@ export const useBinProblem = defineStore('binProblem', () => {
         }
       }
     }
-    const fitness = (solution.length - Math.max(...solution)) * 100 - totalUnderflow - totalOverflow * iteration * 5;
+    const fitness = (solution.length - Math.max(...solution)) * 100 - totalUnderflow - totalOverflow * 50;
     if (fitness < 1) {
       return 1
     }

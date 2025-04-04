@@ -56,8 +56,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return solutions;
   };
 
-  const calculateFitness = (solution: number[], iteration: number) => {
-    console.log(iteration)
+  const calculateFitness = (solution: number[]) => {
     let fitness = 0
     let previousCity = paramStore.start[0]
     for (let i = 0; i < solution.length; i++) {
