@@ -10,8 +10,9 @@ import { storeToRefs } from 'pinia'
 const createPopulation = (problemToSolve:
                             | ReturnType<typeof useKnapsackProblem>
                             | ReturnType<typeof useBinProblem>
-                            | ReturnType<typeof useSalesmanProblem>) => {
-  const solutions: void | number[][] = problemToSolve.createSolutions()
+                            | ReturnType<typeof useSalesmanProblem>,
+                          size: number) => {
+  const solutions: void | number[][] = problemToSolve.createSolutions(size)
   const population: Chromosome[] = []
   if (solutions) {
     solutions.forEach(solution => {
@@ -171,7 +172,7 @@ export const geneticAlgorithm = (problemToSolve:
   const paramStore = useParamStore()
   let populationHistory: Chromosome[][] = []
 
-  let population = createPopulation(problemToSolve)
+  let population = createPopulation(problemToSolve, paramStore.population as number)
   population = evaluateIndividuals(problemToSolve, population, 1)
   if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation !== null && paramStore.choose && paramStore.crossing && paramStore.population) {
     for (let i = 0; i < paramStore.iterations; i++) {

@@ -17,25 +17,23 @@ export const useBinProblem = defineStore('binProblem', () => {
     return solution;
   };
 
-  const createSolutions = (): number[][] => {
+  const createSolutions = (size: number): number[][] => {
     const solutions: number[][] = [];
     let counter: number = 0;
-    if (paramStore.population) {
-      while (solutions.length < paramStore.population) {
-        let currentSolution: number[] = [];
-        for (let i = 0; i < paramStore.binItems.length; i++) {
-          currentSolution.push(Math.floor(Math.random() * paramStore.binItems.length) + 1);
-        }
-        currentSolution = rearrange(currentSolution);
-        if (!solutions.some(sol => sol.every((val, index) => val === currentSolution[index]))) {
-          solutions.push(currentSolution);
-          counter = 0;
-        }
-        else {
-          counter++
-          if (counter > 100) {
-            return solutions;
-          }
+    while (solutions.length < size) {
+      let currentSolution: number[] = [];
+      for (let i = 0; i < paramStore.binItems.length; i++) {
+        currentSolution.push(Math.floor(Math.random() * paramStore.binItems.length) + 1);
+      }
+      currentSolution = rearrange(currentSolution);
+      if (!solutions.some(sol => sol.every((val, index) => val === currentSolution[index]))) {
+        solutions.push(currentSolution);
+        counter = 0;
+      }
+      else {
+        counter++
+        if (counter > 100) {
+          return solutions;
         }
       }
     }

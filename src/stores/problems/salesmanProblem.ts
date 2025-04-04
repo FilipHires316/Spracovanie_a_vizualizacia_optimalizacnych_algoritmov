@@ -31,26 +31,24 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return solution;
   };
 
-  const createSolutions = (): number[][] => {
+  const createSolutions = (size: number): number[][] => {
     const solutions: number[][] = [];
     let counter: number = 0;
-    if (paramStore.population) {
-      while (solutions.length < paramStore.population) {
-        const currentSolution: number[] = Array.from({ length: paramStore.cities.length }, (_, index) => index);
-        for (let i = currentSolution.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          const valueI = currentSolution[i] ?? 0;
-          const valueJ = currentSolution[j] ?? 0;
-          [currentSolution[i], currentSolution[j]] = [valueJ, valueI];
-        }
-        if (!solutions.some(sol => sol.every((val, index) => val === currentSolution[index]))) {
-          solutions.push(currentSolution);
-          counter = 0;
-        } else {
-          counter++;
-          if (counter > 100) {
-            return solutions;
-          }
+    while (solutions.length < size) {
+      const currentSolution: number[] = Array.from({ length: paramStore.cities.length }, (_, index) => index);
+      for (let i = currentSolution.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const valueI = currentSolution[i] ?? 0;
+        const valueJ = currentSolution[j] ?? 0;
+        [currentSolution[i], currentSolution[j]] = [valueJ, valueI];
+      }
+      if (!solutions.some(sol => sol.every((val, index) => val === currentSolution[index]))) {
+        solutions.push(currentSolution);
+        counter = 0;
+      } else {
+        counter++;
+        if (counter > 100) {
+          return solutions;
         }
       }
     }
