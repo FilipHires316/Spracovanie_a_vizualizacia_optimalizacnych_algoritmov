@@ -48,14 +48,22 @@ export const useBinProblem = defineStore('binProblem', () => {
       sizes[solution[i] as number - 1] += paramStore.binItems[i]?.size ?? 0;
     }
     let totalOverflow = 0
+    let totalUnderflow = 0
     if (paramStore.capacity) {
       for (let j = 0; j < sizes.length; j++) {
         if (sizes[j] > paramStore.capacity) {
           totalOverflow += sizes[j] - paramStore.capacity;
         }
+        else {
+          totalUnderflow += paramStore.capacity - sizes[j];
+        }
       }
     }
-    return (solution.length - Math.max(...solution)) * 100 - totalOverflow * iteration * 50;
+    const fitness = (solution.length - Math.max(...solution)) * 100 - totalUnderflow - totalOverflow * iteration * 50;
+    if (fitness < 1) {
+      return 1
+    }
+    return fitness
   }
 
   const getProblemType = () => {

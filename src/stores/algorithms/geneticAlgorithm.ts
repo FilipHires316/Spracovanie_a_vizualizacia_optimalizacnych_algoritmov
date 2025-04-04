@@ -55,7 +55,7 @@ const rouletteSelection = (population: Chromosome[]) => {
   const totalFitness = available.reduce((sum, chromosome) => sum + chromosome.fitness, 0);
   const threshold = Math.random() * totalFitness;
   let cumulativeFitness = 0;
-  for (const chromosome of population) {
+  for (const chromosome of available) {
     cumulativeFitness += chromosome.fitness;
     if (cumulativeFitness >= threshold) {
       chromosome.timesCrossed++;
@@ -142,8 +142,9 @@ const createNewGeneration = (population: Chromosome[], elitism: boolean, elitism
   let newGeneration: Chromosome[] = []
   if (elitism) {
     newGeneration = applyElitism(population, elitismRate)
-    newGeneration = crossover(population, newGeneration, choose, tournamentSize, crossing, size)
   }
+  newGeneration = crossover(population, newGeneration, choose, tournamentSize, crossing, size)
+  console.log("check")
   return newGeneration;
 }
 
@@ -172,7 +173,7 @@ export const geneticAlgorithm = (problemToSolve:
 
   let population = createPopulation(problemToSolve)
   population = evaluateIndividuals(problemToSolve, population, 1)
-  if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation && paramStore.choose && paramStore.crossing && paramStore.population) {
+  if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation !== null && paramStore.choose && paramStore.crossing && paramStore.population) {
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
       population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism, paramStore.choose, paramStore.tournamentSize, paramStore.crossing, paramStore.population)

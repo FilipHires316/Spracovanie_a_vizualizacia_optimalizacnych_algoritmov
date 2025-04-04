@@ -7,6 +7,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
   const paramStore = useParamStore();
 
   const rearrange = (solution: number[]): number[] => {
+    console.log (solution);
     let missingNumbers = Array.from({ length: paramStore.cities.length }, (_, index) => index);
     missingNumbers = missingNumbers.filter(num => !solution.includes(num));
     for (let i = missingNumbers.length - 1; i > 0; i--) {
@@ -15,16 +16,18 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
       const valueJ = missingNumbers[j] ?? 0;
       [missingNumbers[i], missingNumbers[j]] = [valueJ, valueI];
     }
+    console.log(missingNumbers);
     const seen = new Set<number>();
     for (let i = 0; i < solution.length; i++) {
       const x = solution[i];
-      if (x) {
-        if (seen.has(x) && missingNumbers.length > 0) {
+      if (x !== undefined) {
+        if (seen.has(x)) {
           solution[i] = missingNumbers.shift()!;
         }
         seen.add(x);
       }
     }
+    console.log(solution ,seen);
     return solution;
   };
 
@@ -59,7 +62,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     let fitness = 0
     let previousCity = paramStore.start[0]
     for (let i = 0; i < solution.length; i++) {
-      const currentCity = paramStore.cities[i]
+      const currentCity = paramStore.cities[solution[i] ?? 0]
       if (currentCity && previousCity) {
         const deltaX = currentCity.x - previousCity.x;
         const deltaY = currentCity.y - previousCity.y;
@@ -68,7 +71,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
         previousCity = paramStore.cities[i]
       }
     }
-    return fitness
+    return Math.floor(1 / (fitness + 0.0001))
   }
 
   const getProblemType = () => {
@@ -82,7 +85,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
         if (Math.random() * 100 < mutationRate) {
           let j = index
           while (index == j)
-          j = Math.floor(Math.random() * (index + 1));
+            j = Math.floor(Math.random() * (individual.solution.length));
           const valueI = individual.solution[index] ?? 0;
           const valueJ = individual.solution[j] ?? 0;
           [individual.solution[index], individual.solution[j]] = [valueJ, valueI];
