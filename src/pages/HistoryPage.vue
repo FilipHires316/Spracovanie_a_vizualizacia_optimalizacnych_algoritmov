@@ -35,7 +35,7 @@
   </q-drawer>
 
   <q-btn
-    v-if="(!isMobile || !rightDrawerOpen) && !screenSplit"
+    v-if="(!isMobile || !rightDrawerOpen) && screenSplit"
     dense
     flat
     round
@@ -45,7 +45,7 @@
     style="position: fixed; z-index: 9998; top: 100px; right: 0"
   />
 
-  <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered overlay v-show="!screenSplit">
+  <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered overlay v-show="screenSplit">
     <q-scroll-area style="height: 100%; flex: 1" class="custom-scroll">
       <div class="Menu">
         <q-expansion-item
@@ -71,7 +71,11 @@
   </q-drawer>
 
   <div class="page-container">
-    <div style="padding-left: 5vw; padding-right: 5vw; height: 85vh; overflow: hidden; overflow-y: scroll; scrollbar-width: none;">
+    <!-- Left Page -->
+    <div
+      class="scroll-wrapper"
+      :style="{ width: screenSplit ? '50vw' : '100vw' }"
+    >
       <q-page class="column items-center justify-evenly page">
         <div>
           {{ entries[leftSolutionIndex]?.bestFitness }}
@@ -96,17 +100,23 @@
         </div>
         <q-btn
           color="grey"
-          :icon="screenSplit ? 'add' : 'remove'"
+          :icon="screenSplit ? 'remove' : 'add'"
           @click="screenSplitShift"
           style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw;"
         />
       </q-page>
     </div>
 
-    <div style="padding-left: 5vw; padding-right: 5vw; height: 85vh; overflow: hidden; overflow-y: scroll; scrollbar-width: none;" v-show="!screenSplit">
+    <!-- Right Page -->
+    <div
+      class="scroll-wrapper"
+      v-show="screenSplit"
+      :style="{ width: '50vw' }"
+    >
       <q-page class="column items-center justify-evenly page">
         <div>
-          {{ entries[rightSolutionIndex] }}
+          {{ entries[rightSolutionIndex]?.bestFitness }}
+          {{ entries[rightSolutionIndex]?.averageFitness }}
         </div>
         <div v-if="entries.length > 0" class="button-container" style="margin-top: 10px">
           <q-btn
@@ -127,7 +137,7 @@
         </div>
         <q-btn
           color="grey"
-          :icon="screenSplit ? 'add' : 'remove'"
+          :icon="screenSplit ? 'remove' : 'add'"
           @click="screenSplitShift"
           style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw;"
         />
@@ -143,71 +153,51 @@ import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'HistoryPage',
-
-  components: {},
-
   setup() {
     const history = useHistory()
-    const {
-      entries
-    } = storeToRefs(history);
+    const { entries } = storeToRefs(history)
 
     const leftDrawerOpen = ref(false)
-    const toggleLeftDrawer = () => {
-      leftDrawerOpen.value = !leftDrawerOpen.value
-    }
-
     const rightDrawerOpen = ref(false)
-    const toggleRightDrawer = () => {
-      rightDrawerOpen.value = !rightDrawerOpen.value
-    }
+    const isMobile = ref(false)
 
     const leftSolutionIndex = ref(history.entries.length - 1)
     const rightSolutionIndex = ref(history.entries.length - 1)
-
     const screenSplit = ref(true)
 
-    const screenSplitShift = () => {
-      screenSplit.value = !screenSplit.value
-    }
+    const toggleLeftDrawer = () => (leftDrawerOpen.value = !leftDrawerOpen.value)
+    const toggleRightDrawer = () => (rightDrawerOpen.value = !rightDrawerOpen.value)
+    const screenSplitShift = () => (screenSplit.value = !screenSplit.value)
 
     const leftSolutionIndexIncrement = () => {
-      leftSolutionIndex.value++
-      if (leftSolutionIndex.value > history.entries.length - 1)
-        leftSolutionIndex.value = 0
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      leftSolutionIndex.value = (leftSolutionIndex.value + 1) % history.entries.length
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
     const leftSolutionIndexDecrement = () => {
-      leftSolutionIndex.value--
-      if (leftSolutionIndex.value < 0)
-        leftSolutionIndex.value = history.entries.length - 1
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      leftSolutionIndex.value = (leftSolutionIndex.value - 1 + history.entries.length) % history.entries.length
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
+
     const leftSolutionIndexSet = (index: number) => {
       leftSolutionIndex.value = index
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
     const rightSolutionIndexIncrement = () => {
-      rightSolutionIndex.value++
-      if (rightSolutionIndex.value > history.entries.length - 1)
-        rightSolutionIndex.value = 0
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      rightSolutionIndex.value = (rightSolutionIndex.value + 1) % history.entries.length
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
     const rightSolutionIndexDecrement = () => {
-      rightSolutionIndex.value--
-      if (rightSolutionIndex.value < 0)
-        rightSolutionIndex.value = history.entries.length - 1
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    const rightSolutionIndexSet = (index: number) => {
-      rightSolutionIndex.value = index
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      rightSolutionIndex.value = (rightSolutionIndex.value - 1 + history.entries.length) % history.entries.length
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
-    const isMobile = ref(false)
+    const rightSolutionIndexSet = (index: number) => {
+      rightSolutionIndex.value = index
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
 
     const checkMobile = () => {
       isMobile.value = window.innerWidth <= 768
@@ -216,37 +206,32 @@ export default defineComponent({
     onMounted(() => {
       checkMobile()
       window.addEventListener('resize', checkMobile)
+      leftDrawerOpen.value = false
+      rightDrawerOpen.value = false
     })
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', checkMobile)
     })
 
-    onMounted(() => {
-      checkMobile()
-      window.addEventListener('resize', checkMobile)
-      leftDrawerOpen.value = false;
-      rightDrawerOpen.value = false;
-    })
-
     return {
       history,
+      entries,
       toggleLeftDrawer,
       leftDrawerOpen,
       toggleRightDrawer,
       rightDrawerOpen,
+      isMobile,
       leftSolutionIndex,
       rightSolutionIndex,
-      isMobile,
+      screenSplit,
+      screenSplitShift,
       leftSolutionIndexIncrement,
       leftSolutionIndexDecrement,
       leftSolutionIndexSet,
       rightSolutionIndexIncrement,
       rightSolutionIndexDecrement,
       rightSolutionIndexSet,
-      entries,
-      screenSplit,
-      screenSplitShift
     }
   },
 })
@@ -273,7 +258,7 @@ export default defineComponent({
 .menuButton {
   width: 16.5vw;
   background: white;
-  color: Black;
+  color: black;
   border-radius: 20px;
   margin-top: 0.5vw;
   margin-left: 1vw;
@@ -299,7 +284,13 @@ export default defineComponent({
   width: 100vw;
   height: 85vh;
   overflow: hidden;
-  overflow-y: scroll;
+}
+
+.scroll-wrapper {
+  height: 85vh;
+  overflow-y: auto;
+  padding-left: 5vw;
+  padding-right: 5vw;
   scrollbar-width: none;
 }
 </style>
