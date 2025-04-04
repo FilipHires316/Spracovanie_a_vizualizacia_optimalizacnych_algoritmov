@@ -178,7 +178,7 @@ export const geneticAlgorithm = (problemToSolve:
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
       population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism, paramStore.choose, paramStore.tournamentSize, paramStore.crossing, paramStore.population)
-      population = problemToSolve.mutate(population, paramStore.mutation)
+      population = problemToSolve.mutate(population, paramStore.mutation) as Chromosome[]
       population = evaluateIndividuals(problemToSolve, population, i + 2)
     }
     saveResult(problemToSolve, populationHistory)

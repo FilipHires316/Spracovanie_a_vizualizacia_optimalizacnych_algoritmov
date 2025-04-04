@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { Chromosome } from 'stores/individuals/chromosome'
 import { useParamStore } from 'stores/paramStore'
+import type { Lion } from 'stores/individuals/lion'
 
 export const useSalesmanProblem = defineStore('salesmanProblem', () => {
 
@@ -83,7 +84,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return 'salesman'
   };
 
-  const mutate = (population: Chromosome[], mutationRate: number) => {
+  const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
     population.forEach(individual => {
       individual.solution = rearrange(individual.solution);
       for (let index = 0; index < individual.solution.length; index++) {

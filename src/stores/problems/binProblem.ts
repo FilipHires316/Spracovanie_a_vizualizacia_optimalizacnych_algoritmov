@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { Chromosome } from 'stores/individuals/chromosome'
 import { useParamStore } from 'stores/paramStore'
+import type { Lion } from 'stores/individuals/lion'
 
 export const useBinProblem = defineStore('binProblem', () => {
 
@@ -68,7 +69,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return 'bin'
   };
 
-  const mutate = (population: Chromosome[], mutationRate: number) => {
+  const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
     population.forEach(individual => {
       for (let index = 0; index < individual.solution.length; index++) {
         if (Math.random() * 100 < mutationRate) {
