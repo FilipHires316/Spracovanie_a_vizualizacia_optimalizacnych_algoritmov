@@ -45,7 +45,14 @@
     style="position: fixed; z-index: 9998; top: 100px; right: 0"
   />
 
-  <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered overlay v-show="screenSplit">
+  <q-drawer
+    show-if-above
+    v-model="rightDrawerOpen"
+    side="right"
+    bordered
+    overlay
+    v-show="screenSplit"
+  >
     <q-scroll-area style="height: 100%; flex: 1" class="custom-scroll">
       <div class="Menu">
         <q-expansion-item
@@ -72,15 +79,16 @@
 
   <div class="page-container">
     <!-- Left Page -->
-    <div
-      class="scroll-wrapper"
-      :style="{ width: screenSplit ? '50vw' : '100vw' }"
-    >
+    <div class="scroll-wrapper" :style="{ width: screenSplit ? '50vw' : '100vw' }">
       <q-page class="column items-center justify-evenly page">
-        <div>
-          {{ entries[leftSolutionIndex]?.bestFitness }}
-          {{ entries[leftSolutionIndex]?.averageFitness }}
-        </div>
+        <FitnessChart
+          v-if="entries[leftSolutionIndex]"
+          :bestFitness="entries[leftSolutionIndex]?.bestFitness as number[]"
+          :averageFitness="entries[leftSolutionIndex]?.averageFitness as number[]"
+          label="Vývoj Fitness (ľavý)"
+          @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
+        />
+
         <div v-if="entries.length > 0" class="button-container" style="margin-top: 10px">
           <q-btn
             class="button"
@@ -102,22 +110,21 @@
           color="grey"
           :icon="screenSplit ? 'remove' : 'add'"
           @click="screenSplitShift"
-          style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw;"
+          style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw"
         />
       </q-page>
     </div>
 
     <!-- Right Page -->
-    <div
-      class="scroll-wrapper"
-      v-show="screenSplit"
-      :style="{ width: '50vw' }"
-    >
+    <div class="scroll-wrapper" v-show="screenSplit" :style="{ width: '50vw' }">
       <q-page class="column items-center justify-evenly page">
-        <div>
-          {{ entries[rightSolutionIndex]?.bestFitness }}
-          {{ entries[rightSolutionIndex]?.averageFitness }}
-        </div>
+        <FitnessChart
+          v-if="entries[rightSolutionIndex]"
+          :bestFitness="entries[rightSolutionIndex]?.bestFitness as number[]"
+          :averageFitness="entries[rightSolutionIndex]?.averageFitness as number[]"
+          label="Vývoj Fitness (ľavý)"
+          @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
+        />
         <div v-if="entries.length > 0" class="button-container" style="margin-top: 10px">
           <q-btn
             class="button"
@@ -139,7 +146,7 @@
           color="grey"
           :icon="screenSplit ? 'remove' : 'add'"
           @click="screenSplitShift"
-          style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw;"
+          style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw"
         />
       </q-page>
     </div>
@@ -150,9 +157,11 @@
 import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useHistory } from 'stores/history'
 import { storeToRefs } from 'pinia'
+import FitnessChart from 'components/visualisation/graph.vue'
 
 export default defineComponent({
   name: 'HistoryPage',
+  components: { FitnessChart },
   setup() {
     const history = useHistory()
     const { entries } = storeToRefs(history)
@@ -175,7 +184,8 @@ export default defineComponent({
     }
 
     const leftSolutionIndexDecrement = () => {
-      leftSolutionIndex.value = (leftSolutionIndex.value - 1 + history.entries.length) % history.entries.length
+      leftSolutionIndex.value =
+        (leftSolutionIndex.value - 1 + history.entries.length) % history.entries.length
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
@@ -190,7 +200,8 @@ export default defineComponent({
     }
 
     const rightSolutionIndexDecrement = () => {
-      rightSolutionIndex.value = (rightSolutionIndex.value - 1 + history.entries.length) % history.entries.length
+      rightSolutionIndex.value =
+        (rightSolutionIndex.value - 1 + history.entries.length) % history.entries.length
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 

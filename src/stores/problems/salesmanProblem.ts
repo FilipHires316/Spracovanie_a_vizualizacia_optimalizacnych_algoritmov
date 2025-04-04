@@ -76,7 +76,10 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
       const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
       fitness += distance
     }
-    return Math.round(1 / (fitness + 0.0001))
+    Math.round(fitness = 10000 - fitness)
+    if (fitness < 1)
+      return 1
+    return fitness;
   }
 
   const getProblemType = () => {
