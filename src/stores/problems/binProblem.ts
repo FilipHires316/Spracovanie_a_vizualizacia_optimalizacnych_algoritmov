@@ -58,7 +58,7 @@ export const useBinProblem = defineStore('binProblem', () => {
         }
       }
     }
-    const fitness = (solution.length - Math.max(...solution)) * 100 - totalUnderflow - totalOverflow * iteration * 50;
+    const fitness = (solution.length - Math.max(...solution)) * 100 - totalUnderflow - totalOverflow * iteration * 5;
     if (fitness < 1) {
       return 1
     }
