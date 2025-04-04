@@ -49,6 +49,20 @@ const saveResult = (problemToSolve:
   const history = useHistory();
   const { entries } = storeToRefs(history);
   const result = new HistoryEntry(populationHistory, 'genetic', problemToSolve.getProblemType())
+  populationHistory.forEach(entry => {
+    let max = 0
+    let average = 0
+    entry.forEach(individual => {
+      if (individual.fitness > max)
+        max = individual.fitness
+      average += individual.fitness
+    })
+    average = average / entry.length
+    result.bestFitness.push(max)
+    result.averageFitness.push(average)
+    max = 0
+    average = 0
+  })
   entries.value.push(result)
 }
 

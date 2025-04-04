@@ -74,7 +74,8 @@
     <div style="padding-left: 5vw; padding-right: 5vw; height: 85vh; overflow: hidden; overflow-y: scroll; scrollbar-width: none;">
       <q-page class="column items-center justify-evenly page">
         <div>
-          {{ entries[leftSolutionIndex] }}
+          {{ entries[leftSolutionIndex]?.bestFitness }}
+          {{ entries[leftSolutionIndex]?.averageFitness }}
         </div>
         <div v-if="entries.length > 0" class="button-container" style="margin-top: 10px">
           <q-btn
