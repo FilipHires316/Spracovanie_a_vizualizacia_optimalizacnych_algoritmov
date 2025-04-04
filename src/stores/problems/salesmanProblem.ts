@@ -12,7 +12,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     let missingNumbers = Array.from({ length: paramStore.cities.length }, (_, index) => index);
     missingNumbers = missingNumbers.filter(num => !solution.includes(num));
     for (let i = missingNumbers.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.round(Math.random() * (i + 1));
       const valueI = missingNumbers[i] ?? 0;
       const valueJ = missingNumbers[j] ?? 0;
       [missingNumbers[i], missingNumbers[j]] = [valueJ, valueI];
@@ -38,7 +38,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     while (solutions.length < size) {
       const currentSolution: number[] = Array.from({ length: paramStore.cities.length }, (_, index) => index);
       for (let i = currentSolution.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = Math.round(Math.random() * (i + 1));
         const valueI = currentSolution[i] ?? 0;
         const valueJ = currentSolution[j] ?? 0;
         [currentSolution[i], currentSolution[j]] = [valueJ, valueI];
@@ -77,7 +77,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
       const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
       fitness += distance
     }
-    return Math.floor(1 / (fitness + 0.0001))
+    return Math.round(1 / (fitness + 0.0001))
   }
 
   const getProblemType = () => {
@@ -91,7 +91,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
         if (Math.random() * 100 < mutationRate) {
           let j = index
           while (index == j)
-            j = Math.floor(Math.random() * (individual.solution.length));
+            j = Math.round(Math.random() * (individual.solution.length));
           const valueI = individual.solution[index] ?? 0;
           const valueJ = individual.solution[j] ?? 0;
           [individual.solution[index], individual.solution[j]] = [valueJ, valueI];

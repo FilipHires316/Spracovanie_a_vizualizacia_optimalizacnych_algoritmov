@@ -24,7 +24,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     while (solutions.length < size) {
       let currentSolution: number[] = [];
       for (let i = 0; i < paramStore.binItems.length; i++) {
-        currentSolution.push(Math.floor(Math.random() * paramStore.binItems.length) + 1);
+        currentSolution.push(Math.round(Math.random() * paramStore.binItems.length) + 1);
       }
       currentSolution = rearrange(currentSolution);
       if (!solutions.some(sol => sol.every((val, index) => val === currentSolution[index]))) {
@@ -75,7 +75,7 @@ export const useBinProblem = defineStore('binProblem', () => {
         if (Math.random() * 100 < mutationRate) {
           let newValue;
           do {
-            newValue = Math.floor(Math.random() * paramStore.binItems.length) + 1;
+            newValue = Math.round(Math.random() * paramStore.binItems.length) + 1;
           } while (newValue === individual.solution[index]);
           individual.solution[index] = newValue;
         }
