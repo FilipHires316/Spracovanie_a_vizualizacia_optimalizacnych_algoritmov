@@ -81,11 +81,16 @@
     <!-- Left Page -->
     <div class="scroll-wrapper" :style="{ width: screenSplit ? '50vw' : '100vw' }">
       <q-page class="column items-center justify-evenly page">
-        <FitnessChart
+        <GenerationGraph
           v-if="entries[leftSolutionIndex]"
           :bestFitness="entries[leftSolutionIndex]?.bestFitness as number[]"
           :averageFitness="entries[leftSolutionIndex]?.averageFitness as number[]"
           label="Vývoj Fitness"
+          @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
+        />
+        <IndividualsGraph
+          :data="entries[leftSolutionIndex]?.solution[iteration] ?? []"
+          :label="'Fitness Jedincov z Iterácie ' + iteration"
           @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
         />
       </q-page>
@@ -94,7 +99,7 @@
     <!-- Right Page -->
     <div class="scroll-wrapper" v-show="screenSplit" :style="{ width: '50vw' }">
       <q-page class="column items-center justify-evenly page">
-        <FitnessChart
+        <GenerationGraph
           v-if="entries[rightSolutionIndex]"
           :bestFitness="entries[rightSolutionIndex]?.bestFitness as number[]"
           :averageFitness="entries[rightSolutionIndex]?.averageFitness as number[]"
@@ -104,6 +109,7 @@
       </q-page>
     </div>
   </div>
+
   <q-btn
     color="grey"
     :icon="screenSplit ? 'remove' : 'add'"
@@ -117,10 +123,11 @@ import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useHistory } from 'stores/history'
 import { storeToRefs } from 'pinia'
 import GenerationGraph from 'components/visualisation/GenerationGraph.vue'
+import IndividualsGraph from 'components/visualisation/IndividualsGraph.vue'
 
 export default defineComponent({
   name: 'HistoryPage',
-  components: { FitnessChart: GenerationGraph },
+  components: { GenerationGraph, IndividualsGraph},
   setup() {
     const history = useHistory()
     const { entries } = storeToRefs(history)
@@ -128,6 +135,8 @@ export default defineComponent({
     const leftDrawerOpen = ref(false)
     const rightDrawerOpen = ref(false)
     const isMobile = ref(false)
+
+    const iteration = ref(0)
 
     const leftSolutionIndex = ref(history.entries.length - 1)
     const rightSolutionIndex = ref(history.entries.length - 1)
@@ -184,6 +193,8 @@ export default defineComponent({
       window.removeEventListener('resize', checkMobile)
     })
 
+    console.log(entries.value[0])
+
     return {
       history,
       entries,
@@ -202,6 +213,7 @@ export default defineComponent({
       rightSolutionIndexIncrement,
       rightSolutionIndexDecrement,
       rightSolutionIndexSet,
+      iteration,
     }
   },
 })

@@ -38,8 +38,8 @@ const evaluateIndividuals = (problemToSolve:
 
 const applyElitism = (population: Chromosome[], elitismRate: number) => {
   const eliteNumber = population.length / 100 * elitismRate
-  population.sort((a, b) => b.fitness - a.fitness);
-  return population.slice(0, eliteNumber);
+  const sortedPopulation = [...population].sort((a, b) => b.fitness - a.fitness);
+  return sortedPopulation.slice(0, eliteNumber);
 }
 
 const tournamentSelection = (population: Chromosome[], tournamentSize: number) => {

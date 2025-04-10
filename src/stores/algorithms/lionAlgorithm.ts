@@ -28,7 +28,6 @@ const createPopulation = (problemToSolve:
         i++
       }
       population.push(pack)
-      console.log(population)
     }
     const pack = []
     while (pack.length < femalesNumber + malesNumber) {

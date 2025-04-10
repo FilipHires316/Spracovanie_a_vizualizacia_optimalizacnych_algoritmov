@@ -1,11 +1,15 @@
+import type { Lion } from 'stores/individuals/lion'
+import type { Whale } from 'stores/individuals/whale'
+import type { Chromosome } from 'stores/individuals/chromosome'
+
 export class HistoryEntry {
   algorithm: string;
   problem: string;
-  solution: unknown;
+  solution: Lion[][] | Whale[][] | Chromosome[][];
   bestFitness: number[];
   averageFitness: number[];
 
-  constructor(solution: unknown, algorithm: string, problem: string) {
+  constructor(solution: Lion[][] | Whale[][] | Chromosome[][], algorithm: string, problem: string) {
     this.algorithm = algorithm;
     this.problem = problem;
     this.solution = solution;
