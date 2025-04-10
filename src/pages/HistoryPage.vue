@@ -86,11 +86,12 @@
           :bestFitness="entries[leftSolutionIndex]?.bestFitness as number[]"
           :averageFitness="entries[leftSolutionIndex]?.averageFitness as number[]"
           label="Vývoj Fitness"
-          @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
+          @bar-click="(genIndex) => leftIteration = genIndex"
         />
         <IndividualsGraph
-          :data="entries[leftSolutionIndex]?.solution[iteration] ?? []"
-          :label="'Fitness Jedincov z Iterácie ' + iteration"
+          style="max-width: 90vw; height: 50vw; padding: 20px"
+          :data="entries[leftSolutionIndex]?.solution[leftIteration] ?? []"
+          :label="'Fitness Jedincov'"
           @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
         />
       </q-page>
@@ -104,6 +105,12 @@
           :bestFitness="entries[rightSolutionIndex]?.bestFitness as number[]"
           :averageFitness="entries[rightSolutionIndex]?.averageFitness as number[]"
           label="Vývoj Fitness"
+          @bar-click="(genIndex) => rightIteration = genIndex"
+        />
+        <IndividualsGraph
+          style="max-width: 90vw; height: 50vw; padding: 20px"
+          :data="entries[rightSolutionIndex]?.solution[rightIteration] ?? []"
+          :label="'Fitness Jedincov'"
           @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
         />
       </q-page>
@@ -136,7 +143,8 @@ export default defineComponent({
     const rightDrawerOpen = ref(false)
     const isMobile = ref(false)
 
-    const iteration = ref(0)
+    const leftIteration = ref(0)
+    const rightIteration = ref(0)
 
     const leftSolutionIndex = ref(history.entries.length - 1)
     const rightSolutionIndex = ref(history.entries.length - 1)
@@ -146,30 +154,8 @@ export default defineComponent({
     const toggleRightDrawer = () => (rightDrawerOpen.value = !rightDrawerOpen.value)
     const screenSplitShift = () => (screenSplit.value = !screenSplit.value)
 
-    const leftSolutionIndexIncrement = () => {
-      leftSolutionIndex.value = (leftSolutionIndex.value + 1) % history.entries.length
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-
-    const leftSolutionIndexDecrement = () => {
-      leftSolutionIndex.value =
-        (leftSolutionIndex.value - 1 + history.entries.length) % history.entries.length
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-
     const leftSolutionIndexSet = (index: number) => {
       leftSolutionIndex.value = index
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-
-    const rightSolutionIndexIncrement = () => {
-      rightSolutionIndex.value = (rightSolutionIndex.value + 1) % history.entries.length
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-
-    const rightSolutionIndexDecrement = () => {
-      rightSolutionIndex.value =
-        (rightSolutionIndex.value - 1 + history.entries.length) % history.entries.length
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
@@ -177,6 +163,26 @@ export default defineComponent({
       rightSolutionIndex.value = index
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
+
+    // const leftIterationIncrement = () => {
+    //   leftIteration.value = (leftIteration.value + 1) % entries[leftSolutionIndex.value].solution.lenght
+    //   window.scrollTo({ top: 0, behavior: 'smooth' })
+    // }
+    //
+    // const leftIterationDecrement = () => {
+    //   leftIteration.value = (leftIteration.value - 1 + entries[leftSolutionIndex.value].solution.lenght) % entries[leftSolutionIndex.value].solution.lenght
+    //   window.scrollTo({ top: 0, behavior: 'smooth' })
+    // }
+    //
+    // const rightIterationIncrement = () => {
+    //   rightIteration.value = (rightIteration.value + 1) % entries[rightSolutionIndex.value].solution.lenght
+    //   window.scrollTo({ top: 0, behavior: 'smooth' })
+    // }
+    //
+    // const rightIterationDecrement = () => {
+    //   rightIteration.value = (rightIteration.value - 1 + entries[rightSolutionIndex.value].solution.lenght) % entries[rightSolutionIndex.value].solution.lenght
+    //   window.scrollTo({ top: 0, behavior: 'smooth' })
+    // }
 
     const checkMobile = () => {
       isMobile.value = window.innerWidth <= 768
@@ -207,13 +213,10 @@ export default defineComponent({
       rightSolutionIndex,
       screenSplit,
       screenSplitShift,
-      leftSolutionIndexIncrement,
-      leftSolutionIndexDecrement,
       leftSolutionIndexSet,
-      rightSolutionIndexIncrement,
-      rightSolutionIndexDecrement,
       rightSolutionIndexSet,
-      iteration,
+      leftIteration,
+      rightIteration
     }
   },
 })

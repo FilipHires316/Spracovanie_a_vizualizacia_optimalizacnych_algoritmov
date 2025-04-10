@@ -36,26 +36,47 @@ export default defineComponent({
   },
   emits: ['bar-click'],
   setup(props, { emit }) {
+    // Compute generations for x-axis labels
     const generations = computed(() => {
       return props.bestFitness.map((_, i) => i + 1)
     })
 
-    const chartData = computed(() => ({
-      labels: generations.value,
-      datasets: [
-        {
-          label: 'Najlepšia Fitness',
-          backgroundColor: '#66bb6a',
-          data: props.bestFitness
-        },
-        {
-          label: 'Priemerná Fitness',
-          backgroundColor: '#42a5f5',
-          data: props.averageFitness
-        }
-      ]
-    }))
+    // Find the index of the maximum value in bestFitness
+    const maxFitnessIndex = computed(() => {
+      return props.bestFitness.indexOf(Math.max(...props.bestFitness))
+    })
 
+    // Chart data with dynamic coloring for max value in bestFitness
+    const chartData = computed(() => {
+      // Create an array of background colors for bestFitness (green by default)
+      const bestFitnessColors = props.bestFitness.map((fitness, index) =>
+        index === maxFitnessIndex.value ? 'red' : '#66bb6a' // Highlight max fitness value in red
+      )
+
+      return {
+        labels: generations.value,
+        datasets: [
+          {
+            label: 'Najlepšia Fitness',
+            backgroundColor: bestFitnessColors,
+            data: props.bestFitness
+          },
+          {
+            label: 'Priemerná Fitness',
+            backgroundColor: '#42a5f5', // Blue color for average fitness
+            data: props.averageFitness
+          },
+          {
+            label: 'Najlepšia Fitness',
+            backgroundColor: 'red',
+            data: [],
+            borderWidth: 0,
+          }
+        ]
+      }
+    })
+
+    // Chart options
     const chartOptions: ChartOptions<'bar'> = {
       responsive: true,
       maintainAspectRatio: false,

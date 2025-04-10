@@ -40,6 +40,10 @@ export default defineComponent({
     label: {
       type: String,
       default: 'Fitness Graph'
+    },
+    index: {
+      type: Number,
+      default: 1
     }
   },
   emits: ['bar-click'],
@@ -48,16 +52,34 @@ export default defineComponent({
 
     const fitnessValues = computed(() => props.data.map(entry => entry.fitness))
 
-    const chartData = computed(() => ({
-      labels: generations.value,
-      datasets: [
-        {
-          label: 'Fitness',
-          backgroundColor: '#66bb6a',
-          data: fitnessValues.value
-        }
-      ]
-    }))
+    // Find the maximum fitness value index
+    const maxFitnessIndex = computed(() => {
+      return fitnessValues.value.indexOf(Math.max(...fitnessValues.value))
+    })
+
+    const chartData = computed(() => {
+      // Create arrays for background colors (green by default, red for max value)
+      const backgroundColors = fitnessValues.value.map((fitness, index) =>
+        index === maxFitnessIndex.value ? 'red' : '#66bb6a' // Red for max, green for others
+      )
+
+      return {
+        labels: generations.value,
+        datasets: [
+          {
+            label: 'Fitness',
+            backgroundColor: backgroundColors,
+            data: fitnessValues.value
+          },
+          {
+            label: 'Najlepšia Fitness',
+            backgroundColor: 'red',
+            data: [],
+            borderWidth: 0,
+          }
+        ]
+      }
+    })
 
     const chartOptions: ChartOptions<'bar'> = {
       responsive: true,
