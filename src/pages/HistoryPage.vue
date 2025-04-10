@@ -85,32 +85,8 @@
           v-if="entries[leftSolutionIndex]"
           :bestFitness="entries[leftSolutionIndex]?.bestFitness as number[]"
           :averageFitness="entries[leftSolutionIndex]?.averageFitness as number[]"
-          label="Vývoj Fitness (ľavý)"
+          label="Vývoj Fitness"
           @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
-        />
-
-        <div v-if="entries.length > 0" class="button-container" style="margin-top: 10px">
-          <q-btn
-            class="button"
-            color="white"
-            text-color="black"
-            label="Predchádzajúce"
-            @click="leftSolutionIndexDecrement"
-            style="width: 10vw"
-          />
-          <q-btn
-            class="button"
-            color="primary"
-            label="Ďalšie"
-            @click="leftSolutionIndexIncrement"
-            style="width: 10vw"
-          />
-        </div>
-        <q-btn
-          color="grey"
-          :icon="screenSplit ? 'remove' : 'add'"
-          @click="screenSplitShift"
-          style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw"
         />
       </q-page>
     </div>
@@ -122,46 +98,29 @@
           v-if="entries[rightSolutionIndex]"
           :bestFitness="entries[rightSolutionIndex]?.bestFitness as number[]"
           :averageFitness="entries[rightSolutionIndex]?.averageFitness as number[]"
-          label="Vývoj Fitness (ľavý)"
+          label="Vývoj Fitness"
           @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
-        />
-        <div v-if="entries.length > 0" class="button-container" style="margin-top: 10px">
-          <q-btn
-            class="button"
-            color="white"
-            text-color="black"
-            label="Predchádzajúce"
-            @click="rightSolutionIndexDecrement"
-            style="width: 10vw"
-          />
-          <q-btn
-            class="button"
-            color="primary"
-            label="Ďalšie"
-            @click="rightSolutionIndexIncrement"
-            style="width: 10vw"
-          />
-        </div>
-        <q-btn
-          color="grey"
-          :icon="screenSplit ? 'remove' : 'add'"
-          @click="screenSplitShift"
-          style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw"
         />
       </q-page>
     </div>
   </div>
+  <q-btn
+    color="grey"
+    :icon="screenSplit ? 'remove' : 'add'"
+    @click="screenSplitShift"
+    style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useHistory } from 'stores/history'
 import { storeToRefs } from 'pinia'
-import FitnessChart from 'components/visualisation/graph.vue'
+import GenerationGraph from 'components/visualisation/GenerationGraph.vue'
 
 export default defineComponent({
   name: 'HistoryPage',
-  components: { FitnessChart },
+  components: { FitnessChart: GenerationGraph },
   setup() {
     const history = useHistory()
     const { entries } = storeToRefs(history)
@@ -276,18 +235,6 @@ export default defineComponent({
   text-align: left;
   min-width: 250px;
   max-width: 250px;
-}
-
-.button {
-  border-radius: 20px;
-  min-width: 140px;
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  gap: 1vw;
-  margin-bottom: 2vw;
 }
 
 .page-container {

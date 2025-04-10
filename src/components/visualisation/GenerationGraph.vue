@@ -27,7 +27,7 @@ import { Bar } from 'vue-chartjs'
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default defineComponent({
-  name: 'FitnessChart',
+  name: 'GenerationGraph',
   components: { Bar },
   props: {
     bestFitness: { type: Array as () => number[], required: true },
@@ -44,12 +44,12 @@ export default defineComponent({
       labels: generations.value,
       datasets: [
         {
-          label: 'Best Fitness',
+          label: 'Najlepšia Fitness',
           backgroundColor: '#66bb6a',
           data: props.bestFitness
         },
         {
-          label: 'Average Fitness',
+          label: 'Priemerná Fitness',
           backgroundColor: '#42a5f5',
           data: props.averageFitness
         }
