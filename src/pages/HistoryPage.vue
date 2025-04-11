@@ -89,6 +89,7 @@
           @bar-click="(genIndex) => leftIteration = genIndex"
         />
         <IndividualsGraph
+          v-if="entries[leftSolutionIndex]"
           style="max-width: 90vw; height: 50vw; padding: 20px"
           :data="entries[leftSolutionIndex]?.solution[leftIteration] ?? []"
           :label="'Fitness Jedincov'"
@@ -108,6 +109,7 @@
           @bar-click="(genIndex) => rightIteration = genIndex"
         />
         <IndividualsGraph
+          v-if="entries[rightSolutionIndex]"
           style="max-width: 90vw; height: 50vw; padding: 20px"
           :data="entries[rightSolutionIndex]?.solution[rightIteration] ?? []"
           :label="'Fitness Jedincov'"
