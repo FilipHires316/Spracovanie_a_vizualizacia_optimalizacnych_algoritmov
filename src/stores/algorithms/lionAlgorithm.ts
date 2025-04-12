@@ -58,8 +58,115 @@ const evaluateIndividuals = (problemToSolve:
     });
   });
   return population;
-
 }
+
+const move = (lion: Lion, target: number[], probability: number): Lion => {
+  const newSolution = [...lion.solution];
+  const newLion: Lion = { ...lion, solution: newSolution };
+
+  for (let i = 0; i < newLion.solution.length; i++) {
+    const lionGene = newLion.solution[i];
+    const targetGene = target[i];
+    if (lionGene !== undefined && targetGene !== undefined) {
+      if (probability > Math.random()) {
+        if (lionGene > targetGene) {
+          newLion.solution[i] = lionGene - 1;
+        } else if (lionGene < targetGene) {
+          newLion.solution[i] = lionGene + 1;
+        }
+      }
+    }
+  }
+  return newLion;
+};
+
+
+const hunt = (population: Lion[][], huntersNumber: number) => {
+  const newPopulation: Lion[][] = []
+  population.forEach((pack, index) => {
+    console.log(population)
+    if (index < population.length - 1) {
+      const newPack: Lion[] = []
+      const males: Lion[] = []
+      let females: Lion[] = []
+      pack.forEach(individual => {
+        if (individual.sex === 1) {
+          males.push(individual)
+        }
+        else {
+          females.push(individual)
+        }
+      })
+      females = [...females].sort(() => Math.random() - 0.5);
+      const hunters = females.slice(0, huntersNumber);
+      const others = females.slice(huntersNumber);
+      const third = Math.round(huntersNumber / 3);
+      const group1 = hunters.slice(0, third);
+      const group2 = hunters.slice(third, third * 2);
+      const group3 = hunters.slice(third * 2);
+      const group1fitness = group1.reduce((sum, h) => sum + h.fitness, 0);
+      const group2fitness = group2.reduce((sum, h) => sum + h.fitness, 0);
+      const group3fitness = group3.reduce((sum, h) => sum + h.fitness, 0);
+      const groups = [
+        { group: group1, fitness: group1fitness },
+        { group: group2, fitness: group2fitness },
+        { group: group3, fitness: group3fitness }
+      ].sort((a, b) => b.fitness - a.fitness);
+      let center: Lion[] = [], leftWing: Lion[] = [], rightWing: Lion[] = [];
+      if (groups[0] && groups[1] && groups[2]) {
+        center = [...groups[0].group];
+        leftWing = [...groups[1].group];
+        rightWing = [...groups[2].group];
+      }
+      const prey: number[] = [];
+      if (females[0]) {
+        for (let i = 0; i < females[0].solution.length; i++) {
+          const randomHunter = females[Math.floor(Math.random() * huntersNumber)];
+          prey.push(randomHunter?.solution[i] ?? 0);
+        }
+      }
+      while (center.length !== 0 || leftWing.length !== 0 || rightWing.length !== 0) {
+        const groupToAttack = Math.floor(Math.random() * 3);
+        let attacker;
+        // let fitnessBeforeHunt;
+        if (groupToAttack === 0 && center.length > 0) {
+          attacker = center.shift();
+          if (attacker) {
+            attacker = move(attacker, prey, 0.25)
+            newPack.push(attacker)
+          }
+        } else if (groupToAttack === 1 && leftWing.length > 0) {
+          attacker = leftWing.shift();
+          if (attacker) {
+            attacker = move(attacker, prey, 0.5)
+            newPack.push(attacker)
+          }
+        } else if (groupToAttack === 2 && rightWing.length > 0) {
+          attacker = rightWing.shift();
+          if (attacker) {
+            attacker = move(attacker, prey, 0.5)
+            newPack.push(attacker)
+          }
+        }
+      }
+      others.forEach(individual => {
+        newPack.push(individual);
+      })
+      males.forEach(individual => {
+        newPack.push(individual);
+      })
+      newPopulation.push(newPack)
+    }
+    else {
+      const newPack: Lion[] = []
+      pack.forEach((individual) => {
+        newPack.push(individual);
+      })
+      newPopulation.push(newPack)
+    }
+  })
+  return newPopulation
+};
 
 const savePopulation = (populationHistory: Lion[][][], population: Lion[][]) => {
   populationHistory.push(population)
@@ -107,11 +214,12 @@ export const lionAlgorithm = (problemToSolve:
                                    | ReturnType<typeof useSalesmanProblem>) => {
   const paramStore = useParamStore()
   let populationHistory: Lion[][][] = []
-  if (paramStore.packs != null && paramStore.males != null && paramStore.females != null && paramStore.iterations) {
+  if (paramStore.packs != null && paramStore.males != null && paramStore.females != null && paramStore.hunters != null && paramStore.iterations) {
     let population = createPopulation(problemToSolve, paramStore.packs, paramStore.females, paramStore.males)
     population = evaluateIndividuals(problemToSolve, population)
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
+      population = hunt(population, paramStore.females / 100 * paramStore.hunters)
       population = evaluateIndividuals(problemToSolve, population)
     }
     saveResult(problemToSolve, populationHistory)

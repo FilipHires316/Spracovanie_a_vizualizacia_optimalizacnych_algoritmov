@@ -166,26 +166,6 @@ export default defineComponent({
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
-    // const leftIterationIncrement = () => {
-    //   leftIteration.value = (leftIteration.value + 1) % entries[leftSolutionIndex.value].solution.lenght
-    //   window.scrollTo({ top: 0, behavior: 'smooth' })
-    // }
-    //
-    // const leftIterationDecrement = () => {
-    //   leftIteration.value = (leftIteration.value - 1 + entries[leftSolutionIndex.value].solution.lenght) % entries[leftSolutionIndex.value].solution.lenght
-    //   window.scrollTo({ top: 0, behavior: 'smooth' })
-    // }
-    //
-    // const rightIterationIncrement = () => {
-    //   rightIteration.value = (rightIteration.value + 1) % entries[rightSolutionIndex.value].solution.lenght
-    //   window.scrollTo({ top: 0, behavior: 'smooth' })
-    // }
-    //
-    // const rightIterationDecrement = () => {
-    //   rightIteration.value = (rightIteration.value - 1 + entries[rightSolutionIndex.value].solution.lenght) % entries[rightSolutionIndex.value].solution.lenght
-    //   window.scrollTo({ top: 0, behavior: 'smooth' })
-    // }
-
     const checkMobile = () => {
       isMobile.value = window.innerWidth <= 768
     }
@@ -200,8 +180,6 @@ export default defineComponent({
     onBeforeUnmount(() => {
       window.removeEventListener('resize', checkMobile)
     })
-
-    console.log(entries.value[0])
 
     return {
       history,
