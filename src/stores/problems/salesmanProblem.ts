@@ -108,5 +108,6 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     createSolutions,
     calculateFitness,
     getProblemType,
+    rearrange
   };
 });

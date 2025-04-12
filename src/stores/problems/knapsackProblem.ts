@@ -29,6 +29,12 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return solutions;
   };
 
+  const rearrange = (solution: (number | undefined)[]): number[] => {
+    return solution.map(val =>
+      val === undefined ? 0 : val < 0 ? 0 : val > 1 ? 1 : val
+    );
+  };
+
   const calculateFitness = (solution: number[]) => {
     let fitness = 0;
     let totalSize = 0;
@@ -69,5 +75,6 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     createSolutions,
     calculateFitness,
     getProblemType,
+    rearrange
   };
 });

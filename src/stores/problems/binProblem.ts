@@ -90,5 +90,6 @@ export const useBinProblem = defineStore('binProblem', () => {
     createSolutions,
     calculateFitness,
     getProblemType,
+    rearrange
   };
 });
