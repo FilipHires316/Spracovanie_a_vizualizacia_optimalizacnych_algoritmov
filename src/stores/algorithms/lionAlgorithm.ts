@@ -71,7 +71,6 @@ const move = (problemToSolve:
               lion: Lion, target: number[], probability: number): Lion => {
   const newSolution = [...lion.solution];
   const newLion: Lion = { ...lion, solution: newSolution };
-
   for (let i = 0; i < newLion.solution.length; i++) {
     const lionGene = newLion.solution[i];
     const targetGene = target[i];
@@ -86,6 +85,11 @@ const move = (problemToSolve:
     }
   }
   newLion.solution = problemToSolve.rearrange(newLion.solution);
+  newLion.fitness = problemToSolve.calculateFitness(newLion.solution);
+  if (newLion.fitness > newLion.territoryValue) {
+    newLion.territoryValue = newLion.fitness;
+    newLion.territory = newLion.solution
+  }
   return newLion;
 };
 
@@ -97,7 +101,6 @@ const hunt = (problemToSolve:
               population: Lion[][], huntersNumber: number) => {
   const newPopulation: Lion[][] = []
   population.forEach((pack, index) => {
-    console.log(population)
     if (index < population.length - 1) {
       const newPack: Lion[] = []
       const males: Lion[] = []
@@ -194,6 +197,151 @@ const hunt = (problemToSolve:
   return newPopulation
 };
 
+const breed = (problemToSolve:
+                      | ReturnType<typeof useKnapsackProblem>
+                      | ReturnType<typeof useBinProblem>
+                      | ReturnType<typeof useSalesmanProblem>,
+                    population: Lion[][]) => {
+  const newPopulation: Lion[][] = []
+  population.forEach((pack) => {
+    const newPack: Lion[] = []
+    const males: Lion[] = []
+    let females: Lion[] = []
+    let father
+    pack.forEach(individual => {
+      if (individual.sex === 1) {
+        males.push(individual)
+      }
+      else {
+        females.push(individual)
+      }
+    })
+    females = [...females].sort(() => Math.random() - 0.5);
+    const mothers = [...females].slice(0, Math.ceil(females.length / 3))
+    mothers.forEach(mother => {
+      father = males[Math.floor(Math.random() * males.length)]
+      if (father) {
+        const crossoverPoint = Math.floor(Math.random() * (father.solution.length - 2)) + 1;
+        const firstBreed = [...father.solution.slice(0, crossoverPoint), ...mother.solution.slice(crossoverPoint)]
+        const secondBreed = [...mother.solution.slice(0, crossoverPoint), ...father.solution.slice(crossoverPoint)]
+        const babyMale = new Lion(firstBreed, 1)
+        const babyFemale = new Lion(secondBreed, 0)
+        const babies = problemToSolve.mutate([babyFemale, babyMale], 3)
+        babies.forEach(baby => {
+          newPack.push(baby as Lion)
+        })
+      }
+    })
+    pack.forEach(individual => {
+      newPack.push(individual)
+    })
+    newPopulation.push(newPack)
+  })
+  return newPopulation
+}
+
+const migration = (population: Lion[][], femalesNumber: number, malesNumber: number) => {
+  const newPopulation: Lion[][] = []
+  const newNewPopulation: Lion[][] = []
+  const exiledFemales: Lion[] = []
+  const exiledMales: Lion[] = []
+  let nomadFemales: Lion[] = []
+  let reExiledFemales: Lion[] = []
+  population.forEach((pack, index) => {
+    const newPack: Lion[] = []
+    const males: Lion[] = []
+    let females: Lion[] = []
+    pack.forEach(individual => {
+      if (individual.sex === 1) {
+        males.push(individual)
+      }
+      else {
+        females.push(individual)
+      }
+    })
+    if (index < population.length - 1) {
+      females = [...females].sort(() => Math.random() - 0.5);
+      females.forEach((female, index) => {
+        if (index < femalesNumber - Math.ceil(femalesNumber / 33)) {
+          newPack.push(female)
+        }
+        else {
+          exiledFemales.push(female)
+        }
+      })
+      males.forEach(male => {
+        newPack.push(male)
+      })
+      newPopulation.push(newPack)
+    }
+    else {
+      females.forEach((female) => {
+        nomadFemales.push(female)
+      })
+      exiledFemales.forEach(female => {
+        nomadFemales.push(female)
+      })
+      nomadFemales.sort((a, b) => b.fitness - a.fitness);
+      reExiledFemales = nomadFemales.slice(0, (Math.ceil(femalesNumber / 33) * newPopulation.length))
+      reExiledFemales = [...reExiledFemales].sort(() => Math.random() - 0.5);
+      nomadFemales = nomadFemales.slice((Math.ceil(femalesNumber / 33) * newPopulation.length), (Math.ceil(femalesNumber / 33) * newPopulation.length) + femalesNumber)
+      nomadFemales.forEach((female) => {
+        newPack.push(female)
+      })
+      males.forEach(male => {
+        const attackedPack = Math.floor(Math.random() * newPopulation.length);
+        if (newPopulation[attackedPack]) {
+          newPopulation[attackedPack].push(male)
+        }
+      })
+      newPopulation.push(newPack)
+    }
+  })
+  newPopulation.forEach((pack, index) => {
+    const newPack: Lion[] = []
+    const males: Lion[] = []
+    const females: Lion[] = []
+    pack.forEach(individual => {
+      if (individual.sex === 1) {
+        males.push(individual)
+      }
+      else {
+        females.push(individual)
+      }
+    })
+    if (index < population.length - 1) {
+      while (females.length < femalesNumber) {
+        females.push(reExiledFemales.shift() as Lion)
+      }
+      females.forEach(female => {
+        newPack.push(female)
+      })
+      males.sort((a, b) => b.fitness - a.fitness);
+      males.forEach((male, index) => {
+        if (index < malesNumber) {
+          newPack.push(male)
+        }
+        else {
+          exiledMales.push(male)
+        }
+      })
+      newNewPopulation.push(newPack)
+    }
+    else {
+      exiledMales.sort((a, b) => b.fitness - a.fitness);
+      exiledMales.slice(0, malesNumber)
+      females.forEach(female => {
+        newPack.push(female)
+      })
+      exiledMales.forEach(male => {
+        newPack.push(male)
+      })
+      newNewPopulation.push(newPack)
+    }
+  })
+  return newNewPopulation
+};
+
 const savePopulation = (populationHistory: Lion[][][], population: Lion[][]) => {
   populationHistory.push(population)
   return populationHistory;
@@ -246,7 +394,9 @@ export const lionAlgorithm = (problemToSolve:
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
       population = hunt(problemToSolve, population, paramStore.females / 100 * paramStore.hunters)
+      population = breed(problemToSolve, population)
       population = evaluateIndividuals(problemToSolve, population)
+      population = migration(population, paramStore.females, paramStore.males)
     }
     saveResult(problemToSolve, populationHistory)
   }

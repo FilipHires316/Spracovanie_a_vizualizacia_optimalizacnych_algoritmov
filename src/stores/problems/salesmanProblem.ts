@@ -8,7 +8,6 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
   const paramStore = useParamStore();
 
   const rearrange = (solution: number[]): number[] => {
-    console.log (solution);
     let missingNumbers = Array.from({ length: paramStore.cities.length }, (_, index) => index);
     missingNumbers = missingNumbers.filter(num => !solution.includes(num));
     for (let i = missingNumbers.length - 1; i > 0; i--) {
@@ -17,7 +16,6 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
       const valueJ = missingNumbers[j] ?? 0;
       [missingNumbers[i], missingNumbers[j]] = [valueJ, valueI];
     }
-    console.log(missingNumbers);
     const seen = new Set<number>();
     for (let i = 0; i < solution.length; i++) {
       const x = solution[i];
@@ -28,7 +26,6 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
         seen.add(x);
       }
     }
-    console.log(solution ,seen);
     return solution;
   };
 
