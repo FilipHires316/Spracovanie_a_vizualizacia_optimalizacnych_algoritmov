@@ -64,7 +64,11 @@ const evaluateIndividuals = (problemToSolve:
   return population;
 }
 
-const move = (lion: Lion, target: number[], probability: number): Lion => {
+const move = (problemToSolve:
+                | ReturnType<typeof useKnapsackProblem>
+                | ReturnType<typeof useBinProblem>
+                | ReturnType<typeof useSalesmanProblem>,
+              lion: Lion, target: number[], probability: number): Lion => {
   const newSolution = [...lion.solution];
   const newLion: Lion = { ...lion, solution: newSolution };
 
@@ -81,6 +85,7 @@ const move = (lion: Lion, target: number[], probability: number): Lion => {
       }
     }
   }
+  newLion.solution = problemToSolve.rearrange(newLion.solution);
   return newLion;
 };
 
@@ -140,40 +145,48 @@ const hunt = (problemToSolve:
         if (groupToAttack === 0 && center.length > 0) {
           attacker = center.shift();
           if (attacker) {
-            attacker = move(attacker, prey, 0.25)
-            attacker.solution = problemToSolve.rearrange(attacker.solution)
+            attacker = move(problemToSolve, attacker, prey, 0.25)
             newPack.push(attacker)
           }
         } else if (groupToAttack === 1 && leftWing.length > 0) {
           attacker = leftWing.shift();
           if (attacker) {
-            attacker = move(attacker, prey, 0.5)
-            attacker.solution = problemToSolve.rearrange(attacker.solution)
+            attacker = move(problemToSolve, attacker, prey, 0.5)
             newPack.push(attacker)
           }
         } else if (groupToAttack === 2 && rightWing.length > 0) {
           attacker = rightWing.shift();
           if (attacker) {
-            attacker = move(attacker, prey, 0.5)
-            attacker.solution = problemToSolve.rearrange(attacker.solution)
+            attacker = move(problemToSolve, attacker, prey, 0.5)
             newPack.push(attacker)
           }
         }
       }
       others.forEach(individual => {
-        const direction = ([...pack].sort(() => Math.random() - 0.5)).slice(0, Math.floor(pack.length / 10)).reduce((max, current) => current.territoryValue > max.territoryValue ? current : max);
-        const strider = move(individual, direction.territory, 0.75)
+        const direction = ([...pack].sort(() => Math.random() - 0.5)).slice(0, Math.ceil(pack.length / 10)).reduce((max, current) => current.territoryValue > max.territoryValue ? current : max);
+        const strider = move(problemToSolve, individual, direction.territory, 0.75)
         newPack.push(strider);
       })
       males.forEach(individual => {
-        newPack.push(individual);
+        let strider = { ...individual };
+        const direction = ([...pack].sort(() => Math.random() - 0.5)).slice(0, Math.ceil(pack.length / 2))
+        for (let i = 0; i < direction.length; i++) {
+          strider = move(problemToSolve, strider, direction[i]?.territory ?? [], 0.75)
+        }
+        strider.solution = strider.territory
+        strider.fitness = strider.territoryValue
+        newPack.push(strider)
       })
       newPopulation.push(newPack)
     }
     else {
       const newPack: Lion[] = []
       pack.forEach((individual) => {
-        newPack.push(individual);
+        const direction = problemToSolve.createSolutions(1)[0];
+        if (direction) {
+          const strider = move(problemToSolve, individual, direction, 0.75)
+          newPack.push(strider);
+        }
       })
       newPopulation.push(newPack)
     }
