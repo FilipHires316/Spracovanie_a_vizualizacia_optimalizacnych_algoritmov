@@ -244,7 +244,7 @@ const migration = (population: Lion[][], femalesNumber: number, malesNumber: num
   const newPopulation: Lion[][] = []
   const newNewPopulation: Lion[][] = []
   const exiledFemales: Lion[] = []
-  const exiledMales: Lion[] = []
+  let exiledMales: Lion[] = []
   let nomadFemales: Lion[] = []
   let reExiledFemales: Lion[] = []
   population.forEach((pack, index) => {
@@ -284,7 +284,7 @@ const migration = (population: Lion[][], femalesNumber: number, malesNumber: num
       nomadFemales.sort((a, b) => b.fitness - a.fitness);
       reExiledFemales = nomadFemales.slice(0, (Math.ceil(femalesNumber / 33) * newPopulation.length))
       reExiledFemales = [...reExiledFemales].sort(() => Math.random() - 0.5);
-      nomadFemales = nomadFemales.slice((Math.ceil(femalesNumber / 33) * newPopulation.length), (Math.ceil(femalesNumber / 33) * newPopulation.length) + femalesNumber)
+      nomadFemales = nomadFemales.slice((Math.ceil(femalesNumber / 33) * newPopulation.length), (Math.ceil(femalesNumber / 33) * newPopulation.length) + malesNumber)
       nomadFemales.forEach((female) => {
         newPack.push(female)
       })
@@ -329,7 +329,7 @@ const migration = (population: Lion[][], femalesNumber: number, malesNumber: num
     }
     else {
       exiledMales.sort((a, b) => b.fitness - a.fitness);
-      exiledMales.slice(0, malesNumber)
+      exiledMales = exiledMales.slice(0, femalesNumber)
       females.forEach(female => {
         newPack.push(female)
       })
