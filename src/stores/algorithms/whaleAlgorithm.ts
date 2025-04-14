@@ -36,6 +36,57 @@ const evaluateIndividuals = (problemToSolve:
   return population;
 }
 
+const move = (problemToSolve:
+                | ReturnType<typeof useKnapsackProblem>
+                | ReturnType<typeof useBinProblem>
+                | ReturnType<typeof useSalesmanProblem>,
+              whale: Whale, target: number[], probability: number): Whale => {
+  const newSolution = [...whale.solution];
+  const newWhale: Whale = { ...whale, solution: newSolution };
+  for (let i = 0; i < newWhale.solution.length; i++) {
+    const whaleGene = newWhale.solution[i];
+    const targetGene = target[i];
+    if (whaleGene !== undefined && targetGene !== undefined) {
+      if (probability > Math.random()) {
+        if (whaleGene > targetGene) {
+          newWhale.solution[i] = whaleGene - 1;
+        } else if (whaleGene < targetGene) {
+          newWhale.solution[i] = whaleGene + 1;
+        }
+      }
+    }
+  }
+  newWhale.solution = problemToSolve.rearrange(newWhale.solution);
+  return newWhale;
+};
+
+const relocate = (problemToSolve:
+                 | ReturnType<typeof useKnapsackProblem>
+                 | ReturnType<typeof useBinProblem>
+                 | ReturnType<typeof useSalesmanProblem>,
+               population: Whale[], iteration: number, maxIteration: number) => {
+  const newPopulation: Whale[] = []
+  population.forEach((individual) => {
+    const p = Math.random()
+    if (p < 0.5) {
+      const a = 2 - iteration * (2 / maxIteration)
+      const r = Math.random()
+      const A = 2*a * r - a
+      let target = population[Math.floor(Math.random() * population.length)]
+      if (A < 1) {
+        target = [...population].sort((a, b) => b.fitness - a.fitness)[0];
+      }
+      if (target) {
+        newPopulation.push(move(problemToSolve, individual, target.solution, r))
+      }
+    }
+    else {
+      newPopulation.push(individual)
+    }
+  })
+  return newPopulation
+}
+
 const savePopulation = (populationHistory: Whale[][], population: Whale[]) => {
   populationHistory.push(population)
   return populationHistory;
@@ -77,6 +128,7 @@ export const whaleAlgorithm = (problemToSolve:
     population = evaluateIndividuals(problemToSolve, population)
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
+      population = relocate(problemToSolve, population, i, paramStore.iterations)
       population = evaluateIndividuals(problemToSolve, population)
     }
     saveResult(problemToSolve, populationHistory)
