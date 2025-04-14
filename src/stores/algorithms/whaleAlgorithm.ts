@@ -108,25 +108,30 @@ const relocate = (problemToSolve:
                population: Whale[], iteration: number, maxIteration: number) => {
   const newPopulation: Whale[] = []
   population.forEach((individual) => {
-    const p = Math.random()
-    if (p < 0.5) {
-      const a = 2 - iteration * (2 / maxIteration)
-      const r = Math.random()
-      const A = 2*a * r - a
-      let target = population[Math.floor(Math.random() * population.length)]
-      if (A < 1) {
-        target = [...population].sort((a, b) => b.fitness - a.fitness)[0];
+    if (individual !== [...population].sort((a, b) => b.fitness - a.fitness)[0]) {
+      const p = Math.random()
+      if (p < 0.5) {
+        const a = 2 - iteration * (2 / maxIteration)
+        const r = Math.random()
+        const A = 2*a * r - a
+        let target = population[Math.floor(Math.random() * population.length)]
+        if (A < 1) {
+          target = [...population].sort((a, b) => b.fitness - a.fitness)[0];
+        }
+        if (target) {
+          newPopulation.push(move(problemToSolve, individual, target.solution, r))
+        }
       }
-      if (target) {
-        newPopulation.push(move(problemToSolve, individual, target.solution, r))
+      else {
+        const target = [...population].sort((a, b) => b.fitness - a.fitness)[0]
+        const spiralProb = (2 - iteration * (2 / maxIteration)) / 2
+        if (target) {
+          newPopulation.push(spiralMove(problemToSolve.getProblemType(), individual, target.solution, spiralProb))
+        }
       }
     }
     else {
-      const target = [...population].sort((a, b) => b.fitness - a.fitness)[0]
-      const spiralProb = (2 - iteration * (2 / maxIteration)) / 2
-      if (target) {
-        newPopulation.push(spiralMove(problemToSolve.getProblemType(), individual, target.solution, spiralProb))
-      }
+      newPopulation.push(individual)
     }
   })
   return newPopulation
