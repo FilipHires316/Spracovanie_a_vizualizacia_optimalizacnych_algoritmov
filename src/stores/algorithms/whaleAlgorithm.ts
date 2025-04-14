@@ -36,6 +36,47 @@ const evaluateIndividuals = (problemToSolve:
   return population;
 }
 
+function spiralMove(type: string, whale: Whale, target: number[], spiralProb: number) {
+  const newSolution = [...whale.solution];
+  const b = 1;
+  const l = Math.random() * 2 - 1; // l in [-1, 1]
+
+  for (let i = 0; i < newSolution.length; i++) {
+    const whaleGene = newSolution[i];
+    const targetGene = target[i];
+
+    if (whaleGene != undefined && targetGene != undefined && Math.random() < spiralProb) {
+      const D = Math.abs(whaleGene - targetGene) + 1e-6; // avoid zero distance
+      const spiralStep = Math.floor(D * Math.exp(b * l) * Math.cos(2 * Math.PI * l));
+
+      if (type === 'knapsack') {
+        const flipProb = Math.min(1, Math.abs(spiralStep) / (D + 1));
+        if (Math.random() < flipProb) {
+          newSolution[i] = whaleGene === 1 ? 0 : 1;
+        }
+
+      } else if (type === 'bin') {
+        let updatedGene = whaleGene;
+        if (whaleGene < targetGene) {
+          updatedGene += Math.min(spiralStep, targetGene - whaleGene);
+        } else if (whaleGene > targetGene) {
+          updatedGene -= Math.min(spiralStep, whaleGene - targetGene);
+        }
+        newSolution[i] = updatedGene;
+
+      } else if (type === 'salesman') {
+        const j = (i + spiralStep + newSolution.length) % newSolution.length;
+        if (i !== j && newSolution[i] !== newSolution[j]) {
+          const temp = newSolution[i];
+          newSolution[i] = newSolution[j] as number;
+          newSolution[j] = temp as number;
+        }
+      }
+    }
+  }
+  return { ...whale, solution: newSolution };
+}
+
 const move = (problemToSolve:
                 | ReturnType<typeof useKnapsackProblem>
                 | ReturnType<typeof useBinProblem>
@@ -81,7 +122,11 @@ const relocate = (problemToSolve:
       }
     }
     else {
-      newPopulation.push(individual)
+      const target = [...population].sort((a, b) => b.fitness - a.fitness)[0]
+      const spiralProb = (2 - iteration * (2 / maxIteration)) / 2
+      if (target) {
+        newPopulation.push(spiralMove(problemToSolve.getProblemType(), individual, target.solution, spiralProb))
+      }
     }
   })
   return newPopulation
@@ -99,7 +144,7 @@ const saveResult = (problemToSolve:
                     populationHistory: Whale[][]) => {
   const history = useHistory();
   const { entries } = storeToRefs(history);
-  const result = new HistoryEntry(populationHistory, 'genetic', problemToSolve.getProblemType())
+  const result = new HistoryEntry(populationHistory, 'whale', problemToSolve.getProblemType())
   populationHistory.forEach(entry => {
     let max = 0
     let average = 0
