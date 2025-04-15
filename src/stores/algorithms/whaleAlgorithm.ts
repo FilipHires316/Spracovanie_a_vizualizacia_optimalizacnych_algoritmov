@@ -49,13 +49,13 @@ function spiralMove(type: string, whale: Whale, target: number[], spiralProb: nu
       const D = Math.abs(whaleGene - targetGene) + 1e-6; // avoid zero distance
       const spiralStep = Math.floor(D * Math.exp(b * l) * Math.cos(2 * Math.PI * l));
 
-      if (type === 'knapsack') {
+      if (type === 'batoh') {
         const flipProb = Math.min(1, Math.abs(spiralStep) / (D + 1));
         if (Math.random() < flipProb) {
           newSolution[i] = whaleGene === 1 ? 0 : 1;
         }
 
-      } else if (type === 'bin') {
+      } else if (type === 'koše') {
         let updatedGene = whaleGene;
         if (whaleGene < targetGene) {
           updatedGene += Math.min(spiralStep, targetGene - whaleGene);
@@ -64,7 +64,7 @@ function spiralMove(type: string, whale: Whale, target: number[], spiralProb: nu
         }
         newSolution[i] = updatedGene;
 
-      } else if (type === 'salesman') {
+      } else if (type === 'obchodný cestujúci') {
         const j = (i + spiralStep + newSolution.length) % newSolution.length;
         if (i !== j && newSolution[i] !== newSolution[j]) {
           const temp = newSolution[i];
@@ -149,7 +149,7 @@ const saveResult = (problemToSolve:
                     populationHistory: Whale[][]) => {
   const history = useHistory();
   const { entries } = storeToRefs(history);
-  const result = new HistoryEntry(populationHistory, 'whale', problemToSolve.getProblemType())
+  const result = new HistoryEntry(populationHistory, 'veľryby', problemToSolve.getProblemType())
   populationHistory.forEach(entry => {
     let max = 0
     let average = 0

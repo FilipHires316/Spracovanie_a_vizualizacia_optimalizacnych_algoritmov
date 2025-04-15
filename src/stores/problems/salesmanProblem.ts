@@ -80,7 +80,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
   }
 
   const getProblemType = () => {
-    return 'salesman'
+    return 'obchodný cestujúci'
   };
 
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {

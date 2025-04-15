@@ -188,6 +188,7 @@ const hunt = (problemToSolve:
         const direction = problemToSolve.createSolutions(1)[0];
         if (direction) {
           const strider = move(problemToSolve, individual, direction, 0.75)
+          console.log(strider.solution)
           newPack.push(strider);
         }
       })
@@ -364,7 +365,7 @@ const saveResult = (problemToSolve:
     unpack2.push(unpack1)
   });
   const { entries } = storeToRefs(history);
-  const result = new HistoryEntry(unpack2, 'lion', problemToSolve.getProblemType())
+  const result = new HistoryEntry(unpack2, 'levy', problemToSolve.getProblemType())
   unpack2.forEach(entry => {
     let max = 0
     let average = 0

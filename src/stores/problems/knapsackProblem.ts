@@ -56,7 +56,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
 
 
   const getProblemType = () => {
-    return 'knapsack'
+    return 'batoh'
   };
 
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
