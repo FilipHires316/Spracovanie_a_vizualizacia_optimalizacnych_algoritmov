@@ -66,7 +66,7 @@ export const useBinProblem = defineStore('binProblem', () => {
   }
 
   const getProblemType = () => {
-    return 'koše'
+    return 'Koše'
   };
 
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {

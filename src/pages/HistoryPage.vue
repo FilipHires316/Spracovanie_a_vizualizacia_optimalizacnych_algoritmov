@@ -81,12 +81,51 @@
     <!-- Left Page -->
     <div class="scroll-wrapper" :style="{ width: screenSplit ? '50vw' : '100vw' }">
       <q-page class="column items-center justify-evenly page">
+        <div v-if="entries[leftSolutionIndex]" class="headerBanner">
+          <span class="title">
+            {{
+              entries[leftSolutionIndex]?.algorithm + ' + ' + entries[leftSolutionIndex]?.problem
+            }}
+          </span>
+        </div>
+
+        <div v-if="entries[leftSolutionIndex]" class="row q-col-gutter-md" style="margin-top: 10px; width: 100%">
+          <div class="col-md-6 col-xs-12">
+            <div
+              class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="border-radius: 20px; height: 100%">
+              <h4 class="section-title">Optimalizačný algoritmus</h4>
+              <span class="paramInfo">{{'Počet iterácií: ' + entries[leftSolutionIndex]?.solution.length}}</span>
+              <span class="paramInfo">{{'Velkosť populácie: ' + entries[leftSolutionIndex]?.solution[0]?.length}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický'" class="paramInfo">{{'Pravdepodobnosť mutácie: ' + 'x' + '%'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický'" class="paramInfo">{{'Elitizmus: ' + 'Áno/Nie'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický'" class="paramInfo">{{'Miera elitizmu: ' + 'x' + '%'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický'" class="paramInfo">{{'Spôsob výberu jedincov: ' + 'Ruleta/Turnaj'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický'" class="paramInfo">{{'Spôsob kríženia: ' + 'Jednobodové/Dvojbodové/Uniformné'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet svoriek: ' + 'x'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samíc v svorke: ' + 'x'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samcov v svorke: ' + 'x'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Loviace samice: ' + 'x' + '%'}}</span>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-xs-12">
+            <div
+              class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="border-radius: 20px; height: 100%">
+              <h4 class="section-title">Optimalizačný problém</h4>
+              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + 'x'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Priemerná váha predmetov: ' + 'x'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + 'x'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + entries[leftSolutionIndex]?.solution.length}}</span>
+            </div>
+          </div>
+        </div>
+
         <GenerationGraph
           v-if="entries[leftSolutionIndex]"
           :bestFitness="entries[leftSolutionIndex]?.bestFitness as number[]"
           :averageFitness="entries[leftSolutionIndex]?.averageFitness as number[]"
           label="Vývoj Fitness"
-          @bar-click="(genIndex) => leftIteration = genIndex"
+          @bar-click="(genIndex) => (leftIteration = genIndex)"
         />
         <IndividualsGraph
           v-if="entries[leftSolutionIndex]"
@@ -101,12 +140,19 @@
     <!-- Right Page -->
     <div class="scroll-wrapper" v-show="screenSplit" :style="{ width: '50vw' }">
       <q-page class="column items-center justify-evenly page">
+        <div v-if="entries[rightSolutionIndex]" class="headerBanner">
+          <span class="title"
+            >{{
+              entries[rightSolutionIndex]?.algorithm + ' + ' + entries[rightSolutionIndex]?.problem
+            }}
+          </span>
+        </div>
         <GenerationGraph
           v-if="entries[rightSolutionIndex]"
           :bestFitness="entries[rightSolutionIndex]?.bestFitness as number[]"
           :averageFitness="entries[rightSolutionIndex]?.averageFitness as number[]"
           label="Vývoj Fitness"
-          @bar-click="(genIndex) => rightIteration = genIndex"
+          @bar-click="(genIndex) => (rightIteration = genIndex)"
         />
         <IndividualsGraph
           v-if="entries[rightSolutionIndex]"
@@ -136,7 +182,10 @@ import IndividualsGraph from 'components/visualisation/IndividualsGraph.vue'
 
 export default defineComponent({
   name: 'HistoryPage',
-  components: { GenerationGraph, IndividualsGraph},
+  components: {
+    GenerationGraph,
+    IndividualsGraph,
+  },
   setup() {
     const history = useHistory()
     const { entries } = storeToRefs(history)
@@ -196,7 +245,7 @@ export default defineComponent({
       leftSolutionIndexSet,
       rightSolutionIndexSet,
       leftIteration,
-      rightIteration
+      rightIteration,
     }
   },
 })
@@ -245,5 +294,34 @@ export default defineComponent({
   padding-left: 5vw;
   padding-right: 5vw;
   scrollbar-width: none;
+}
+
+.headerBanner {
+  width: 100%;
+  background-color: #1976d2;
+  margin-top: 20px;
+  border-radius: 20px;
+  padding: 20px;
+  justify-content: center;
+  display: flex;
+}
+
+.title {
+  color: white;
+  font-size: 27px;
+}
+
+.section-title {
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 1vw;
+  color: white;
+}
+
+.paramInfo {
+  font-family: 'Arial', sans-serif;
+  font-size: 15px;
+  font-weight: bold;
 }
 </style>
