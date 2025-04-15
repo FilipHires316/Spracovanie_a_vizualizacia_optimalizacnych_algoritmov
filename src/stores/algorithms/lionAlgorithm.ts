@@ -364,7 +364,7 @@ const saveResult = (problemToSolve:
     unpack2.push(unpack1)
   });
   const { entries } = storeToRefs(history);
-  const result = new HistoryEntry(unpack2, 'Levy', problemToSolve.getProblemType())
+  const result = new HistoryEntry(unpack2, 'Levy', problemToSolve.getProblemType(), 0, false, 0, 'none', 'none')
   unpack2.forEach(entry => {
     let max = 0
     let average = 0

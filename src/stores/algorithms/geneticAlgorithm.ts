@@ -100,7 +100,11 @@ const uniformCrossover = (parent1: Chromosome, parent2: Chromosome) => {
   return [new Chromosome(firstBreed as number[]), new Chromosome(secondBreed as number[])]
 };
 
-const crossover = (population: Chromosome[], newGeneration: Chromosome[], choose: string, tournamentSize: number | null, crossing: string, size: number) => {
+const crossover = (problemToSolve:
+                     | ReturnType<typeof useKnapsackProblem>
+                     | ReturnType<typeof useBinProblem>
+                     | ReturnType<typeof useSalesmanProblem>,
+                   population: Chromosome[], newGeneration: Chromosome[], choose: string, tournamentSize: number | null, crossing: string, size: number, mutation: number) => {
   let parent1 = null
   let parent2 = null
   while (newGeneration.length != population.length) {
@@ -129,6 +133,7 @@ const crossover = (population: Chromosome[], newGeneration: Chromosome[], choose
       else if (crossing == 'uni') {
         breeds = uniformCrossover(parent1, parent2)
       }
+      breeds = problemToSolve.mutate(breeds, mutation) as Chromosome[];
       for (let i = 0; i < breeds.length; i++) {
         if (newGeneration.length != size) {
           newGeneration.push(breeds[i] as Chromosome)
@@ -139,12 +144,16 @@ const crossover = (population: Chromosome[], newGeneration: Chromosome[], choose
   return newGeneration
 }
 
-const createNewGeneration = (population: Chromosome[], elitism: boolean, elitismRate: number, choose: string, tournamentSize: number | null , crossing: string, size: number) => {
+const createNewGeneration = (problemToSolve:
+                               | ReturnType<typeof useKnapsackProblem>
+                               | ReturnType<typeof useBinProblem>
+                               | ReturnType<typeof useSalesmanProblem>,
+                             population: Chromosome[], elitism: boolean, elitismRate: number, choose: string, tournamentSize: number | null , crossing: string, size: number, mutation: number) => {
   let newGeneration: Chromosome[] = []
   if (elitism) {
     newGeneration = applyElitism(population, elitismRate)
   }
-  newGeneration = crossover(population, newGeneration, choose, tournamentSize, crossing, size)
+  newGeneration = crossover(problemToSolve, population, newGeneration, choose, tournamentSize, crossing, size, mutation)
   console.log("check")
   return newGeneration;
 }
@@ -159,9 +168,10 @@ const saveResult = (problemToSolve:
                       | ReturnType<typeof useBinProblem>
                       | ReturnType<typeof useSalesmanProblem>,
                     populationHistory: Chromosome[][]) => {
+  const paramStore = useParamStore()
   const history = useHistory();
   const { entries } = storeToRefs(history);
-  const result = new HistoryEntry(populationHistory, 'Genetický', problemToSolve.getProblemType())
+  const result = new HistoryEntry(populationHistory, 'Genetický', problemToSolve.getProblemType(), paramStore.mutation as number, paramStore.showNewInput, paramStore.elitism as number, paramStore.choose as string, paramStore.crossing as string)
   populationHistory.forEach(entry => {
     let max = 0
     let average = 0
@@ -191,8 +201,7 @@ export const geneticAlgorithm = (problemToSolve:
   if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation !== null && paramStore.choose && paramStore.crossing && paramStore.population) {
     for (let i = 0; i < paramStore.iterations; i++) {
       populationHistory = savePopulation(populationHistory, population)
-      population = createNewGeneration(population, paramStore.showNewInput, paramStore.elitism, paramStore.choose, paramStore.tournamentSize, paramStore.crossing, paramStore.population)
-      population = problemToSolve.mutate(population, paramStore.mutation) as Chromosome[]
+      population = createNewGeneration(problemToSolve, population, paramStore.showNewInput, paramStore.elitism, paramStore.choose, paramStore.tournamentSize, paramStore.crossing, paramStore.population, paramStore.mutation)
       population = evaluateIndividuals(problemToSolve, population)
     }
     saveResult(problemToSolve, populationHistory)
