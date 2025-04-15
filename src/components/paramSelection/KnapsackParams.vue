@@ -19,7 +19,7 @@
 
     <q-input
       filled
-      v-model="capacity"
+      v-model.number="capacity"
       label="Kapacita batohu"
       stack-label
       dense

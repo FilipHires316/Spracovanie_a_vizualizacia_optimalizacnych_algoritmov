@@ -2,7 +2,7 @@
   <div style="margin-top: 10px; display: flex; align-items: center;">
     <q-input
       filled
-      v-model="localSize"
+      v-model.number="localSize"
       label="Veľkosť predmetu"
       stack-label
       dense
@@ -14,7 +14,7 @@
     />
     <q-input
       filled
-      v-model="localPrice"
+      v-model.number="localPrice"
       label="Cena predmetu"
       stack-label
       dense

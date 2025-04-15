@@ -19,7 +19,7 @@
 
     <q-input
       filled
-      v-model="iterations"
+      v-model.number="iterations"
       label="Počet iterácií"
       stack-label
       dense
@@ -32,7 +32,7 @@
 
     <q-input
       filled
-      v-model="population"
+      v-model.number="population"
       label="Veľkosť populácie"
       stack-label
       dense

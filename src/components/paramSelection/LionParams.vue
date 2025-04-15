@@ -19,7 +19,7 @@
 
     <q-input
       filled
-      v-model="iterations"
+      v-model.number="iterations"
       label="Počet iterácií"
       stack-label
       dense
@@ -31,7 +31,7 @@
     />
     <q-input
       filled
-      v-model="packs"
+      v-model.number="packs"
       label="Počet svoriek"
       stack-label
       dense
@@ -43,7 +43,7 @@
     />
     <q-input
       filled
-      v-model="females"
+      v-model.number="females"
       label="Počet samíc v svorke"
       stack-label
       dense
@@ -55,7 +55,7 @@
     />
     <q-input
       filled
-      v-model="males"
+      v-model.number="males"
       label="Počet samcov v svorke"
       stack-label
       dense
@@ -67,7 +67,7 @@
     />
     <q-input
       filled
-      v-model="hunters"
+      v-model.number="hunters"
       label="Percento loviacich samíc"
       stack-label
       dense

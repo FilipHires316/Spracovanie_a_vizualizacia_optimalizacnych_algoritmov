@@ -19,7 +19,7 @@
 
     <q-input
       filled
-      v-model="iterations"
+      v-model.number="iterations"
       label="Počet iterácií"
       stack-label
       dense
@@ -31,7 +31,7 @@
     />
     <q-input
       filled
-      v-model="population"
+      v-model.number="population"
       label="Veľkosť počiatočnej populácie"
       stack-label
       dense
@@ -43,7 +43,7 @@
     />
     <q-input
       filled
-      v-model="mutation"
+      v-model.number="mutation"
       label="Pravdepodobnosť mutácie v %"
       stack-label
       dense
@@ -64,7 +64,7 @@
       <q-input
         v-if="showNewInput"
         filled
-        v-model="elitism"
+        v-model.number="elitism"
         label="Miera elitizmu v %"
         stack-label
         dense
@@ -94,7 +94,7 @@
       <q-input
         v-if="choose === 'tournament'"
         filled
-        v-model="tournamentSize"
+        v-model.number="tournamentSize"
         label="Veľkosť turnaju"
         stack-label
         dense

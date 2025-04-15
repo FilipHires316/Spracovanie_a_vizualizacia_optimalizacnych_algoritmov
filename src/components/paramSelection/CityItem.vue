@@ -2,7 +2,7 @@
   <div style="margin-top: 10px; display: flex; align-items: center;">
     <q-input
       filled
-      v-model="localX"
+      v-model.number="localX"
       label="X"
       stack-label
       dense
@@ -14,7 +14,7 @@
     />
     <q-input
       filled
-      v-model="localY"
+      v-model.number="localY"
       label="Y"
       stack-label
       dense
