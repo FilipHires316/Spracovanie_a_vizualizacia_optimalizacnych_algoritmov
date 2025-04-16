@@ -119,7 +119,7 @@
               <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + 'x'}}</span>
               <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Priemerná váha predmetov: ' + 'x'}}</span>
               <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + 'x'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + entries[leftSolutionIndex]?.solution.length}}</span>
+              <span v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + 'x'}}</span>
             </div>
           </div>
         </div>
@@ -182,7 +182,7 @@
               <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh' || entries[rightSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + 'x'}}</span>
               <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh' || entries[rightSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Priemerná váha predmetov: ' + 'x'}}</span>
               <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + 'x'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + entries[leftSolutionIndex]?.solution.length}}</span>
+              <span v-if="entries[rightSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + 'x'}}</span>
             </div>
           </div>
         </div>

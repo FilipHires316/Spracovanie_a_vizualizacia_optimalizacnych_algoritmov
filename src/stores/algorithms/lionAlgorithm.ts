@@ -352,6 +352,7 @@ const saveResult = (problemToSolve:
                       | ReturnType<typeof useBinProblem>
                       | ReturnType<typeof useSalesmanProblem>,
                     populationHistory: Lion[][][]) => {
+  const paramStore = useParamStore()
   const history = useHistory();
   const unpack2: Lion[][] = []
   populationHistory.forEach(generation => {
@@ -364,7 +365,7 @@ const saveResult = (problemToSolve:
     unpack2.push(unpack1)
   });
   const { entries } = storeToRefs(history);
-  const result = new HistoryEntry(unpack2, 'Levy', problemToSolve.getProblemType(), 0, false, 0, 'none', 'none')
+  const result = new HistoryEntry(unpack2, 'Levy', problemToSolve.getProblemType(), {packs: paramStore.packs as number, females: paramStore.females as number, males: paramStore.males as number, hunters: paramStore.hunters as number})
   unpack2.forEach(entry => {
     let max = 0
     let average = 0

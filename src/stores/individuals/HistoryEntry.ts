@@ -1,6 +1,18 @@
-import type { Lion } from 'stores/individuals/lion'
-import type { Whale } from 'stores/individuals/whale'
-import type { Chromosome } from 'stores/individuals/chromosome'
+import type { Lion } from 'stores/individuals/lion';
+import type { Whale } from 'stores/individuals/whale';
+import type { Chromosome } from 'stores/individuals/chromosome';
+
+interface HistoryEntryOptions {
+  mutation?: number;
+  elitism?: boolean;
+  elitismRate?: number;
+  choose?: string;
+  crossing?: string;
+  packs?: number;
+  females?: number;
+  males?: number;
+  hunters?: number;
+}
 
 export class HistoryEntry {
   algorithm: string;
@@ -13,17 +25,31 @@ export class HistoryEntry {
   elitismRate: number;
   choose: string;
   crossing: string;
+  packs: number;
+  females: number;
+  males: number;
+  hunters: number;
 
-  constructor(solution: Lion[][] | Whale[][] | Chromosome[][], algorithm: string, problem: string, mutation: number, elitism: boolean, elitismRate: number, choose: string, crossing: string) {
+  constructor(
+    solution: Lion[][] | Whale[][] | Chromosome[][],
+    algorithm: string,
+    problem: string,
+    options: HistoryEntryOptions = {}
+  ) {
     this.algorithm = algorithm;
     this.problem = problem;
     this.solution = solution;
     this.bestFitness = [];
     this.averageFitness = [];
-    this.mutation = mutation;
-    this.elitism = elitism;
-    this.elitismRate = elitismRate;
-    this.choose = choose;
-    this.crossing = crossing;
+
+    this.mutation = options.mutation ?? 0;
+    this.elitism = options.elitism ?? false;
+    this.elitismRate = options.elitismRate ?? 0;
+    this.choose = options.choose ?? 'none';
+    this.crossing = options.crossing ?? 'none';
+    this.packs = options.packs ?? 0;
+    this.females = options.females ?? 0;
+    this.males = options.males ?? 0;
+    this.hunters = options.hunters ?? 0;
   }
 }
