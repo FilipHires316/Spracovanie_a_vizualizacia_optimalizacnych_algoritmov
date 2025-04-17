@@ -105,10 +105,10 @@
               <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && entries[leftSolutionIndex]?.crossing == 'one'" class="paramInfo">{{'Spôsob kríženia: Jednobodové'}}</span>
               <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && entries[leftSolutionIndex]?.crossing == 'two'" class="paramInfo">{{'Spôsob kríženia: Dvojbodové'}}</span>
               <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && entries[leftSolutionIndex]?.crossing == 'uni'" class="paramInfo">{{'Spôsob kríženia: Uniformné'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet svoriek: ' + 'x'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samíc v svorke: ' + 'x'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samcov v svorke: ' + 'x'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Loviace samice: ' + 'x' + '%'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet svoriek: ' + entries[leftSolutionIndex]?.packs}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samíc v svorke: ' + entries[leftSolutionIndex]?.females}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samcov v svorke: ' + entries[leftSolutionIndex]?.males}}</span>
+              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Loviace samice: ' + entries[leftSolutionIndex]?.hunters + '%'}}</span>
             </div>
           </div>
 
@@ -116,10 +116,11 @@
             <div
               class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="border-radius: 20px; height: 100%">
               <h4 class="section-title">Optimalizačný problém</h4>
-              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + 'x'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Priemerná váha predmetov: ' + 'x'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + 'x'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + 'x'}}</span>
+              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Kapacita: ' + entries[leftSolutionIndex]?.capacity }}</span>
+              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + entries[leftSolutionIndex]?.count}}</span>
+              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Priemerná velkosť predmetov: ' + entries[leftSolutionIndex]?.averageWeight}}</span>
+              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + entries[leftSolutionIndex]?.averagePrice}}</span>
+              <span v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + entries[leftSolutionIndex]?.count }}</span>
             </div>
           </div>
         </div>
@@ -168,10 +169,10 @@
               <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.crossing == 'one'" class="paramInfo">{{'Spôsob kríženia: Jednobodové'}}</span>
               <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.crossing == 'two'" class="paramInfo">{{'Spôsob kríženia: Dvojbodové'}}</span>
               <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.crossing == 'uni'" class="paramInfo">{{'Spôsob kríženia: Uniformné'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet svoriek: ' + 'x'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samíc v svorke: ' + 'x'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samcov v svorke: ' + 'x'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Loviace samice: ' + 'x' + '%'}}</span>
+              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet svoriek: ' + entries[rightSolutionIndex]?.packs}}</span>
+              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samíc v svorke: ' + entries[rightSolutionIndex]?.females}}</span>
+              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samcov v svorke: ' + entries[rightSolutionIndex]?.males}}</span>
+              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Loviace samice: ' + entries[rightSolutionIndex]?.hunters + '%'}}</span>
             </div>
           </div>
 
@@ -179,10 +180,11 @@
             <div
               class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="border-radius: 20px; height: 100%">
               <h4 class="section-title">Optimalizačný problém</h4>
-              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh' || entries[rightSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + 'x'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh' || entries[rightSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Priemerná váha predmetov: ' + 'x'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + 'x'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + 'x'}}</span>
+              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh' || entries[rightSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Kapacita: ' + entries[rightSolutionIndex]?.capacity }}</span>
+              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh' || entries[rightSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + entries[rightSolutionIndex]?.count}}</span>
+              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh' || entries[rightSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Priemerná velkosť predmetov: ' + entries[rightSolutionIndex]?.averageWeight}}</span>
+              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + entries[rightSolutionIndex]?.averagePrice}}</span>
+              <span v-if="entries[rightSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + entries[rightSolutionIndex]?.count }}</span>
             </div>
           </div>
         </div>

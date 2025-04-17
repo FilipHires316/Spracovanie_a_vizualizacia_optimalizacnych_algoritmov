@@ -149,7 +149,36 @@ const saveResult = (problemToSolve:
                     populationHistory: Whale[][]) => {
   const history = useHistory();
   const { entries } = storeToRefs(history);
-  const result = new HistoryEntry(populationHistory, 'Veľryby', problemToSolve.getProblemType())
+  const paramStore = useParamStore()
+  let count = 0;
+  let capacity = 0;
+  let averageWeight = 0;
+  let averagePrice = 0;
+  if (problemToSolve.getProblemType() == 'Batoh') {
+    count = paramStore.knapsackItems.length;
+    capacity = paramStore.capacity as number
+    let totalWeight = 0;
+    let totalPrice = 0;
+    paramStore.knapsackItems.forEach(item => {
+      totalPrice += item.price;
+      totalWeight += item.size;
+    })
+    averageWeight = totalWeight / paramStore.knapsackItems.length;
+    averagePrice = totalPrice / paramStore.knapsackItems.length;
+  }
+  if (problemToSolve.getProblemType() == 'Koše') {
+    count = paramStore.binItems.length;
+    capacity = paramStore.capacity as number
+    let totalWeight = 0;
+    paramStore.binItems.forEach(item => {
+      totalWeight += item.size;
+    })
+    averageWeight = totalWeight / paramStore.knapsackItems.length;
+  }
+  if (problemToSolve.getProblemType() == 'Obchodný cestujúci') {
+    count = paramStore.cities.length + 1;
+  }
+  const result = new HistoryEntry(populationHistory, 'Veľryby', problemToSolve.getProblemType(), {count: count, capacity: capacity, averageWeight: averageWeight, averagePrice: averagePrice})
   populationHistory.forEach(entry => {
     let max = 0
     let average = 0

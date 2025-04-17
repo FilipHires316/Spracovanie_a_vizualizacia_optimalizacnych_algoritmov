@@ -12,6 +12,10 @@ interface HistoryEntryOptions {
   females?: number;
   males?: number;
   hunters?: number;
+  capacity?: number;
+  averageWeight?: number;
+  averagePrice?: number;
+  count?: number;
 }
 
 export class HistoryEntry {
@@ -29,6 +33,10 @@ export class HistoryEntry {
   females: number;
   males: number;
   hunters: number;
+  capacity: number;
+  averageWeight: number;
+  averagePrice: number;
+  count: number;
 
   constructor(
     solution: Lion[][] | Whale[][] | Chromosome[][],
@@ -51,5 +59,9 @@ export class HistoryEntry {
     this.females = options.females ?? 0;
     this.males = options.males ?? 0;
     this.hunters = options.hunters ?? 0;
+    this.capacity = options.capacity ?? 0;
+    this.averageWeight = options.averageWeight ?? 0;
+    this.averagePrice = options.averagePrice ?? 0;
+    this.count = options.count ?? 0;
   }
 }

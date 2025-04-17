@@ -365,7 +365,35 @@ const saveResult = (problemToSolve:
     unpack2.push(unpack1)
   });
   const { entries } = storeToRefs(history);
-  const result = new HistoryEntry(unpack2, 'Levy', problemToSolve.getProblemType(), {packs: paramStore.packs as number, females: paramStore.females as number, males: paramStore.males as number, hunters: paramStore.hunters as number})
+  let count = 0;
+  let capacity = 0;
+  let averageWeight = 0;
+  let averagePrice = 0;
+  if (problemToSolve.getProblemType() == 'Batoh') {
+    count = paramStore.knapsackItems.length;
+    capacity = paramStore.capacity as number
+    let totalWeight = 0;
+    let totalPrice = 0;
+    paramStore.knapsackItems.forEach(item => {
+      totalPrice += item.price;
+      totalWeight += item.size;
+    })
+    averageWeight = totalWeight / paramStore.knapsackItems.length;
+    averagePrice = totalPrice / paramStore.knapsackItems.length;
+  }
+  if (problemToSolve.getProblemType() == 'Koše') {
+    count = paramStore.binItems.length;
+    capacity = paramStore.capacity as number
+    let totalWeight = 0;
+    paramStore.binItems.forEach(item => {
+      totalWeight += item.size;
+    })
+    averageWeight = totalWeight / paramStore.knapsackItems.length;
+  }
+  if (problemToSolve.getProblemType() == 'Obchodný cestujúci') {
+    count = paramStore.cities.length + 1;
+  }
+  const result = new HistoryEntry(unpack2, 'Levy', problemToSolve.getProblemType(), {packs: paramStore.packs as number, females: paramStore.females as number, males: paramStore.males as number, hunters: paramStore.hunters as number, count: count, capacity: capacity, averageWeight: averageWeight, averagePrice: averagePrice})
   unpack2.forEach(entry => {
     let max = 0
     let average = 0
