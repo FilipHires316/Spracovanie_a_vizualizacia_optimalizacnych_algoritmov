@@ -71,12 +71,6 @@ export default defineComponent({
             backgroundColor: backgroundColors,
             data: fitnessValues.value
           },
-          {
-            label: 'Najlepšia Fitness',
-            backgroundColor: 'red',
-            data: [],
-            borderWidth: 0,
-          }
         ]
       }
     })
@@ -94,7 +88,37 @@ export default defineComponent({
       },
       plugins: {
         legend: {
-          position: 'top'
+          position: 'top',
+          labels: {
+            generateLabels: (chart) => {
+              const original = ChartJS.defaults.plugins.legend.labels.generateLabels(chart)
+
+              const customLegend = [
+                {
+                  text: 'Najlepšie riešenie z iterácie',
+                  fillStyle: 'red',
+                  strokeStyle: 'red',
+                  lineWidth: 1,
+                  hidden: false,
+                  index: original.length + 1 // optional, just to sort it last
+                }
+              ]
+
+              // Force "Najlepšia Fitness" to green no matter what
+              const modifiedOriginal = original.map(label => {
+                if (label.text === 'Fitness') {
+                  return {
+                    ...label,
+                    fillStyle: '#66bb6a'
+                  }
+                }
+                return label
+              })
+
+              return [...modifiedOriginal, ...customLegend]
+            }
+          }
+
         },
         title: {
           display: true,
@@ -102,6 +126,7 @@ export default defineComponent({
         }
       }
     }
+
 
     return {
       chartData,

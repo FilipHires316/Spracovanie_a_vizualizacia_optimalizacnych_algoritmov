@@ -163,8 +163,8 @@ const saveResult = (problemToSolve:
       totalPrice += item.price;
       totalWeight += item.size;
     })
-    averageWeight = totalWeight / paramStore.knapsackItems.length;
-    averagePrice = totalPrice / paramStore.knapsackItems.length;
+    averageWeight = Math.round((totalWeight / paramStore.knapsackItems.length) * 100) / 100;
+    averagePrice = Math.round((totalPrice / paramStore.knapsackItems.length) * 100) / 100;
   }
   if (problemToSolve.getProblemType() == 'Koše') {
     count = paramStore.binItems.length;
@@ -173,7 +173,7 @@ const saveResult = (problemToSolve:
     paramStore.binItems.forEach(item => {
       totalWeight += item.size;
     })
-    averageWeight = totalWeight / paramStore.knapsackItems.length;
+    averageWeight = Math.round((totalWeight / paramStore.binItems.length) * 100) / 100;
   }
   if (problemToSolve.getProblemType() == 'Obchodný cestujúci') {
     count = paramStore.cities.length + 1;
