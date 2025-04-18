@@ -124,8 +124,8 @@
             </div>
           </div>
         </div>
-
         <GenerationGraph
+          style="width: 98%; margin-top: 20px; height: 20vw"
           v-if="entries[leftSolutionIndex]"
           :bestFitness="entries[leftSolutionIndex]?.bestFitness as number[]"
           :averageFitness="entries[leftSolutionIndex]?.averageFitness as number[]"
@@ -133,14 +133,14 @@
           @bar-click="(genIndex) => (leftIteration = genIndex)"
         />
         <IndividualsGraph
+          style="width: 98%; margin-top: 20px; height: 20vw"
           v-if="entries[leftSolutionIndex]"
-          style="max-width: 90vw; height: 50vw; padding: 20px"
           :data="entries[leftSolutionIndex]?.solution[leftIteration] ?? []"
           :label="'Fitness Jedincov'"
           @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
         />
         <SalesmanVisualisation
-        style="width: 98%; margin-bottom: 20px"
+        style="width: 98%; margin-top: 20px; margin-bottom: 20px"
         v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'"
         :cities="[
             { x: 10, y: 20},

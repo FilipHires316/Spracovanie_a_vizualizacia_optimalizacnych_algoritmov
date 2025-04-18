@@ -1,9 +1,11 @@
 <template>
-  <Bar
-    :data="chartData"
-    :options="chartOptions"
-    @click="handleClick"
-  />
+  <q-card class="q-pa-md">
+    <Bar
+      :data="chartData"
+      :options="chartOptions"
+      @click="handleClick"
+    />
+  </q-card>
 </template>
 
 <script lang="ts">
