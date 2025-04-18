@@ -17,7 +17,7 @@ interface HistoryEntryOptions {
 export class HistoryEntry {
   algorithm: string;
   problem: string;
-  solution: number[][][];
+  solution: number[][][][];
   fitness: number[][];
   bestFitness: number[];
   averageFitness: number[];
@@ -36,7 +36,7 @@ export class HistoryEntry {
   count: number;
 
   constructor(
-    solution: number[][][],
+    solution: number[][][][],
     algorithm: string,
     problem: string,
     fitness: number[][],

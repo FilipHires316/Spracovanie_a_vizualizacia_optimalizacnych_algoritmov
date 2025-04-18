@@ -20,16 +20,9 @@ import type { EChartsOption } from 'echarts'
 
 use([CanvasRenderer, ScatterChart, LineChart, GridComponent, TooltipComponent])
 
-interface City {
-  x: number
-  y: number
-  name?: string
-}
-
 // Props
 const props = defineProps<{
-  cities: City[]
-  path: number[]
+  cities: number[][]
 }>()
 
 interface TooltipFormatterParams {
@@ -40,16 +33,20 @@ interface TooltipFormatterParams {
 
 const chartOptions: ComputedRef<EChartsOption> = computed(() => {
   const scatterData = props.cities.map((city, i) => ({
-    value: [city.x, city.y],
-    name: city.name || `City ${i}`,
+    value: [city[0], city[1]],
+    name: `City ${i}`,
     label: {
       show: true,
-      formatter: (param: { dataIndex: number }) => props.cities[param.dataIndex]?.name || `City ${param.dataIndex}`,
+      formatter: (param: { dataIndex: number }) => `City ${param.dataIndex}`,
       position: 'top'
     }
   }))
 
-  const lineData = props.path.map(index => [props.cities[index]?.x, props.cities[index]?.y])
+  const lineData = props.cities.map(city => [city[0], city[1]])
+  if (props.cities.length > 0) {
+    const [firstX, firstY] = props.cities[0]!
+    lineData.push([firstX, firstY])
+  }
 
   return {
     tooltip: {
@@ -68,7 +65,7 @@ const chartOptions: ComputedRef<EChartsOption> = computed(() => {
         symbolSize: 30,
         label: {
           show: true,
-          formatter: (param: { dataIndex: number }) => props.cities[param.dataIndex]?.name || `City ${param.dataIndex}`,
+          formatter: (param: { dataIndex: number }) => `City ${param.dataIndex}`,
           position: 'top'
         }
       },

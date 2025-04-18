@@ -150,6 +150,7 @@ const saveResult = (problemToSolve:
   const history = useHistory();
   const { entries } = storeToRefs(history);
   const paramStore = useParamStore()
+  const visSolution: number[][][][] = []
   let count = 0;
   let capacity = 0;
   let averageWeight = 0;
@@ -165,6 +166,19 @@ const saveResult = (problemToSolve:
     })
     averageWeight = Math.round((totalWeight / paramStore.knapsackItems.length) * 100) / 100;
     averagePrice = Math.round((totalPrice / paramStore.knapsackItems.length) * 100) / 100;
+    populationHistory.forEach(generation => {
+      const gen: number[][][] = []
+      generation.forEach(individual => {
+        const sol: number[][] = []
+        individual.solution.forEach((index, i) => {
+          if (index == 1) {
+            sol.push([paramStore.knapsackItems[i]?.price ?? 0, paramStore.knapsackItems[i]?.size ?? 0]);
+          }
+        })
+        gen.push(sol)
+      })
+      visSolution.push(gen)
+    })
   }
   if (problemToSolve.getProblemType() == 'Koše') {
     count = paramStore.binItems.length;
@@ -177,6 +191,17 @@ const saveResult = (problemToSolve:
   }
   if (problemToSolve.getProblemType() == 'Obchodný cestujúci') {
     count = paramStore.cities.length + 1;
+    populationHistory.forEach(generation => {
+      const gen: number[][][] = []
+      generation.forEach(individual => {
+        const sol: number[][] = [[paramStore.start[0]?.x ?? 0, paramStore.start[0]?.y ?? 0]]
+        individual.solution.forEach(index => {
+          sol.push([paramStore.cities[index]?.x ?? 0, paramStore.cities[index]?.y ?? 0]);
+        })
+        gen.push(sol)
+      })
+      visSolution.push(gen)
+    })
   }
   const fitness: number[][] = []
   populationHistory.forEach(generation => {
@@ -186,7 +211,7 @@ const saveResult = (problemToSolve:
     })
     fitness.push(currentFitness)
   })
-  const result = new HistoryEntry([], 'Veľryby', problemToSolve.getProblemType(), fitness, {count: count, capacity: capacity, averageWeight: averageWeight, averagePrice: averagePrice})
+  const result = new HistoryEntry(visSolution, 'Veľryby', problemToSolve.getProblemType(), fitness, {count: count, capacity: capacity, averageWeight: averageWeight, averagePrice: averagePrice})
   populationHistory.forEach(entry => {
     let max = 0
     let average = 0

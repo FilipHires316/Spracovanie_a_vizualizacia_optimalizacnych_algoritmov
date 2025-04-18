@@ -63,7 +63,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
         const deltaY = currentCity.y - previousCity.y;
         const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         fitness += distance
-        previousCity = paramStore.cities[i]
+        previousCity = currentCity
       }
     }
     const currentCity = paramStore.start[0]
@@ -73,7 +73,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
       const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
       fitness += distance
     }
-    Math.round(fitness = 10000 - fitness)
+    fitness = Math.round(10000 - fitness)
     if (fitness < 1)
       return 1
     return fitness;
@@ -90,7 +90,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
         if (Math.random() * 100 < mutationRate) {
           let j = index
           while (index == j)
-            j = Math.round(Math.random() * (individual.solution.length));
+            j = Math.floor(Math.random() * individual.solution.length);
           const valueI = individual.solution[index] ?? 0;
           const valueJ = individual.solution[j] ?? 0;
           [individual.solution[index], individual.solution[j]] = [valueJ, valueI];

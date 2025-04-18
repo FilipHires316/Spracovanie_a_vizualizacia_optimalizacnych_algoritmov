@@ -137,18 +137,13 @@
           v-if="entries[leftSolutionIndex]"
           :Fitness="entries[leftSolutionIndex]?.fitness[leftIteration] ?? []"
           :label="'Fitness Jedincov'"
-          @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
+          @bar-click="(genIndex) => { leftIndividual = genIndex; console.log(entries[leftSolutionIndex]?.solution?.[leftIteration]?.[leftIndividual] ?? []); }"
+
         />
         <SalesmanVisualisation
         style="width: 98%; margin-top: 20px; margin-bottom: 20px"
         v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'"
-        :cities="[
-            { x: 10, y: 20},
-            { x: 50, y: 80},
-            { x: 90, y: 10},
-            { x: 40, y: 40}
-          ]"
-        :path="[0, 3, 1, 2, 0]"
+        :cities="entries[leftSolutionIndex]?.solution[leftIteration]?.[leftIndividual] ?? []"
       />
       </q-page>
     </div>
@@ -254,6 +249,10 @@ export default defineComponent({
 
     const leftSolutionIndex = ref(history.entries.length - 1)
     const rightSolutionIndex = ref(history.entries.length - 1)
+
+    const leftIndividual = ref(0)
+    const rightIndividual = ref(0)
+
     const screenSplit = ref(false)
 
     const toggleLeftDrawer = () => (leftDrawerOpen.value = !leftDrawerOpen.value)
@@ -301,6 +300,8 @@ export default defineComponent({
       rightSolutionIndexSet,
       leftIteration,
       rightIteration,
+      leftIndividual,
+      rightIndividual,
     }
   },
 })
