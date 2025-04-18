@@ -140,16 +140,16 @@
           @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
         />
         <SalesmanVisualisation
-          style="width: 98%; margin-bottom: 20px"
-          v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'"
-          :cities="[
+        style="width: 98%; margin-bottom: 20px"
+        v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'"
+        :cities="[
             { x: 10, y: 20},
             { x: 50, y: 80},
             { x: 90, y: 10},
             { x: 40, y: 40}
           ]"
-          :path="[0, 3, 1, 2, 0]"
-        />
+        :path="[0, 3, 1, 2, 0]"
+      />
       </q-page>
     </div>
 
