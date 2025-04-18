@@ -25,44 +25,33 @@ import {
   LinearScale
 } from 'chart.js'
 import { Bar } from 'vue-chartjs'
-import type { Lion } from 'stores/individuals/lion'
-import type { Whale } from 'stores/individuals/whale'
-import type { Chromosome } from 'stores/individuals/chromosome'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default defineComponent({
-  name: 'IndividualsGraph',
+  name: 'IndividualGraph',
   components: { Bar },
   props: {
-    data: {
-      type: Array as () => Lion[] | Whale[] | Chromosome[],
-      required: true
-    },
-    label: {
-      type: String,
-      default: 'Fitness Graph'
-    },
-    index: {
-      type: Number,
-      default: 1
-    }
+    Fitness: { type: Array as () => number[], required: true },
+    label: { type: String, default: 'Fitness Graph' }
   },
   emits: ['bar-click'],
   setup(props, { emit }) {
-    const generations = computed(() => props.data.map((_, i) => i + 1))
-
-    const fitnessValues = computed(() => props.data.map(entry => entry.fitness))
-
-    // Find the maximum fitness value index
-    const maxFitnessIndex = computed(() => {
-      return fitnessValues.value.indexOf(Math.max(...fitnessValues.value))
+    // Compute generations for x-axis labels
+    const generations = computed(() => {
+      return props.Fitness.map((_, i) => i + 1)
     })
 
+    // Find the index of the maximum value in bestFitness
+    const maxFitnessIndex = computed(() => {
+      return props.Fitness.indexOf(Math.max(...props.Fitness))
+    })
+
+    // Chart data with dynamic coloring for max value in bestFitness
     const chartData = computed(() => {
-      // Create arrays for background colors (green by default, red for max value)
-      const backgroundColors = fitnessValues.value.map((fitness, index) =>
-        index === maxFitnessIndex.value ? 'red' : '#66bb6a' // Red for max, green for others
+      // Create an array of background colors for bestFitness (green by default)
+      const bestFitnessColors = props.Fitness.map((fitness, index) =>
+        index === maxFitnessIndex.value ? 'red' : '#66bb6a' // Highlight max fitness value in red
       )
 
       return {
@@ -70,8 +59,8 @@ export default defineComponent({
         datasets: [
           {
             label: 'Fitness',
-            backgroundColor: backgroundColors,
-            data: fitnessValues.value
+            backgroundColor: bestFitnessColors,
+            data: props.Fitness
           },
         ]
       }
@@ -108,7 +97,7 @@ export default defineComponent({
 
               // Force "Najlepšia Fitness" to green no matter what
               const modifiedOriginal = original.map(label => {
-                if (label.text === 'Fitness') {
+                if (label.text === 'Najlepšia Fitness') {
                   return {
                     ...label,
                     fillStyle: '#66bb6a'

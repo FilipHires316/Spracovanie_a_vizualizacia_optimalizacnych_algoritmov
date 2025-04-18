@@ -1,7 +1,3 @@
-import type { Lion } from 'stores/individuals/lion';
-import type { Whale } from 'stores/individuals/whale';
-import type { Chromosome } from 'stores/individuals/chromosome';
-
 interface HistoryEntryOptions {
   mutation?: number;
   elitism?: boolean;
@@ -21,7 +17,8 @@ interface HistoryEntryOptions {
 export class HistoryEntry {
   algorithm: string;
   problem: string;
-  solution: Lion[][] | Whale[][] | Chromosome[][];
+  solution: number[][][];
+  fitness: number[][];
   bestFitness: number[];
   averageFitness: number[];
   mutation: number;
@@ -39,14 +36,16 @@ export class HistoryEntry {
   count: number;
 
   constructor(
-    solution: Lion[][] | Whale[][] | Chromosome[][],
+    solution: number[][][],
     algorithm: string,
     problem: string,
+    fitness: number[][],
     options: HistoryEntryOptions = {}
   ) {
     this.algorithm = algorithm;
     this.problem = problem;
     this.solution = solution;
+    this.fitness = fitness;
     this.bestFitness = [];
     this.averageFitness = [];
 

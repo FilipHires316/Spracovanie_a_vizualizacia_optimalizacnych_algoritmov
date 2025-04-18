@@ -393,7 +393,15 @@ const saveResult = (problemToSolve:
   if (problemToSolve.getProblemType() == 'Obchodný cestujúci') {
     count = paramStore.cities.length + 1;
   }
-  const result = new HistoryEntry(unpack2, 'Levy', problemToSolve.getProblemType(), {packs: paramStore.packs as number, females: paramStore.females as number, males: paramStore.males as number, hunters: paramStore.hunters as number, count: count, capacity: capacity, averageWeight: averageWeight, averagePrice: averagePrice})
+  const fitness: number[][] = []
+  unpack2.forEach(generation => {
+    const currentFitness: number[] = []
+    generation.forEach(individual => {
+      currentFitness.push(individual.fitness);
+    })
+    fitness.push(currentFitness)
+  })
+  const result = new HistoryEntry([], 'Levy', problemToSolve.getProblemType(), fitness, {packs: paramStore.packs as number, females: paramStore.females as number, males: paramStore.males as number, hunters: paramStore.hunters as number, count: count, capacity: capacity, averageWeight: averageWeight, averagePrice: averagePrice})
   unpack2.forEach(entry => {
     let max = 0
     let average = 0

@@ -178,7 +178,15 @@ const saveResult = (problemToSolve:
   if (problemToSolve.getProblemType() == 'Obchodný cestujúci') {
     count = paramStore.cities.length + 1;
   }
-  const result = new HistoryEntry(populationHistory, 'Veľryby', problemToSolve.getProblemType(), {count: count, capacity: capacity, averageWeight: averageWeight, averagePrice: averagePrice})
+  const fitness: number[][] = []
+  populationHistory.forEach(generation => {
+    const currentFitness: number[] = []
+    generation.forEach(individual => {
+      currentFitness.push(individual.fitness);
+    })
+    fitness.push(currentFitness)
+  })
+  const result = new HistoryEntry([], 'Veľryby', problemToSolve.getProblemType(), fitness, {count: count, capacity: capacity, averageWeight: averageWeight, averagePrice: averagePrice})
   populationHistory.forEach(entry => {
     let max = 0
     let average = 0

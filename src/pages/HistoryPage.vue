@@ -135,7 +135,7 @@
         <IndividualsGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
           v-if="entries[leftSolutionIndex]"
-          :data="entries[leftSolutionIndex]?.solution[leftIteration] ?? []"
+          :Fitness="entries[leftSolutionIndex]?.fitness[leftIteration] ?? []"
           :label="'Fitness Jedincov'"
           @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
         />
@@ -210,7 +210,7 @@
         <IndividualsGraph
           v-if="entries[rightSolutionIndex]"
           style="max-width: 90vw; height: 50vw; padding: 20px"
-          :data="entries[rightSolutionIndex]?.solution[rightIteration] ?? []"
+          :Fitness="entries[rightSolutionIndex]?.fitness[rightIteration] ?? []"
           :label="'Fitness Jedincov'"
           @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
         />
