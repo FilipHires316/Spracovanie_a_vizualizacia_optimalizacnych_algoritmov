@@ -18,11 +18,13 @@
     "@quasar/extras": "^1.16.4",
     "chart.js": "^4.4.8",
     "components": "^0.1.0",
+    "echarts": "^5.6.0",
     "pinia": "^3.0.1",
     "quasar": "^2.16.0",
     "stores": "^1.0.0",
     "vue": "^3.4.18",
     "vue-chartjs": "^5.3.2",
+    "vue-echarts": "^7.0.3",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {

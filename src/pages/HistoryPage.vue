@@ -139,6 +139,17 @@
           :label="'Fitness Jedincov'"
           @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
         />
+        <SalesmanVisualisation
+          style="width: 98%; margin-bottom: 20px"
+          v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'"
+          :cities="[
+            { x: 10, y: 20},
+            { x: 50, y: 80},
+            { x: 90, y: 10},
+            { x: 40, y: 40}
+          ]"
+          :path="[0, 3, 1, 2, 0]"
+        />
       </q-page>
     </div>
 
@@ -221,12 +232,14 @@ import { useHistory } from 'stores/history'
 import { storeToRefs } from 'pinia'
 import GenerationGraph from 'components/visualisation/GenerationGraph.vue'
 import IndividualsGraph from 'components/visualisation/IndividualsGraph.vue'
+import SalesmanVisualisation from 'components/visualisation/SalesmanVisualisation.vue'
 
 export default defineComponent({
   name: 'HistoryPage',
   components: {
     GenerationGraph,
     IndividualsGraph,
+    SalesmanVisualisation
   },
   setup() {
     const history = useHistory()
