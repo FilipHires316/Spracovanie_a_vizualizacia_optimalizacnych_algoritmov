@@ -161,11 +161,11 @@
     </div>
 
     <!-- Right Page -->
-    <div class="scroll-wrapper" v-show="screenSplit" :style="{ width: '50vw' }">
+    <div v-if="screenSplit" class="scroll-wrapper" :style="{ width: screenSplit ? '50vw' : '100vw' }">
       <q-page class="column items-center justify-evenly page">
         <div v-if="entries[rightSolutionIndex]" class="headerBanner">
-          <span class="title"
-            >{{
+          <span class="title">
+            {{
               entries[rightSolutionIndex]?.algorithm + ' + ' + entries[rightSolutionIndex]?.problem
             }}
           </span>
@@ -178,10 +178,10 @@
               <h4 class="section-title">Optimalizačný algoritmus</h4>
               <span class="paramInfo">{{'Počet iterácií: ' + entries[rightSolutionIndex]?.solution.length}}</span>
               <span class="paramInfo">{{'Velkosť populácie: ' + entries[rightSolutionIndex]?.solution[0]?.length}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický'" class="paramInfo">{{'Pravdepodobnosť mutácie: ' + entries[leftSolutionIndex]?.mutation + '%'}}</span>
+              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický'" class="paramInfo">{{'Pravdepodobnosť mutácie: ' + entries[rightSolutionIndex]?.mutation + '%'}}</span>
               <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.elitism" class="paramInfo">{{'Elitizmus: Áno'}}</span>
               <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && !entries[rightSolutionIndex]?.elitism" class="paramInfo">{{'Elitizmus: Nie'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.elitism" class="paramInfo">{{'Miera elitizmu: ' + entries[leftSolutionIndex]?.elitismRate + '%'}}</span>
+              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.elitism" class="paramInfo">{{'Miera elitizmu: ' + entries[rightSolutionIndex]?.elitismRate + '%'}}</span>
               <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.choose == 'roulette'" class="paramInfo">{{'Spôsob výberu jedincov: Ruleta'}}</span>
               <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.choose == 'tournament'" class="paramInfo">{{'Spôsob výberu jedincov: Turnaj'}}</span>
               <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.crossing == 'one'" class="paramInfo">{{'Spôsob kríženia: Jednobodové'}}</span>
@@ -206,8 +206,8 @@
             </div>
           </div>
         </div>
-
         <GenerationGraph
+          style="width: 98%; margin-top: 20px; height: 20vw"
           v-if="entries[rightSolutionIndex]"
           :bestFitness="entries[rightSolutionIndex]?.bestFitness as number[]"
           :averageFitness="entries[rightSolutionIndex]?.averageFitness as number[]"
@@ -215,22 +215,40 @@
           @bar-click="(genIndex) => (rightIteration = genIndex)"
         />
         <IndividualsGraph
+          style="width: 98%; margin-top: 20px; height: 20vw"
           v-if="entries[rightSolutionIndex]"
-          style="max-width: 90vw; height: 50vw; padding: 20px"
           :Fitness="entries[rightSolutionIndex]?.fitness[rightIteration] ?? []"
           :label="'Fitness Jedincov'"
-          @bar-click="(genIndex) => console.log('Clicked generation', genIndex)"
+          @bar-click="(genIndex) => { rightIndividual = genIndex}"
+
+        />
+        <SalesmanVisualisation
+          style="width: 98%; margin-top: 20px; margin-bottom: 20px"
+          v-if="entries[rightSolutionIndex]?.problem == 'Obchodný cestujúci'"
+          :cities="entries[rightSolutionIndex]?.solution[rightIteration]?.[rightIndividual] ?? []"
+        />
+        <KnapsackVisualisation
+          style="width: 98%; margin-top: 20px; margin-bottom: 20px"
+          v-if="entries[rightSolutionIndex]?.problem == 'Batoh'"
+          :solution="entries[rightSolutionIndex]?.solution[rightIteration]?.[rightIndividual] ?? []"
+          :capacity="entries[rightSolutionIndex]?.capacity as number"
+        />
+        <BinVisualisation
+          style="width: 98%; margin-top: 20px; margin-bottom: 20px"
+          v-if="entries[rightSolutionIndex]?.problem == 'Koše'"
+          :solution="entries[rightSolutionIndex]?.solution[rightIteration]?.[rightIndividual] ?? []"
+          :capacity="entries[rightSolutionIndex]?.capacity as number"
         />
       </q-page>
     </div>
-  </div>
 
-  <q-btn
-    color="grey"
-    :icon="screenSplit ? 'remove' : 'add'"
-    @click="screenSplitShift"
-    style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw"
-  />
+    <q-btn
+      color="grey"
+      :icon="screenSplit ? 'remove' : 'add'"
+      @click="screenSplitShift"
+      style="width: 4vw; height: 4vw; position: fixed; bottom: 1vw; right: 1vw"
+    />
+  </div>
 </template>
 
 <script lang="ts">

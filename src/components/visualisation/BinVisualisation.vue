@@ -6,7 +6,7 @@
         v-for="(bin, binIndex) in visualBins"
         :key="'bin-' + binIndex"
         class="q-pa-sm bg-grey-1"
-        style="width: 100%; border: 2px solid #555; height: auto"
+        style="width: 99%; border: 2px solid #555; height: auto"
       >
         <div class="text-subtitle2 q-mb-sm">Kôš {{ binIndex + 1 }}</div>
         <div class="relative w-full flex h-10">
