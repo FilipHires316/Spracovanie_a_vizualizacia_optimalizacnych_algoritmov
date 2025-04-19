@@ -97,7 +97,7 @@ export default defineComponent({
 
               // Force "Najlepšia Fitness" to green no matter what
               const modifiedOriginal = original.map(label => {
-                if (label.text === 'Najlepšia Fitness') {
+                if (label.text === 'Fitness') {
                   return {
                     ...label,
                     fillStyle: '#66bb6a'

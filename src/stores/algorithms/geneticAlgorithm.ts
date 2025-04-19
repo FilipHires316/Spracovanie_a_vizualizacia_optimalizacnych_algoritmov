@@ -209,6 +209,20 @@ const saveResult = (problemToSolve:
       totalWeight += item.size;
     })
     averageWeight = Math.round((totalWeight / paramStore.binItems.length) * 100) / 100;
+    populationHistory.forEach(generation => {
+      const gen: number[][][] = []
+      generation.forEach(individual => {
+        const sol: number[][] = []
+        for (let i = 0; i < Math.max(...individual.solution); i++) {
+          sol.push([])
+        }
+        individual.solution.forEach((index, i) => {
+          sol[index - 1]?.push(paramStore.binItems[i]?.size ?? 0);
+        })
+        gen.push(sol)
+      })
+      visSolution.push(gen)
+    })
   }
   if (problemToSolve.getProblemType() == 'Obchodný cestujúci') {
     count = paramStore.cities.length + 1;
@@ -267,5 +281,6 @@ export const geneticAlgorithm = (problemToSolve:
       population = evaluateIndividuals(problemToSolve, population)
     }
     saveResult(problemToSolve, populationHistory)
+    console.log(populationHistory)
   }
 }

@@ -21,7 +21,7 @@
           </q-tooltip>
         </div>
           <q-tooltip>
-            Unused: {{ unusedPercentage.toFixed(1) }}%
+            Nevyužitý priestor: {{ unusedPercentage.toFixed(1) }}%
           </q-tooltip>
         </div>
     </q-card>

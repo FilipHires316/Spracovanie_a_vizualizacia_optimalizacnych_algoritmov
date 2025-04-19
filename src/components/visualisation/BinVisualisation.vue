@@ -29,7 +29,7 @@
 
           <!-- Render unused space -->
             <q-tooltip>
-              Nevyužité: {{ bin.unused.toFixed(1) }}%
+              Nevyužitý priestor: {{ bin.unused.toFixed(1) }}%
             </q-tooltip>
           </div>
       </q-card>
