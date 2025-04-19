@@ -46,7 +46,12 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
       }
     }
     if (paramStore.capacity) {
-     fitness = totalPrice * 100 + ((paramStore.capacity - totalSize) * 50);
+      if (paramStore.capacity - totalSize > 0) {
+        fitness = totalPrice * 100 + ((paramStore.capacity - totalSize) * 50);
+      }
+      else {
+        fitness = totalPrice * 100 + ((paramStore.capacity - totalSize) * 300);
+      }
     }
     if (fitness < 1) {
       return 1

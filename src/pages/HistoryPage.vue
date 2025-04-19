@@ -141,10 +141,22 @@
 
         />
         <SalesmanVisualisation
-        style="width: 98%; margin-top: 20px; margin-bottom: 20px"
-        v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'"
-        :cities="entries[leftSolutionIndex]?.solution[leftIteration]?.[leftIndividual] ?? []"
-      />
+          style="width: 98%; margin-top: 20px; margin-bottom: 20px"
+          v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'"
+          :cities="entries[leftSolutionIndex]?.solution[leftIteration]?.[leftIndividual] ?? []"
+        />
+        <KnapsackVisualisation
+          style="width: 98%; margin-top: 20px; margin-bottom: 20px"
+          v-if="entries[leftSolutionIndex]?.problem == 'Batoh'"
+          :solution="entries[leftSolutionIndex]?.solution[leftIteration]?.[leftIndividual] ?? []"
+          :capacity="entries[leftSolutionIndex]?.capacity as number"
+        />
+        <BinVisualisation
+          style="width: 98%; margin-top: 20px; margin-bottom: 20px"
+          v-if="entries[leftSolutionIndex]?.problem == 'Koše'"
+          :solution="entries[leftSolutionIndex]?.solution[leftIteration]?.[leftIndividual] ?? []"
+          :capacity="entries[leftSolutionIndex]?.capacity as number"
+        />
       </q-page>
     </div>
 
@@ -228,13 +240,17 @@ import { storeToRefs } from 'pinia'
 import GenerationGraph from 'components/visualisation/GenerationGraph.vue'
 import IndividualsGraph from 'components/visualisation/IndividualsGraph.vue'
 import SalesmanVisualisation from 'components/visualisation/SalesmanVisualisation.vue'
+import KnapsackVisualisation from 'components/visualisation/KnapsackVisualisation.vue'
+import BinVisualisation from 'components/visualisation/BinVisualisation.vue'
 
 export default defineComponent({
   name: 'HistoryPage',
   components: {
     GenerationGraph,
     IndividualsGraph,
-    SalesmanVisualisation
+    SalesmanVisualisation,
+    KnapsackVisualisation,
+    BinVisualisation
   },
   setup() {
     const history = useHistory()
