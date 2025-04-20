@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { solve } from './starter'
+import { solve } from './solver'
 
 type ResettableKey =
   | 'iterations'

@@ -3,9 +3,6 @@ import type { useBinProblem } from 'stores/problems/binProblem'
 import type { useSalesmanProblem } from 'stores/problems/salesmanProblem'
 import { Chromosome } from 'stores/individuals/chromosome'
 import { useParamStore } from 'stores/paramStore'
-import { HistoryEntry } from 'stores/individuals/HistoryEntry'
-import { useHistory } from 'stores/history'
-import { storeToRefs } from 'pinia'
 
 const createPopulation = (problemToSolve:
                             | ReturnType<typeof useKnapsackProblem>
@@ -154,115 +151,12 @@ const createNewGeneration = (problemToSolve:
     newGeneration = applyElitism(population, elitismRate)
   }
   newGeneration = crossover(problemToSolve, population, newGeneration, choose, tournamentSize, crossing, size, mutation)
-  console.log("check")
   return newGeneration;
 }
 
 const savePopulation = (populationHistory: Chromosome[][], population: Chromosome[]) => {
   populationHistory.push(population)
   return populationHistory;
-}
-
-const saveResult = (problemToSolve:
-                      | ReturnType<typeof useKnapsackProblem>
-                      | ReturnType<typeof useBinProblem>
-                      | ReturnType<typeof useSalesmanProblem>,
-                    populationHistory: Chromosome[][]) => {
-  const paramStore = useParamStore()
-  const history = useHistory();
-  const { entries } = storeToRefs(history);
-  const visSolution: number[][][][] = []
-  let count = 0;
-  let capacity = 0;
-  let averageWeight = 0;
-  let averagePrice = 0;
-  if (problemToSolve.getProblemType() == 'Batoh') {
-    count = paramStore.knapsackItems.length;
-    capacity = paramStore.capacity as number
-    let totalWeight = 0;
-    let totalPrice = 0;
-    paramStore.knapsackItems.forEach(item => {
-      totalPrice += item.price;
-      totalWeight += item.size;
-    })
-    averageWeight = Math.round((totalWeight / paramStore.knapsackItems.length) * 100) / 100;
-    averagePrice = Math.round((totalPrice / paramStore.knapsackItems.length) * 100) / 100;
-    populationHistory.forEach(generation => {
-      const gen: number[][][] = []
-      generation.forEach(individual => {
-        const sol: number[][] = []
-        individual.solution.forEach((index, i) => {
-          if (index == 1) {
-            sol.push([paramStore.knapsackItems[i]?.price ?? 0, paramStore.knapsackItems[i]?.size ?? 0]);
-          }
-        })
-        gen.push(sol)
-      })
-      visSolution.push(gen)
-    })
-  }
-  if (problemToSolve.getProblemType() == 'Koše') {
-    count = paramStore.binItems.length;
-    capacity = paramStore.capacity as number
-    let totalWeight = 0;
-    paramStore.binItems.forEach(item => {
-      totalWeight += item.size;
-    })
-    averageWeight = Math.round((totalWeight / paramStore.binItems.length) * 100) / 100;
-    populationHistory.forEach(generation => {
-      const gen: number[][][] = []
-      generation.forEach(individual => {
-        const sol: number[][] = []
-        for (let i = 0; i < Math.max(...individual.solution); i++) {
-          sol.push([])
-        }
-        individual.solution.forEach((index, i) => {
-          sol[index - 1]?.push(paramStore.binItems[i]?.size ?? 0);
-        })
-        gen.push(sol)
-      })
-      visSolution.push(gen)
-    })
-  }
-  if (problemToSolve.getProblemType() == 'Obchodný cestujúci') {
-    count = paramStore.cities.length + 1;
-    populationHistory.forEach(generation => {
-      const gen: number[][][] = []
-      generation.forEach(individual => {
-        const sol: number[][] = [[paramStore.start[0]?.x ?? 0, paramStore.start[0]?.y ?? 0]]
-        individual.solution.forEach(index => {
-          sol.push([paramStore.cities[index]?.x ?? 0, paramStore.cities[index]?.y ?? 0]);
-        })
-        gen.push(sol)
-      })
-      visSolution.push(gen)
-    })
-  }
-  const fitness: number[][] = []
-  populationHistory.forEach(generation => {
-    const currentFitness: number[] = []
-    generation.forEach(individual => {
-      currentFitness.push(individual.fitness);
-    })
-    fitness.push(currentFitness)
-  })
-  const result = new HistoryEntry(visSolution, 'Genetický', problemToSolve.getProblemType(), fitness, { mutation: paramStore.mutation as number, elitism: paramStore.showNewInput, elitismRate: paramStore.elitism as number, choose: paramStore.choose as string, crossing: paramStore.crossing as string, count: count, capacity: capacity, averageWeight: averageWeight, averagePrice: averagePrice});
-  populationHistory.forEach(entry => {
-    let max = 0
-    let average = 0
-    entry.forEach(individual => {
-      if (individual.fitness > max)
-        max = individual.fitness
-      average += individual.fitness
-    })
-    average = average / entry.length
-    result.bestFitness.push(max)
-    result.averageFitness.push(average)
-    max = 0
-    average = 0
-  })
-  entries.value.push(result)
-  console.log(result)
 }
 
 export const geneticAlgorithm = (problemToSolve:
@@ -280,7 +174,6 @@ export const geneticAlgorithm = (problemToSolve:
       population = createNewGeneration(problemToSolve, population, paramStore.showNewInput, paramStore.elitism, paramStore.choose, paramStore.tournamentSize, paramStore.crossing, paramStore.population, paramStore.mutation)
       population = evaluateIndividuals(problemToSolve, population)
     }
-    saveResult(problemToSolve, populationHistory)
-    console.log(populationHistory)
+    return populationHistory
   }
 }

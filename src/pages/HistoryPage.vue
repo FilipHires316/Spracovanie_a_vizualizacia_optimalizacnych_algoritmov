@@ -149,7 +149,7 @@
           v-if="entries[leftSolutionIndex]"
           :Fitness="entries[leftSolutionIndex]?.fitness[leftIteration] ?? []"
           :label="'Fitness Jedincov'"
-          @bar-click="(genIndex) => { leftIndividual = genIndex; console.log(entries[leftSolutionIndex]?.solution?.[leftIteration]?.[leftIndividual] ?? []); }"
+          @bar-click="(genIndex) => { leftIndividual = genIndex }"
         />
 
         <!-- visualisation of traveling salesman problem solution -->
