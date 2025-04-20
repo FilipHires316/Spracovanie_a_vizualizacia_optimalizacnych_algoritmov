@@ -4,6 +4,6 @@ import {createPinia} from 'pinia'
 declare module 'pinia' {
 }
 
-export default defineStore((/* { ssrContext } */) => {
+export default defineStore(() => {
   return createPinia()
 })

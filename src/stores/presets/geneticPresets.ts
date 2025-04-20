@@ -1,4 +1,6 @@
+// storage for genetic algorithm preset values
 export const geneticPresets = {
+  // optimal values
   optimum: {
     iterations: 20,
     population: 100,
@@ -9,6 +11,7 @@ export const geneticPresets = {
     tournamentSize: 2,
     crossing: "two",
   },
+  // big population
   big: {
     iterations: 40,
     population: 200,
@@ -19,6 +22,7 @@ export const geneticPresets = {
     tournamentSize: 0,
     crossing: "uni",
   },
+  // small population
   small: {
     iterations: 15,
     population: 80,
@@ -29,6 +33,7 @@ export const geneticPresets = {
     tournamentSize: 2,
     crossing: "one",
   },
+  // no values defined
   own: {
     iterations: 0,
     population: 0,

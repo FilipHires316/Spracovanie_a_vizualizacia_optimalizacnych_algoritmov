@@ -1,4 +1,6 @@
+// storage for knapsack problem preset values
 export const salesmanPresets = {
+  // optimal number of cities
   optimum: {
     start: [[250, 250]],
     cities: [
@@ -18,6 +20,7 @@ export const salesmanPresets = {
       [370, 370]
     ]
   },
+  // many cities to test hard computations
   big: {
     start: [[100, 400]],
     cities: [
@@ -38,6 +41,7 @@ export const salesmanPresets = {
       [500, 500]
     ]
   },
+  // few cities to check if algorithm works alright
   small: {
     start: [[50, 50]],
     cities: [
@@ -51,6 +55,7 @@ export const salesmanPresets = {
       [460, 500]
     ]
   },
+  // no values defined
   own: {
     start: [[0, 0]],
     cities: []

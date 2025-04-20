@@ -13,6 +13,8 @@ let problemToSolve:
   | ReturnType<typeof useSalesmanProblem>
   | null = null;
 
+
+// function that decides which algorithm function will be called and for which problem also saves results to history
 export const solve = () => {
   const paramStore = useParamStore();  // Moved inside the solve function
   const { algorithm, problem } = storeToRefs(paramStore);

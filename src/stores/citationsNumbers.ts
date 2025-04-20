@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
+// list of all references and resources (if number of citation is changed here it will change at all places where it is used)
 export const useNumberCites = defineStore('citationsNumbers', () => {
   const Cite1 = ref({
     index: '[1]',

@@ -1,3 +1,4 @@
+// class for Chromosome (genetic algorithm solution)
 export class Chromosome {
   solution: number[];
   fitness: number;

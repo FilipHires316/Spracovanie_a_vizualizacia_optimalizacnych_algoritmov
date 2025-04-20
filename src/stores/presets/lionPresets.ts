@@ -1,4 +1,6 @@
+// storage for lion inspired algorithm preset values
 export const lionPresets = {
+  // optimal values
   optimum: {
     iterations: 20,
     packs: 15,
@@ -6,6 +8,7 @@ export const lionPresets = {
     males: 2,
     hunters: 75,
   },
+  // big population
   big: {
     iterations: 30,
     packs: 20,
@@ -13,6 +16,7 @@ export const lionPresets = {
     males: 3,
     hunters: 80,
   },
+  // small population
   small: {
     iterations: 15,
     packs: 10,
@@ -20,6 +24,7 @@ export const lionPresets = {
     males: 1,
     hunters: 60,
   },
+  // no values defined
   own: {
     iterations: 0,
     packs: 0,

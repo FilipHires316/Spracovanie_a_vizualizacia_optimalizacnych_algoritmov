@@ -1,4 +1,6 @@
+// storage for knapsack problem preset values
 export const knapsackPresets = {
+  // optimal number of items
   optimum: {
     capacity: 20,
     items:
@@ -19,6 +21,7 @@ export const knapsackPresets = {
       [2, 2],
     ]
   },
+  // many items to test hard computations
   big: {
     capacity: 40,
     items:
@@ -40,6 +43,7 @@ export const knapsackPresets = {
         [22, 45]
       ]
   },
+  // few items to check if algorithm works alright
   small: {
     capacity: 15,
     items:
@@ -54,6 +58,7 @@ export const knapsackPresets = {
         [7, 13]
       ]
   },
+  // no values defined
   own: {
     capacity: 0,
     items:

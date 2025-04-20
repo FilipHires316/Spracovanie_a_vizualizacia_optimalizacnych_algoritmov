@@ -1,3 +1,4 @@
+// class for storing information about computing process (including input parameters and output solution)
 interface HistoryEntryOptions {
   mutation?: number;
   elitism?: boolean;

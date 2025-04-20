@@ -1,3 +1,4 @@
+// class for Lion (lion inspired algorithm solution)
 export class Lion {
   solution: number[];
   fitness: number;

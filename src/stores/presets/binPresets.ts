@@ -1,4 +1,6 @@
+// storage for bin packing problem preset values
 export const binPresets = {
+  // optimal number of items
   optimum: {
     capacity: 20,
     items:
@@ -19,6 +21,7 @@ export const binPresets = {
         [22]
       ]
   },
+  // many items to test hard computations
   big: {
     capacity: 30,
     items:
@@ -40,6 +43,7 @@ export const binPresets = {
         [22]
       ]
   },
+  // few items to check if algorithm works alright
   small: {
     capacity: 10,
     items:
@@ -54,6 +58,7 @@ export const binPresets = {
         [7]
       ]
   },
+  // no values defined
   own: {
     capacity: 0,
     items: []

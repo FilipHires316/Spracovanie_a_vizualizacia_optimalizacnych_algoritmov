@@ -22,6 +22,7 @@ type ResettableKey =
   | 'cities'
   | 'start';
 
+// storage where input parameters for computation process are stored (also validates them before starting computation)
 export const useParamStore = defineStore('paramStore', () => {
   const algorithm = ref<string | null>(null);
   const problem = ref<string | null>(null);
@@ -43,6 +44,7 @@ export const useParamStore = defineStore('paramStore', () => {
   const cities = ref<{ id: number; x: number; y: number }[]>([]);
   const start = ref<{ id: number; x: number; y: number }[]>([]);
 
+  // function to reset all values in storage
   const resetStore = (keysToReset: ResettableKey[] = []) => {
     if (keysToReset.includes('iterations')) iterations.value = null;
     if (keysToReset.includes('population')) population.value = null;
@@ -65,6 +67,7 @@ export const useParamStore = defineStore('paramStore', () => {
 
   const router = useRouter();
 
+  // function to validate input data
   const checkInputs = () => {
     let check = true;
     if (algorithm.value === 'genetic') {
