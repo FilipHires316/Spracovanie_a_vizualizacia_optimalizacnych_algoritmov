@@ -1,5 +1,7 @@
+<!-- form for one item in knapsack problem -->
 <template>
   <div style="margin-top: 10px; display: flex; align-items: center;">
+    <!-- field for item size -->
     <q-input
       filled
       v-model.number="localSize"
@@ -12,6 +14,7 @@
       :rules="[val => (val !== null && val >= 0) || 'Veľkosť nesmie byť záporná']"
       hide-bottom-space
     />
+    <!-- field for item price -->
     <q-input
       filled
       v-model.number="localPrice"
@@ -24,6 +27,7 @@
       :rules="[val => (val !== null && val >= 0) || 'Cena nesmie byť záporná']"
       hide-bottom-space
     />
+    <!-- button for deleting item -->
     <q-btn
       icon="remove"
       color="red"
@@ -45,16 +49,13 @@ export default defineComponent({
     item: { type: Object, required: true }
   },
   setup(props, { emit }) {
-    // Create local reactive copies of the prop values
     const localSize = ref(props.item.size);
     const localPrice = ref(props.item.price);
 
-    // Watch local changes and emit update to parent
     watch([localSize, localPrice], ([newSize, newPrice]) => {
       emit('update', { id: props.item.id, size: Number(newSize), price: Number(newPrice) });
     });
 
-    // If parent updates the item externally, sync local values
     watch(
       () => props.item,
       (newItem) => {
@@ -78,5 +79,4 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-/* Add any required styles here */
 </style>

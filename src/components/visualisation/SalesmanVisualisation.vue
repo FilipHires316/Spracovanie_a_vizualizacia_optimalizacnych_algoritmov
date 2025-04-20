@@ -1,3 +1,4 @@
+<!-- visualisation of traveling salesman problem solution -->
 <template>
   <q-card class="q-pa-md">
     <q-card-section>
@@ -20,7 +21,6 @@ import type { EChartsOption } from 'echarts'
 
 use([CanvasRenderer, ScatterChart, LineChart, GridComponent, TooltipComponent])
 
-// Props
 const props = defineProps<{
   cities: number[][]
 }>()

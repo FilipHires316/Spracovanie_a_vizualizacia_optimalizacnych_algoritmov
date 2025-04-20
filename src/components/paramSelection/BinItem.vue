@@ -1,5 +1,7 @@
+<!-- form for one item in bin packing problem -->
 <template>
   <div style="margin-top: 10px; display: flex; align-items: center;">
+    <!-- field for item size -->
     <q-input
       filled
       v-model.number="localSize"
@@ -12,6 +14,7 @@
       :rules="[val => (val !== null && val >= 0) || 'Veľkosť nesmie byť záporná']"
       hide-bottom-space
     />
+    <!-- button for deleting item -->
     <q-btn
       icon="remove"
       color="red"

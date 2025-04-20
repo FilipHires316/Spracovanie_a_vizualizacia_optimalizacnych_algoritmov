@@ -1,4 +1,6 @@
+<!-- list of cited literature -->
 <template>
+  <!-- all appearances of citation number are changed after changing number in store -->
   <div class="content-container">
     <h4 class="section-title">Zdroje a použitá literatúra</h4>
     <ul class="section-list">

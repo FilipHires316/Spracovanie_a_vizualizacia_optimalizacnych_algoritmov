@@ -1,3 +1,4 @@
+<!-- information about bin packing problem -->
 <template>
   <div class="content-container">
     <h4 class="section-title">Problém balenia košov</h4>

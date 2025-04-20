@@ -1,5 +1,7 @@
+<!-- form for genetic algorithm parameters -->
 <template>
   <div class="content-container" style="margin-top: 1vw">
+    <!-- choice of preset -->
     <q-btn-toggle
       v-model="model"
       class="my-custom-toggle"
@@ -17,6 +19,7 @@
         ]"
     ></q-btn-toggle>
 
+    <!-- field for number of iterations -->
     <q-input
       filled
       v-model.number="iterations"
@@ -29,6 +32,7 @@
       :rules="[val => (val !== null && val >= 1) || 'Počet iterácií musí byť aspoň 1']"
       hide-bottom-space
     />
+    <!-- field for number of population size -->
     <q-input
       filled
       v-model.number="population"
@@ -41,6 +45,7 @@
       :rules="[val => (val !== null && val >= 20) || 'Velkosť populácie musí byť aspoň 20']"
       hide-bottom-space
     />
+    <!-- field for mutation rate -->
     <q-input
       filled
       v-model.number="mutation"
@@ -54,6 +59,7 @@
       hide-bottom-space
     />
 
+    <!-- toggle for claiming whether elitism is used or not -->
     <div style="margin-top: 10px; display: flex; align-items: center;">
       <q-toggle
         v-model="showNewInput"
@@ -61,6 +67,7 @@
         color="white"
         style="margin-right: 10px;"
       />
+      <!-- field for elitism rate if elitism is used -->
       <q-input
         v-if="showNewInput"
         filled
@@ -77,6 +84,7 @@
     </div>
 
     <div style="margin-top: 10px; display: flex; align-items: center;">
+      <!-- choice of selection type -->
       <q-btn-toggle
         v-model="choose"
         class="my-custom-toggle"
@@ -91,6 +99,7 @@
           { label: 'Turnaj', value: 'tournament' },
         ]"
       ></q-btn-toggle>
+      <!-- field for tournament size if tournament selection is used -->
       <q-input
         v-if="choose === 'tournament'"
         filled
@@ -106,6 +115,7 @@
       />
     </div>
 
+    <!-- choice of crossover type -->
     <q-btn-toggle
       v-model="crossing"
       class="my-custom-toggle"

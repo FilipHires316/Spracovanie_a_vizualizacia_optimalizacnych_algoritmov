@@ -1,3 +1,4 @@
+<!-- information about optimization -->
 <template>
   <div class="content-container">
     <h4 class="section-title">Optimalizácia</h4>

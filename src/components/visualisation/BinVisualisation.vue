@@ -1,7 +1,9 @@
+<!-- visualisation of bin packing solution -->
 <template>
   <q-card class="q-pa-md" style="width: 98vw; height: auto">
     <h6 class="text-h6">Vizualizácia Riešenia</h6>
     <div class="column q-gutter-md">
+      <!-- dynamic bars representing bins -->
       <q-card
         v-for="(bin, binIndex) in visualBins"
         :key="'bin-' + binIndex"
@@ -10,7 +12,7 @@
       >
         <div class="text-subtitle2 q-mb-sm">Kôš {{ binIndex + 1 }}</div>
         <div class="relative w-full flex h-10">
-          <!-- Render items in the bin -->
+          <!-- items inside current bin -->
           <div
             v-for="(item, itemIndex) in bin.items"
             :key="'item-' + itemIndex"
@@ -26,8 +28,6 @@
               Veľkosť: {{ item.size }}
             </q-tooltip>
           </div>
-
-          <!-- Render unused space -->
             <q-tooltip>
               Nevyužitý priestor: {{ bin.unused.toFixed(1) }}%
             </q-tooltip>
@@ -41,8 +41,8 @@
 import { computed } from 'vue';
 
 const props = defineProps<{
-  solution: number[][];     // Each inner array is a bin of item sizes
-  capacity: number;  // Max capacity per bin
+  solution: number[][];
+  capacity: number;
 }>();
 
 function getColor(index: number): string {
@@ -67,3 +67,6 @@ const visualBins = computed(() => {
   });
 });
 </script>
+
+<style scoped>
+</style>

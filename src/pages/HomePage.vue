@@ -1,3 +1,4 @@
+<!-- layout of homepage -->
 <template>
   <q-page class="row items-center justify-evenly">
     <InfoPanel
@@ -6,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent} from 'vue';
 import InfoPanel from 'components/infoPanels/InfoPanel.vue';
 
 export default defineComponent({
@@ -15,13 +16,6 @@ export default defineComponent({
   components: {
     InfoPanel
   },
-
-  setup() {
-    const todos = ref([]);
-    const meta = ref({});
-
-    return { todos, meta };
-  }
 });
 </script>
 

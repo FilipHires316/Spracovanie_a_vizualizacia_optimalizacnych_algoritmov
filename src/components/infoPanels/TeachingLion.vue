@@ -1,3 +1,4 @@
+<!-- information about lion inpired algorithm -->
 <template>
   <div class="content-container">
     <h4 class="section-title">Algoritmus inšpirovaný správaním levov</h4>

@@ -1,5 +1,7 @@
+<!-- form for knapsack problem parameters -->
 <template>
   <div class="content-container" style="margin-top: 1vw">
+    <!-- preset choice -->
     <q-btn-toggle
       v-model="model"
       class="my-custom-toggle"
@@ -17,6 +19,7 @@
       ]"
     />
 
+    <!-- field for capacity -->
     <q-input
       filled
       v-model.number="capacity"
@@ -32,6 +35,7 @@
 
     <h5 class="subsection-title">Predmety:</h5>
 
+    <!-- dynamic items -->
     <div v-for="item in knapsackItems" :key="item.id">
       <KnapsackItem
         :item="item"
@@ -40,6 +44,7 @@
       />
     </div>
 
+    <!-- button for adding item -->
     <q-btn
       icon="add"
       color="green"

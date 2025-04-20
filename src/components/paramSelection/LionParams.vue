@@ -1,5 +1,7 @@
+<!-- form for lion inspired algorithm parameters -->
 <template>
   <div class="content-container" style="margin-top: 1vw">
+    <!-- preset choice -->
     <q-btn-toggle
       v-model="model"
       class="my-custom-toggle"
@@ -17,6 +19,7 @@
         ]"
     ></q-btn-toggle>
 
+    <!-- field for number of iterations -->
     <q-input
       filled
       v-model.number="iterations"
@@ -29,6 +32,7 @@
       :rules="[val => (val !== null && val >= 1) || 'Počet iterácií musí byť aspoň 1']"
       hide-bottom-space
     />
+    <!-- field for number of packs in one iteration -->
     <q-input
       filled
       v-model.number="packs"
@@ -41,6 +45,7 @@
       :rules="[val => (val !== null && val >= 5) || 'Počet svoriek musí byť aspoň 5']"
       hide-bottom-space
     />
+    <!-- field for number of females in one pack -->
     <q-input
       filled
       v-model.number="females"
@@ -53,6 +58,7 @@
       :rules="[val => (val !== null && val >= 3) || 'Počet samíc musí byť aspoň 3']"
       hide-bottom-space
     />
+    <!-- field for number of males in one pack -->
     <q-input
       filled
       v-model.number="males"
@@ -65,6 +71,7 @@
       :rules="[val => (val !== null && val >= 1) || 'Počet samcov musí byť aspoň 1']"
       hide-bottom-space
     />
+    <!-- field for rate of hunting females -->
     <q-input
       filled
       v-model.number="hunters"

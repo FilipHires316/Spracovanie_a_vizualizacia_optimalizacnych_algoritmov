@@ -1,5 +1,7 @@
+<!-- form for one city in traveling salesman problem -->
 <template>
   <div style="margin-top: 10px; display: flex; align-items: center;">
+    <!-- field for x index -->
     <q-input
       filled
       v-model.number="localX"
@@ -12,6 +14,7 @@
       :rules="[val => (val !== null && val >= 1) || 'Súradnica nesmie byť záporná']"
       hide-bottom-space
     />
+    <!-- field for y index -->
     <q-input
       filled
       v-model.number="localY"
@@ -24,6 +27,7 @@
       :rules="[val => (val !== null && val >= 1) || 'Súradnica nesmie byť záporná']"
       hide-bottom-space
     />
+    <!-- button for deleting city -->
     <q-btn
       v-if="showButton"
       icon="remove"

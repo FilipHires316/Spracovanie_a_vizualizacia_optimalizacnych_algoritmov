@@ -1,9 +1,11 @@
+<!-- visualisation of knapsack problem solution -->
 <template>
   <q-card class="q-pa-md" style="width: 98vw; height: auto">
     <h6 class="text-h6">Vizualizácia riešenia</h6>
+    <!-- bar representing knapsack -->
     <q-card class="q-pa-md bg-grey-1" style="width: 100%; border: 2px solid #555; height: auto">
       <div class="relative h-10 w-full flex">
-        <!-- Render each item -->
+        <!-- items inside knapsack -->
         <div
           v-for="(item, index) in filledItems"
           :key="'item-' + index"
@@ -46,8 +48,8 @@ const totalUsedWeight = computed(() =>
 );
 
 const filledItems = computed(() => {
-  return [...props.solution] // make a shallow copy to avoid mutating props
-    .sort((a, b) => (a[1] ?? 0) - (b[1] ?? 0)) // sort ascending by weight
+  return [...props.solution]
+    .sort((a, b) => (a[1] ?? 0) - (b[1] ?? 0))
     .map(([value, weight], index) => {
       const percentage = ((weight ?? 0) / props.capacity) * 100;
 

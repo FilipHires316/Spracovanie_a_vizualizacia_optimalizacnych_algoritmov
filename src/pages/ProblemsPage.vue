@@ -1,7 +1,9 @@
+<!-- layout of page where parameters are choosed -->
 <template>
   <div class="q-pa-md">
     <div class="row q-col-gutter-md">
       <div class="col-md-6 col-xs-12">
+        <!-- input parameters for algorithm -->
         <div class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="height: 100%; min-height: 32vw">
           <h4 class="section-title">Vstupné parametre optimalizačného algoritmu</h4>
           <q-tabs
@@ -22,6 +24,7 @@
       </div>
 
       <div class="col-md-6 col-xs-12">
+        <!-- input parameters for problem -->
         <div class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="height: 100%; min-height: 32vw">
           <h4 class="section-title">Vstupné parametre optimalizačného problému</h4>
           <q-tabs
@@ -40,6 +43,7 @@
         </div>
       </div>
     </div>
+    <!-- button for starting the simulation -->
     <div class="button-container">
       <q-btn
         icon="play_arrow"

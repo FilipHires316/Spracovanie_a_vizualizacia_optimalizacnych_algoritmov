@@ -1,4 +1,6 @@
+<!-- initial information panel shown on home page -->
 <template>
+  <!-- information -->
   <div class="content-container">
     <h4 class="section-title">O aplikácii</h4>
     <p class="section-paragraph">
@@ -27,6 +29,7 @@
       <li>Prezrite podrobný popis fungovania jednotlivých algoritmov a optimalizačných problémov.</li>
     </ul>
 
+    <!-- navigation buttons -->
     <div class="button-container">
       <q-btn class="button" color="white" text-color="black" label="O algoritmoch" to="/AboutAlgorithms" style="width: 40vw;"/>
       <q-btn class="button" color="primary" label="Riešenie optimalizačných problémov" to="/Problems" style="width: 40vw;"/>
@@ -38,13 +41,8 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'InfoPanel',
-
-  setup() {
-    return {
-    };
-  }
-});
+  name: 'InfoPanel'
+})
 </script>
 
 <style lang="scss" scoped>

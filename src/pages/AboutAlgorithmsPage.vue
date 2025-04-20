@@ -1,4 +1,6 @@
+<!-- layout of about algorithm and problems page -->
 <template>
+  <!-- button for opening drawer with menu -->
   <q-btn
     v-if="!isMobile || !leftDrawerOpen"
     dense
@@ -9,6 +11,7 @@
     @click="toggleLeftDrawer"
     style="position: fixed; z-index: 9998; top: 100px; left: 0"
   />
+  <!-- drawer with menu -->
   <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
     <q-scroll-area style="height: 100%; flex: 1;" class="custom-scroll">
       <div class="Menu">
@@ -66,8 +69,10 @@
     </q-scroll-area>
   </q-drawer>
 
+  <!-- currently chosen page -->
   <q-page class="column items-center justify-evenly">
     <component :is="visibleComponent"/>
+    <!-- buttons for cycling between pages -->
     <div class="button-container">
       <q-btn class="button" color="white" text-color="black" label="Predchádzajúce" @click="changeComponent(-1)" style="width: 10vw"/>
       <q-btn class="button" color="primary" label="Ďalšie" @click="changeComponent(1)" style="width: 10vw"/>

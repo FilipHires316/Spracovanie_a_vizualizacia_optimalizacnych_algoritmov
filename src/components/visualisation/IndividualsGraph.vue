@@ -1,3 +1,4 @@
+<!-- visualisation of fitness of each individual in chosen iteration -->
 <template>
   <q-card class="q-pa-md">
     <Bar
@@ -37,21 +38,17 @@ export default defineComponent({
   },
   emits: ['bar-click'],
   setup(props, { emit }) {
-    // Compute generations for x-axis labels
     const generations = computed(() => {
       return props.Fitness.map((_, i) => i + 1)
     })
 
-    // Find the index of the maximum value in bestFitness
     const maxFitnessIndex = computed(() => {
       return props.Fitness.indexOf(Math.max(...props.Fitness))
     })
 
-    // Chart data with dynamic coloring for max value in bestFitness
     const chartData = computed(() => {
-      // Create an array of background colors for bestFitness (green by default)
       const bestFitnessColors = props.Fitness.map((fitness, index) =>
-        index === maxFitnessIndex.value ? 'red' : '#66bb6a' // Highlight max fitness value in red
+        index === maxFitnessIndex.value ? 'red' : '#66bb6a'
       )
 
       return {
@@ -91,11 +88,10 @@ export default defineComponent({
                   strokeStyle: 'red',
                   lineWidth: 1,
                   hidden: false,
-                  index: original.length + 1 // optional, just to sort it last
+                  index: original.length + 1
                 }
               ]
 
-              // Force "Najlepšia Fitness" to green no matter what
               const modifiedOriginal = original.map(label => {
                 if (label.text === 'Fitness') {
                   return {
@@ -117,7 +113,6 @@ export default defineComponent({
         }
       }
     }
-
 
     return {
       chartData,

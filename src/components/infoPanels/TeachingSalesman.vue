@@ -1,3 +1,4 @@
+<!-- information about traveling salesman problem -->
 <template>
   <div class="content-container">
     <h4 class="section-title">Problém obchodného cestujúceho</h4>

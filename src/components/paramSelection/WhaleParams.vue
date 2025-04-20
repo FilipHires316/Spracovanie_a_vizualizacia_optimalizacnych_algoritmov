@@ -1,5 +1,7 @@
+<!-- form for whale inspired algorithm -->
 <template>
   <div class="content-container" style="margin-top: 1vw">
+    <!-- preset choice -->
     <q-btn-toggle
       v-model="model"
       class="my-custom-toggle"
@@ -17,6 +19,7 @@
         ]"
     ></q-btn-toggle>
 
+    <!-- field for number of iterations -->
     <q-input
       filled
       v-model.number="iterations"
@@ -30,6 +33,7 @@
       hide-bottom-space
     />
 
+    <!-- field for population size -->
     <q-input
       filled
       v-model.number="population"

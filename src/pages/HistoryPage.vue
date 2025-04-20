@@ -1,4 +1,6 @@
+<!-- layout of history page -->
 <template>
+  <!-- button for opening left drawer with history entries -->
   <q-btn
     v-if="!isMobile || !leftDrawerOpen"
     dense
@@ -9,6 +11,7 @@
     @click="toggleLeftDrawer"
     style="position: fixed; z-index: 9998; top: 100px; left: 0"
   />
+  <!-- left drawer with history entries -->
   <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered overlay>
     <q-scroll-area style="height: 100%; flex: 1" class="custom-scroll">
       <div class="Menu">
@@ -34,6 +37,7 @@
     </q-scroll-area>
   </q-drawer>
 
+  <!-- button for opening right drawer with history entries only if screen is split -->
   <q-btn
     v-if="(!isMobile || !rightDrawerOpen) && screenSplit"
     dense
@@ -45,6 +49,7 @@
     style="position: fixed; z-index: 9998; top: 100px; right: 0"
   />
 
+  <!-- right drawer with history entries only if screen is split-->
   <q-drawer
     show-if-above
     v-model="rightDrawerOpen"
@@ -78,9 +83,10 @@
   </q-drawer>
 
   <div class="page-container">
-    <!-- Left Page -->
+    <!-- left page with visualisation of solution is filling entire page if screen is not split -->
     <div class="scroll-wrapper" :style="{ width: screenSplit ? '50vw' : '100vw' }">
       <q-page class="column items-center justify-evenly page">
+        <!-- title of the problem solved and algorithm used -->
         <div v-if="entries[leftSolutionIndex]" class="headerBanner">
           <span class="title">
             {{
@@ -89,6 +95,7 @@
           </span>
         </div>
 
+        <!-- parameters of chosen algorithm -->
         <div v-if="entries[leftSolutionIndex]" class="row q-col-gutter-md" style="margin-top: 10px; width: 100%">
           <div class="col-md-6 col-xs-12">
             <div
@@ -112,6 +119,7 @@
             </div>
           </div>
 
+          <!-- parameters of chosen problem -->
           <div class="col-md-6 col-xs-12">
             <div
               class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="border-radius: 20px; height: 100%">
@@ -124,6 +132,8 @@
             </div>
           </div>
         </div>
+
+        <!-- fitness graph of entire population -->
         <GenerationGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
           v-if="entries[leftSolutionIndex]"
@@ -132,25 +142,32 @@
           label="Vývoj Fitness"
           @bar-click="(genIndex) => (leftIteration = genIndex)"
         />
+
+        <!-- fitness graph of one iteration -->
         <IndividualsGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
           v-if="entries[leftSolutionIndex]"
           :Fitness="entries[leftSolutionIndex]?.fitness[leftIteration] ?? []"
           :label="'Fitness Jedincov'"
           @bar-click="(genIndex) => { leftIndividual = genIndex; console.log(entries[leftSolutionIndex]?.solution?.[leftIteration]?.[leftIndividual] ?? []); }"
-
         />
+
+        <!-- visualisation of traveling salesman problem solution -->
         <SalesmanVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
           v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'"
           :cities="entries[leftSolutionIndex]?.solution[leftIteration]?.[leftIndividual] ?? []"
         />
+
+        <!-- visualisation of knapsack problem solution -->
         <KnapsackVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
           v-if="entries[leftSolutionIndex]?.problem == 'Batoh'"
           :solution="entries[leftSolutionIndex]?.solution[leftIteration]?.[leftIndividual] ?? []"
           :capacity="entries[leftSolutionIndex]?.capacity as number"
         />
+
+        <!-- visualisation of bin packing problem solution -->
         <BinVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
           v-if="entries[leftSolutionIndex]?.problem == 'Koše'"
@@ -160,9 +177,10 @@
       </q-page>
     </div>
 
-    <!-- Right Page -->
+    <!-- right page with visualisation of solution only if screen is split -->
     <div v-if="screenSplit" class="scroll-wrapper" :style="{ width: screenSplit ? '50vw' : '100vw' }">
       <q-page class="column items-center justify-evenly page">
+        <!-- title of the problem solved and algorithm used -->
         <div v-if="entries[rightSolutionIndex]" class="headerBanner">
           <span class="title">
             {{
@@ -171,6 +189,7 @@
           </span>
         </div>
 
+        <!-- parameters of chosen algorithm -->
         <div v-if="entries[rightSolutionIndex]" class="row q-col-gutter-md" style="margin-top: 10px; width: 100%">
           <div class="col-md-6 col-xs-12">
             <div
@@ -194,6 +213,7 @@
             </div>
           </div>
 
+          <!-- parameters of chosen problem -->
           <div class="col-md-6 col-xs-12">
             <div
               class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="border-radius: 20px; height: 100%">
@@ -206,6 +226,8 @@
             </div>
           </div>
         </div>
+
+        <!-- fitness graph of entire population -->
         <GenerationGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
           v-if="entries[rightSolutionIndex]"
@@ -214,25 +236,32 @@
           label="Vývoj Fitness"
           @bar-click="(genIndex) => (rightIteration = genIndex)"
         />
+
+        <!-- fitness graph of one iteration -->
         <IndividualsGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
           v-if="entries[rightSolutionIndex]"
           :Fitness="entries[rightSolutionIndex]?.fitness[rightIteration] ?? []"
           :label="'Fitness Jedincov'"
           @bar-click="(genIndex) => { rightIndividual = genIndex}"
-
         />
+
+        <!-- visualisation of traveling salesman problem solution -->
         <SalesmanVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
           v-if="entries[rightSolutionIndex]?.problem == 'Obchodný cestujúci'"
           :cities="entries[rightSolutionIndex]?.solution[rightIteration]?.[rightIndividual] ?? []"
         />
+
+        <!-- visualisation of knapsack problem solution -->
         <KnapsackVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
           v-if="entries[rightSolutionIndex]?.problem == 'Batoh'"
           :solution="entries[rightSolutionIndex]?.solution[rightIteration]?.[rightIndividual] ?? []"
           :capacity="entries[rightSolutionIndex]?.capacity as number"
         />
+
+        <!-- visualisation of bin packing problem solution -->
         <BinVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
           v-if="entries[rightSolutionIndex]?.problem == 'Koše'"
@@ -242,6 +271,7 @@
       </q-page>
     </div>
 
+    <!-- button for splitting the screen -->
     <q-btn
       color="grey"
       :icon="screenSplit ? 'remove' : 'add'"

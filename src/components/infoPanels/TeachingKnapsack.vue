@@ -1,3 +1,4 @@
+<!-- information about knapsak problem -->
 <template>
   <div class="content-container">
     <h4 class="section-title">Problém batohu</h4>

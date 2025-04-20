@@ -1,3 +1,4 @@
+<!-- information about genetic algorithm -->
 <template>
   <div class="content-container">
     <h4 class="section-title">Genetický Algoritmus</h4>

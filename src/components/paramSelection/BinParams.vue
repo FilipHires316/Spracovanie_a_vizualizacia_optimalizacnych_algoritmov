@@ -1,5 +1,7 @@
+<!-- form for bin packing parameters -->
 <template>
   <div class="content-container" style="margin-top: 1vw">
+    <!-- choice of preset -->
     <q-btn-toggle
       v-model="model"
       class="my-custom-toggle"
@@ -17,6 +19,7 @@
       ]"
     ></q-btn-toggle>
 
+    <!-- field for capacity -->
     <q-input
       filled
       v-model.number="capacity"
@@ -32,6 +35,7 @@
 
     <h5 class="subsection-title">Predmety:</h5>
 
+    <!-- dynamic items -->
     <div v-for="item in binItems" :key="item.id">
       <BinItem
         :item="item"
@@ -40,6 +44,7 @@
       />
     </div>
 
+    <!-- button for adding new item -->
     <q-btn
       icon="add"
       color="green"

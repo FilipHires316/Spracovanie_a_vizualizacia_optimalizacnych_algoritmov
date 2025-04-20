@@ -1,3 +1,4 @@
+<!-- information about whale inspired algorithm -->
 <template>
   <div class="content-container">
     <h4 class="section-title">Algoritmus inšpirovaný správaním veľrýb</h4>

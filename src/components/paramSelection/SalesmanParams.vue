@@ -1,5 +1,7 @@
+<!-- form for traveling salesman problem parameters -->
 <template>
   <div class="content-container" style="margin-top: 1vw">
+    <!-- preset choice -->
     <q-btn-toggle
       v-model="model"
       class="my-custom-toggle"
@@ -18,15 +20,20 @@
     ></q-btn-toggle>
 
     <h5 class="subsection-title">Počiatočné / Koncové mesto:</h5>
+
+    <!-- initial city -->
     <div v-for="item in start" :key="item.id">
       <CityItem :item="item" :showButton="false" />
     </div>
 
     <h5 class="subsection-title">Ostatné mestá:</h5>
+
+    <!-- dynamic cities -->
     <div v-for="item in cities" :key="item.id">
       <CityItem :item="item" @delete="removeItem" @update="updateCity" />
     </div>
 
+    <!-- button for adding a city -->
     <q-btn
       icon="add"
       color="green"
