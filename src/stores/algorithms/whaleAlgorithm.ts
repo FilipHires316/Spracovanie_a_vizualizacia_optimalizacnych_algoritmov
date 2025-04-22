@@ -94,7 +94,6 @@ const move = (problemToSolve:
       }
     }
   }
-  newWhale.solution = problemToSolve.rearrange(newWhale.solution);
   return newWhale;
 };
 

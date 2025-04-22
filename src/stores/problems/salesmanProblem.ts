@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import type { Chromosome } from 'stores/individuals/chromosome'
 import { useParamStore } from 'stores/paramStore'
+import { Chromosome } from 'stores/individuals/chromosome'
 import type { Lion } from 'stores/individuals/lion'
 
 export const useSalesmanProblem = defineStore('salesmanProblem', () => {
@@ -79,9 +79,53 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return fitness;
   }
 
-  const getProblemType = () => {
-    return 'Obchodný cestujúci'
-  };
+  const onePointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
+    const crossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 2)) + 1
+    const firstBreed = [
+      ...parent1.solution.slice(0, crossoverPoint),
+      ...parent2.solution.slice(crossoverPoint),
+    ]
+    const secondBreed = [
+      ...parent2.solution.slice(0, crossoverPoint),
+      ...parent1.solution.slice(crossoverPoint),
+    ]
+    return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
+  }
+
+  const twoPointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
+    const firstCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 3)) + 1
+    let secondCrossoverPoint = 0
+    while (secondCrossoverPoint < firstCrossoverPoint) {
+      secondCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 1)) + 1
+    }
+    const firstBreed = [
+      ...parent1.solution.slice(0, firstCrossoverPoint),
+      ...parent2.solution.slice(firstCrossoverPoint, secondCrossoverPoint),
+      ...parent1.solution.slice(secondCrossoverPoint),
+    ]
+    const secondBreed = [
+      ...parent2.solution.slice(0, firstCrossoverPoint),
+      ...parent1.solution.slice(firstCrossoverPoint, secondCrossoverPoint),
+      ...parent2.solution.slice(secondCrossoverPoint),
+    ]
+    return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
+  }
+
+  const uniformCrossover = (parent1: Chromosome, parent2: Chromosome) => {
+    const firstBreed = []
+    const secondBreed = []
+    for (let i = 0; i < parent1.solution.length; i++) {
+      const uniform = Math.floor(Math.random() * 2)
+      if (uniform === 0) {
+        firstBreed.push(parent1.solution[i])
+        secondBreed.push(parent2.solution[i])
+      } else {
+        firstBreed.push(parent2.solution[i])
+        secondBreed.push(parent1.solution[i])
+      }
+    }
+    return [new Chromosome(firstBreed as number[]), new Chromosome(secondBreed as number[])]
+  }
 
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
     population.forEach(individual => {
@@ -100,11 +144,18 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return population;
   };
 
+  const getProblemType = () => {
+    return 'Obchodný cestujúci'
+  };
+
   return {
     mutate,
     createSolutions,
     calculateFitness,
     getProblemType,
-    rearrange
+    rearrange,
+    onePointCrossover,
+    twoPointCrossover,
+    uniformCrossover,
   };
 });

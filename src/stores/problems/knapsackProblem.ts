@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useParamStore } from 'stores/paramStore'
-import type { Chromosome } from 'stores/individuals/chromosome'
+import { Chromosome } from 'stores/individuals/chromosome'
 import type { Lion } from 'stores/individuals/lion'
 
 export const useKnapsackProblem = defineStore('knapsackProblem', () => {
@@ -9,34 +9,17 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
 
   const createSolutions = (size: number): number[][] => {
     const solutions: number[][] = [];
-    let counter: number = 0;
     while (solutions.length < size) {
       const currentSolution: number[] = [];
       for (let i = 0; i < paramStore.knapsackItems.length; i++) {
         currentSolution.push(Math.random() < 0.5 ? 0 : 1);
       }
-      if (!solutions.some(sol => sol.every((val, index) => val === currentSolution[index]))) {
-        solutions.push(currentSolution);
-        counter = 0;
-      }
-      else {
-        counter++
-        if (counter > 100) {
-          return solutions;
-        }
-      }
+      solutions.push(currentSolution);
     }
     return solutions;
   };
 
-  const rearrange = (solution: (number | undefined)[]): number[] => {
-    return solution.map(val =>
-      val === undefined ? 0 : val < 0 ? 0 : val > 1 ? 1 : val
-    );
-  };
-
   const calculateFitness = (solution: number[]) => {
-    let fitness = 0;
     let totalSize = 0;
     let totalPrice = 0;
     for (let i = 0; i < solution.length; i++) {
@@ -45,24 +28,59 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
         totalPrice += paramStore.knapsackItems[i]?.price ?? 0;
       }
     }
-    if (paramStore.capacity) {
-      if (paramStore.capacity - totalSize > 0) {
-        fitness = totalPrice * 100 + ((paramStore.capacity - totalSize) * 50);
-      }
-      else {
-        fitness = totalPrice * 100 + ((paramStore.capacity - totalSize) * 300);
-      }
+    if (paramStore.capacity ?? 0 < totalSize) {
+      return 0
     }
-    if (fitness < 1) {
-      return 1
-    }
-    return fitness
+    return (totalPrice * 10) - totalSize
   };
 
+  const onePointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
+    const crossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 2)) + 1
+    const firstBreed = [
+      ...parent1.solution.slice(0, crossoverPoint),
+      ...parent2.solution.slice(crossoverPoint),
+    ]
+    const secondBreed = [
+      ...parent2.solution.slice(0, crossoverPoint),
+      ...parent1.solution.slice(crossoverPoint),
+    ]
+    return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
+  }
 
-  const getProblemType = () => {
-    return 'Batoh'
-  };
+  const twoPointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
+    const firstCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 3)) + 1
+    let secondCrossoverPoint = 0
+    while (secondCrossoverPoint < firstCrossoverPoint) {
+      secondCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 1)) + 1
+    }
+    const firstBreed = [
+      ...parent1.solution.slice(0, firstCrossoverPoint),
+      ...parent2.solution.slice(firstCrossoverPoint, secondCrossoverPoint),
+      ...parent1.solution.slice(secondCrossoverPoint),
+    ]
+    const secondBreed = [
+      ...parent2.solution.slice(0, firstCrossoverPoint),
+      ...parent1.solution.slice(firstCrossoverPoint, secondCrossoverPoint),
+      ...parent2.solution.slice(secondCrossoverPoint),
+    ]
+    return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
+  }
+
+  const uniformCrossover = (parent1: Chromosome, parent2: Chromosome) => {
+    const firstBreed = []
+    const secondBreed = []
+    for (let i = 0; i < parent1.solution.length; i++) {
+      const uniform = Math.floor(Math.random() * 2)
+      if (uniform === 0) {
+        firstBreed.push(parent1.solution[i])
+        secondBreed.push(parent2.solution[i])
+      } else {
+        firstBreed.push(parent2.solution[i])
+        secondBreed.push(parent1.solution[i])
+      }
+    }
+    return [new Chromosome(firstBreed as number[]), new Chromosome(secondBreed as number[])]
+  }
 
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
     population.forEach(individual => {
@@ -75,11 +93,18 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return population;
   };
 
+
+  const getProblemType = () => {
+    return 'Batoh'
+  };
+
   return {
     mutate,
     createSolutions,
     calculateFitness,
     getProblemType,
-    rearrange
+    onePointCrossover,
+    twoPointCrossover,
+    uniformCrossover,
   };
 });

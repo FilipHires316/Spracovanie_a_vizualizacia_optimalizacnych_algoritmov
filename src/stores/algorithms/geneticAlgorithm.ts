@@ -4,133 +4,111 @@ import type { useSalesmanProblem } from 'stores/problems/salesmanProblem'
 import { Chromosome } from 'stores/individuals/chromosome'
 import { useParamStore } from 'stores/paramStore'
 
-const createPopulation = (problemToSolve:
-                            | ReturnType<typeof useKnapsackProblem>
-                            | ReturnType<typeof useBinProblem>
-                            | ReturnType<typeof useSalesmanProblem>,
-                          size: number) => {
+const createPopulation = (
+  problemToSolve:
+    | ReturnType<typeof useKnapsackProblem>
+    | ReturnType<typeof useBinProblem>
+    | ReturnType<typeof useSalesmanProblem>,
+  size: number,
+) => {
   const solutions: void | number[][] = problemToSolve.createSolutions(size)
   const population: Chromosome[] = []
   if (solutions) {
-    solutions.forEach(solution => {
-      population.push(new Chromosome(solution));
-    });
+    solutions.forEach((solution) => {
+      population.push(new Chromosome(solution))
+    })
   }
   return population
 }
 
-const evaluateIndividuals = (problemToSolve:
-                               | ReturnType<typeof useKnapsackProblem>
-                               | ReturnType<typeof useBinProblem>
-                               | ReturnType<typeof useSalesmanProblem>,
-                             population: Chromosome[]) => {
-  population.forEach(individual => {
+const evaluateIndividuals = (
+  problemToSolve:
+    | ReturnType<typeof useKnapsackProblem>
+    | ReturnType<typeof useBinProblem>
+    | ReturnType<typeof useSalesmanProblem>,
+  population: Chromosome[],
+) => {
+  population.forEach((individual) => {
     const fitness = problemToSolve.calculateFitness(individual.solution)
     if (fitness) {
       individual.fitness = fitness
     }
-  });
-  return population;
+  })
+  return population
 }
 
 const applyElitism = (population: Chromosome[], elitismRate: number) => {
-  const eliteNumber = population.length / 100 * elitismRate
-  const sortedPopulation = [...population].sort((a, b) => b.fitness - a.fitness);
-  return sortedPopulation.slice(0, eliteNumber);
+  const eliteNumber = Math.ceil((population.length / 100) * elitismRate)
+  const sortedPopulation = [...population].sort((a, b) => b.fitness - a.fitness)
+  return sortedPopulation.slice(0, eliteNumber)
 }
 
 const tournamentSelection = (population: Chromosome[], tournamentSize: number) => {
-  const available = population.filter(chromosome => chromosome.timesCrossed < 4);
-  const shuffled = [...available].sort(() => Math.random() - 0.5);
-  const selected = shuffled.slice(0, tournamentSize);
-  const parent = selected.reduce((best, current) => (current.fitness > best.fitness ? current : best));
-  parent.timesCrossed++;
-  return parent;
-};
+  const available = population.filter((chromosome) => chromosome.fitness > 0)
+  const shuffled = [...available]
+  let currentIndex = shuffled.length;
+  while (currentIndex !== 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    const temp = shuffled[currentIndex];
+    shuffled[currentIndex] = shuffled[randomIndex] as Chromosome;
+    shuffled[randomIndex] = temp as Chromosome;
+  }
+  const selected = shuffled.slice(0, tournamentSize)
+  return selected.reduce((best, current) => (current.fitness > best.fitness ? current : best))
+}
 
 const rouletteSelection = (population: Chromosome[]) => {
-  const available = population.filter(chromosome => chromosome.timesCrossed < 4);
-  const totalFitness = available.reduce((sum, chromosome) => sum + chromosome.fitness, 0);
-  const threshold = Math.random() * totalFitness;
-  let cumulativeFitness = 0;
+  const available = population.filter((chromosome) => chromosome.fitness > 0)
+  const totalFitness = available.reduce((sum, chromosome) => sum + chromosome.fitness, 0)
+  const threshold = Math.random() * totalFitness
+  let cumulativeFitness = 0
   for (const chromosome of available) {
-    cumulativeFitness += chromosome.fitness;
+    cumulativeFitness += chromosome.fitness
     if (cumulativeFitness >= threshold) {
-      chromosome.timesCrossed++;
-      return chromosome;
+      return chromosome
     }
   }
-};
+}
 
-const onePointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
-  const crossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 2)) + 1;
-  const firstBreed = [...parent1.solution.slice(0, crossoverPoint), ...parent2.solution.slice(crossoverPoint)]
-  const secondBreed = [...parent2.solution.slice(0, crossoverPoint), ...parent1.solution.slice(crossoverPoint)]
-  return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
-};
-
-const twoPointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
-  const firstCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 3)) + 1;
-  let secondCrossoverPoint = 0
-  while (secondCrossoverPoint < firstCrossoverPoint) {
-    secondCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 2)) + 1;
-  }
-  const firstBreed = [...parent1.solution.slice(0, firstCrossoverPoint), ...parent2.solution.slice(firstCrossoverPoint, secondCrossoverPoint), ...parent1.solution.slice(secondCrossoverPoint)]
-  const secondBreed = [...parent2.solution.slice(0, firstCrossoverPoint), ...parent1.solution.slice(firstCrossoverPoint, secondCrossoverPoint), ...parent2.solution.slice(secondCrossoverPoint)]
-  return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
-};
-
-const uniformCrossover = (parent1: Chromosome, parent2: Chromosome) => {
-  const firstBreed = []
-  const secondBreed = []
-  for (let i = 0; i < parent1.solution.length; i++) {
-    const uniform = Math.floor(Math.random() * 2);
-    if (uniform === 0) {
-      firstBreed.push(parent1.solution[i])
-      secondBreed.push(parent2.solution[i])
-    }
-    else {
-      firstBreed.push(parent2.solution[i])
-      secondBreed.push(parent1.solution[i])
-    }
-  }
-  return [new Chromosome(firstBreed as number[]), new Chromosome(secondBreed as number[])]
-};
-
-const crossover = (problemToSolve:
-                     | ReturnType<typeof useKnapsackProblem>
-                     | ReturnType<typeof useBinProblem>
-                     | ReturnType<typeof useSalesmanProblem>,
-                   population: Chromosome[], newGeneration: Chromosome[], choose: string, tournamentSize: number | null, crossing: string, size: number, mutation: number) => {
+const crossover = (
+  problemToSolve:
+    | ReturnType<typeof useKnapsackProblem>
+    | ReturnType<typeof useBinProblem>
+    | ReturnType<typeof useSalesmanProblem>,
+  population: Chromosome[],
+  newGeneration: Chromosome[],
+  choose: string,
+  tournamentSize: number | null,
+  crossing: string,
+  size: number,
+  mutation: number,
+) => {
   let parent1 = null
   let parent2 = null
   while (newGeneration.length != population.length) {
     if (choose == 'tournament' && tournamentSize) {
       parent1 = tournamentSelection(population, tournamentSize)
-    }
-    else if (choose == 'roulette') {
+    } else if (choose == 'roulette') {
       parent1 = rouletteSelection(population)
     }
     while (parent2 == null || parent2 == parent1) {
       if (choose == 'tournament' && tournamentSize) {
         parent2 = tournamentSelection(population, tournamentSize)
-      }
-      else if (choose == 'roulette') {
+      } else if (choose == 'roulette') {
         parent2 = rouletteSelection(population)
       }
     }
     if (parent1 && parent2) {
       let breeds: Chromosome[] = []
       if (crossing == 'one') {
-        breeds = onePointCrossover(parent1, parent2)
+        breeds = problemToSolve.onePointCrossover(parent1, parent2)
+      } else if (crossing == 'two') {
+        breeds = problemToSolve.twoPointCrossover(parent1, parent2)
+      } else if (crossing == 'uni') {
+        breeds = problemToSolve.uniformCrossover(parent1, parent2)
       }
-      else if (crossing == 'two') {
-        breeds = twoPointCrossover(parent1, parent2)
-      }
-      else if (crossing == 'uni') {
-        breeds = uniformCrossover(parent1, parent2)
-      }
-      breeds = problemToSolve.mutate(breeds, mutation) as Chromosome[];
+      breeds = problemToSolve.mutate(breeds, mutation) as Chromosome[]
       for (let i = 0; i < breeds.length; i++) {
         if (newGeneration.length != size) {
           newGeneration.push(breeds[i] as Chromosome)
@@ -141,38 +119,75 @@ const crossover = (problemToSolve:
   return newGeneration
 }
 
-const createNewGeneration = (problemToSolve:
-                               | ReturnType<typeof useKnapsackProblem>
-                               | ReturnType<typeof useBinProblem>
-                               | ReturnType<typeof useSalesmanProblem>,
-                             population: Chromosome[], elitism: boolean, elitismRate: number, choose: string, tournamentSize: number | null , crossing: string, size: number, mutation: number) => {
+const createNewGeneration = (
+  problemToSolve:
+    | ReturnType<typeof useKnapsackProblem>
+    | ReturnType<typeof useBinProblem>
+    | ReturnType<typeof useSalesmanProblem>,
+  population: Chromosome[],
+  elitism: boolean,
+  elitismRate: number,
+  choose: string,
+  tournamentSize: number | null,
+  crossing: string,
+  size: number,
+  mutation: number,
+) => {
   let newGeneration: Chromosome[] = []
   if (elitism) {
     newGeneration = applyElitism(population, elitismRate)
   }
-  newGeneration = crossover(problemToSolve, population, newGeneration, choose, tournamentSize, crossing, size, mutation)
-  return newGeneration;
+  newGeneration = crossover(
+    problemToSolve,
+    population,
+    newGeneration,
+    choose,
+    tournamentSize,
+    crossing,
+    size,
+    mutation,
+  )
+  return newGeneration
 }
 
 const savePopulation = (populationHistory: Chromosome[][], population: Chromosome[]) => {
   populationHistory.push(population)
-  return populationHistory;
+  return populationHistory
 }
 
-export const geneticAlgorithm = (problemToSolve:
-                                   | ReturnType<typeof useKnapsackProblem>
-                                   | ReturnType<typeof useBinProblem>
-                                   | ReturnType<typeof useSalesmanProblem>) => {
+export const geneticAlgorithm = (
+  problemToSolve:
+    | ReturnType<typeof useKnapsackProblem>
+    | ReturnType<typeof useBinProblem>
+    | ReturnType<typeof useSalesmanProblem>,
+) => {
   const paramStore = useParamStore()
   let populationHistory: Chromosome[][] = []
 
   let population = createPopulation(problemToSolve, paramStore.population as number)
   population = evaluateIndividuals(problemToSolve, population)
-  if (paramStore.iterations && paramStore.elitism !== null && paramStore.mutation !== null && paramStore.choose && paramStore.crossing && paramStore.population) {
+  if (
+    paramStore.iterations &&
+    paramStore.elitism !== null &&
+    paramStore.mutation !== null &&
+    paramStore.choose &&
+    paramStore.crossing &&
+    paramStore.population
+  ) {
     for (let i = 0; i < paramStore.iterations; i++) {
-      populationHistory = savePopulation(populationHistory, population)
-      population = createNewGeneration(problemToSolve, population, paramStore.showNewInput, paramStore.elitism, paramStore.choose, paramStore.tournamentSize, paramStore.crossing, paramStore.population, paramStore.mutation)
+      population = createNewGeneration(
+        problemToSolve,
+        population,
+        paramStore.showNewInput,
+        paramStore.elitism,
+        paramStore.choose,
+        paramStore.tournamentSize,
+        paramStore.crossing,
+        paramStore.population,
+        paramStore.mutation,
+      )
       population = evaluateIndividuals(problemToSolve, population)
+      populationHistory = savePopulation(populationHistory, population)
     }
     return populationHistory
   }

@@ -81,7 +81,6 @@ const move = (problemToSolve:
       }
     }
   }
-  newLion.solution = problemToSolve.rearrange(newLion.solution);
   newLion.fitness = problemToSolve.calculateFitness(newLion.solution);
   if (newLion.fitness > newLion.territoryValue) {
     newLion.territoryValue = newLion.fitness;
