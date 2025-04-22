@@ -30,6 +30,7 @@ const evaluateIndividuals = (
 ) => {
   population.forEach((individual) => {
     const fitness = problemToSolve.calculateFitness(individual.solution)
+    console.log(fitness)
     if (fitness) {
       individual.fitness = fitness
     }
@@ -108,7 +109,7 @@ const crossover = (
       } else if (crossing == 'uni') {
         breeds = problemToSolve.uniformCrossover(parent1, parent2)
       }
-      breeds = problemToSolve.mutate(breeds, mutation) as Chromosome[]
+      breeds = problemToSolve.mutate(breeds, mutation)
       for (let i = 0; i < breeds.length; i++) {
         if (newGeneration.length != size) {
           newGeneration.push(breeds[i] as Chromosome)
@@ -163,7 +164,6 @@ export const geneticAlgorithm = (
 ) => {
   const paramStore = useParamStore()
   let populationHistory: Chromosome[][] = []
-
   let population = createPopulation(problemToSolve, paramStore.population as number)
   population = evaluateIndividuals(problemToSolve, population)
   if (

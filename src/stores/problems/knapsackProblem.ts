@@ -28,7 +28,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
         totalPrice += paramStore.knapsackItems[i]?.price ?? 0;
       }
     }
-    if (paramStore.capacity ?? 0 < totalSize) {
+    if (paramStore.capacity && paramStore.capacity < totalSize) {
       return 0
     }
     return (totalPrice * 10) - totalSize

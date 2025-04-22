@@ -2,31 +2,31 @@
 export const geneticPresets = {
   // optimal values
   optimum: {
-    iterations: 20,
+    iterations: 200,
     population: 100,
-    mutation: 1,
+    mutation: 5,
     showNewInput: true,
-    elitism: 3,
+    elitism: 1,
     choose: "tournament",
-    tournamentSize: 2,
+    tournamentSize: 3,
     crossing: "two",
   },
   // big population
   big: {
-    iterations: 40,
+    iterations: 400,
     population: 200,
-    mutation: 2,
+    mutation: 4,
     showNewInput: true,
-    elitism: 4,
+    elitism: 2,
     choose: "roulette",
     tournamentSize: 0,
     crossing: "uni",
   },
   // small population
   small: {
-    iterations: 15,
+    iterations: 100,
     population: 80,
-    mutation: 1,
+    mutation: 6,
     showNewInput: false,
     elitism: 0,
     choose: "tournament",
