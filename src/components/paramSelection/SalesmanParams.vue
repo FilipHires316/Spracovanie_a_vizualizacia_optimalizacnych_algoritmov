@@ -29,8 +29,10 @@
     <h5 class="subsection-title">Ostatné mestá:</h5>
 
     <!-- dynamic cities -->
-    <div v-for="item in cities" :key="item.id">
-      <CityItem :item="item" @delete="removeItem" @update="updateCity" />
+    <div style="overflow-y: auto; max-height: 25vh; width: 100%; scrollbar-width: none;">
+      <div v-for="item in cities" :key="item.id">
+        <CityItem :item="item" @delete="removeItem" @update="updateCity" />
+      </div>
     </div>
 
     <!-- button for adding a city -->

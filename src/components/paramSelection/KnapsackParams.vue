@@ -36,12 +36,14 @@
     <h5 class="subsection-title">Predmety:</h5>
 
     <!-- dynamic items -->
-    <div v-for="item in knapsackItems" :key="item.id">
-      <KnapsackItem
-        :item="item"
-        @delete="removeItem"
-        @update="updateItem"
-      />
+    <div style="overflow-y: auto; max-height: 25vh; width: 100%; scrollbar-width: none;">
+      <div v-for="item in knapsackItems" :key="item.id">
+        <KnapsackItem
+          :item="item"
+          @delete="removeItem"
+          @update="updateItem"
+        />
+      </div>
     </div>
 
     <!-- button for adding item -->

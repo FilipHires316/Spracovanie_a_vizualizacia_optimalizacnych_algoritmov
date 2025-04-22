@@ -1,10 +1,10 @@
 <!-- layout of page where parameters are choosed -->
 <template>
   <div class="q-pa-md">
-    <div class="row q-col-gutter-md">
+    <div class="row q-col-gutter-md items-stretch">
       <div class="col-md-6 col-xs-12">
         <!-- input parameters for algorithm -->
-        <div class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="height: 100%; min-height: 32vw">
+        <div class="q-pa-md bg-primary text-white shadow-2 rounded-borders column items-center full-height">
           <h4 class="section-title">Vstupné parametre optimalizačného algoritmu</h4>
           <q-tabs
             v-model="selectedOptimization"
@@ -25,7 +25,7 @@
 
       <div class="col-md-6 col-xs-12">
         <!-- input parameters for problem -->
-        <div class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="height: 100%; min-height: 32vw">
+        <div class="q-pa-md bg-primary text-white shadow-2 rounded-borders column items-center full-height">
           <h4 class="section-title">Vstupné parametre optimalizačného problému</h4>
           <q-tabs
             v-model="selectedProblem"
