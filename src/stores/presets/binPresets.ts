@@ -18,7 +18,7 @@ export const binPresets = {
         [9],
         [10],
         [10],
-        [22]
+        [18]
       ]
   },
   // many items to test hard computations

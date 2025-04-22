@@ -90,13 +90,14 @@ export const solve = () => {
         const gen: number[][][] = []
         generation.forEach(individual => {
           const sol: number[][] = []
-          for (let i = 0; i < Math.max(...individual.solution); i++) {
+          for (let i = 0; i < individual.solution.length; i++) {
             sol.push([])
           }
           individual.solution.forEach((index, i) => {
-            sol[index - 1]?.push(paramStore.binItems[i]?.size ?? 0);
+            sol[index]?.push(paramStore.binItems[i]?.size ?? 0);
           })
-          gen.push(sol)
+          console.log(sol)
+          gen.push(sol.filter(bin => bin.length > 0))
         })
         visSolution.push(gen)
       })

@@ -30,7 +30,6 @@ const evaluateIndividuals = (
 ) => {
   population.forEach((individual) => {
     const fitness = problemToSolve.calculateFitness(individual.solution)
-    console.log(fitness)
     if (fitness) {
       individual.fitness = fitness
     }
@@ -45,8 +44,7 @@ const applyElitism = (population: Chromosome[], elitismRate: number) => {
 }
 
 const tournamentSelection = (population: Chromosome[], tournamentSize: number) => {
-  const available = population.filter((chromosome) => chromosome.fitness > 0)
-  const shuffled = [...available]
+  const shuffled = [...population]
   let currentIndex = shuffled.length;
   while (currentIndex !== 0) {
     const randomIndex = Math.floor(Math.random() * currentIndex);
@@ -60,7 +58,7 @@ const tournamentSelection = (population: Chromosome[], tournamentSize: number) =
 }
 
 const rouletteSelection = (population: Chromosome[]) => {
-  const available = population.filter((chromosome) => chromosome.fitness > 0)
+  const available = [...population]
   const totalFitness = available.reduce((sum, chromosome) => sum + chromosome.fitness, 0)
   const threshold = Math.random() * totalFitness
   let cumulativeFitness = 0
