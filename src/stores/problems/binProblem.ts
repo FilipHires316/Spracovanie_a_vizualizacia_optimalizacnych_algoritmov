@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { useParamStore } from 'stores/paramStore'
 import { Chromosome } from 'stores/individuals/chromosome'
-import type { Lion } from 'stores/individuals/lion'
+import { Lion } from 'stores/individuals/lion'
 
 export const useBinProblem = defineStore('binProblem', () => {
 
@@ -86,6 +86,45 @@ export const useBinProblem = defineStore('binProblem', () => {
     return [new Chromosome(firstBreed as number[]), new Chromosome(secondBreed as number[])]
   }
 
+  const breed = (parent1: Lion, parent2: Lion) => {
+    const firstCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 3)) + 1
+    let secondCrossoverPoint = 0
+    while (secondCrossoverPoint < firstCrossoverPoint) {
+      secondCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 1)) + 1
+    }
+    const firstBreed = [
+      ...parent1.solution.slice(0, firstCrossoverPoint),
+      ...parent2.solution.slice(firstCrossoverPoint, secondCrossoverPoint),
+      ...parent1.solution.slice(secondCrossoverPoint),
+    ]
+    const secondBreed = [
+      ...parent2.solution.slice(0, firstCrossoverPoint),
+      ...parent1.solution.slice(firstCrossoverPoint, secondCrossoverPoint),
+      ...parent2.solution.slice(secondCrossoverPoint),
+    ]
+    return [new Lion(firstBreed, 1), new Lion(secondBreed, 0)]
+  }
+
+  const move = (solution: number[], target: number[], probability: number): number[] => {
+    const moved = [...solution]; // Clone input
+    for (let i = 0; i < moved.length; i++) {
+      if (Math.random() < probability) {
+        moved[i] = target[i] as number;
+      }
+    }
+    return moved;
+  };
+
+  const spiralMove = (target: number[]): number[] => {
+    const mutated = [...target];
+    for (let i = 0; i < mutated.length; i++) {
+      if (Math.random() < 0.1) {
+        mutated[i] = Math.floor(Math.random() * mutated.length);
+      }
+    }
+    return mutated;
+  };
+
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
     population.forEach(individual => {
       for (let index = 0; index < individual.solution.length; index++) {
@@ -113,5 +152,8 @@ export const useBinProblem = defineStore('binProblem', () => {
     onePointCrossover,
     twoPointCrossover,
     uniformCrossover,
+    breed,
+    move,
+    spiralMove,
   };
 });

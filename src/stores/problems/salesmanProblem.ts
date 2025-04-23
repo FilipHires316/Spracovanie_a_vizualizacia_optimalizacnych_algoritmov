@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { useParamStore } from 'stores/paramStore'
 import { Chromosome } from 'stores/individuals/chromosome'
-import type { Lion } from 'stores/individuals/lion'
+import { Lion } from 'stores/individuals/lion'
 
 export const useSalesmanProblem = defineStore('salesmanProblem', () => {
 
@@ -104,6 +104,59 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return [new Chromosome(child1 as number[]), new Chromosome(child2 as number[])];
   };
 
+  const breed = (parent1: Lion, parent2: Lion) => {
+    const len = parent1.solution.length;
+    const start = Math.floor(Math.random() * len);
+    const end = Math.floor(Math.random() * (len - start)) + start;
+    const slice1 = parent1.solution.slice(start, end);
+    const fillFromParent2 = parent2.solution.filter(city => !slice1.includes(city));
+    const child1 = [
+      ...fillFromParent2.slice(0, start),
+      ...slice1,
+      ...fillFromParent2.slice(start)
+    ];
+    const slice2 = parent2.solution.slice(start, end);
+    const fillFromParent1 = parent1.solution.filter(city => !slice2.includes(city));
+    const child2 = [
+      ...fillFromParent1.slice(0, start),
+      ...slice2,
+      ...fillFromParent1.slice(start)
+    ];
+    return [new Lion(child1, 1), new Lion(child2, 0)];
+  }
+
+  const move = (solution: number[], target: number[], probability: number): number[] => {
+    const len = solution.length;
+    const newSolution = Array(len).fill(null);
+    const positions = [];
+    for (let i = 0; i < len; i++) {
+      if (Math.random() < probability) {
+        newSolution[i] = target[i];
+        positions.push(i);
+      }
+    }
+    let fillIndex1 = 0;
+    for (let i = 0; i < len; i++) {
+      if (!positions.includes(i)) {
+        while (newSolution.includes(solution[fillIndex1])) fillIndex1++;
+        newSolution[i] = solution[fillIndex1++];
+      }
+    }
+    return newSolution;
+  };
+
+
+  const spiralMove = (solution: number[]): number[] => {
+    const len = solution.length;
+    const i = Math.floor(Math.random() * (len - 1));
+    let j = Math.floor(Math.random() * (len - 1));
+    if (j <= i) j = i + 1; // j must be greater than i
+    const newSolution = [...solution];
+    const subArray = newSolution.slice(i + 1, j + 1).reverse();
+    newSolution.splice(i + 1, j - i, ...subArray);
+    return newSolution;
+  };
+
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
     population.forEach(individual => {
       for (let index = 0; index < individual.solution.length; index++) {
@@ -132,5 +185,8 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     onePointCrossover,
     twoPointCrossover,
     uniformCrossover,
+    breed,
+    move,
+    spiralMove
   };
 });

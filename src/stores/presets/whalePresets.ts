@@ -2,18 +2,18 @@
 export const whalePresets = {
   // optimal values
   optimum: {
-    iterations: 20,
-    population: 20,
+    iterations: 200,
+    population: 100,
   },
   // big population
   big: {
-    iterations: 30,
-    population: 30,
+    iterations: 300,
+    population: 150,
   },
   // small population
   small: {
-    iterations: 10,
-    population: 10,
+    iterations: 100,
+    population: 80,
   },
   // no values defined
   own: {

@@ -62,35 +62,6 @@ const evaluateIndividuals = (problemToSolve:
   return population;
 }
 
-const move = (problemToSolve:
-                | ReturnType<typeof useKnapsackProblem>
-                | ReturnType<typeof useBinProblem>
-                | ReturnType<typeof useSalesmanProblem>,
-              lion: Lion, target: number[], probability: number): Lion => {
-  const newSolution = [...lion.solution];
-  const newLion: Lion = { ...lion, solution: newSolution };
-  for (let i = 0; i < newLion.solution.length; i++) {
-    const lionGene = newLion.solution[i];
-    const targetGene = target[i];
-    if (lionGene !== undefined && targetGene !== undefined) {
-      if (probability > Math.random()) {
-        if (lionGene > targetGene) {
-          newLion.solution[i] = lionGene - 1;
-        } else if (lionGene < targetGene) {
-          newLion.solution[i] = lionGene + 1;
-        }
-      }
-    }
-  }
-  newLion.fitness = problemToSolve.calculateFitness(newLion.solution);
-  if (newLion.fitness > newLion.territoryValue) {
-    newLion.territoryValue = newLion.fitness;
-    newLion.territory = newLion.solution
-  }
-  return newLion;
-};
-
-
 const hunt = (problemToSolve:
                 | ReturnType<typeof useKnapsackProblem>
                 | ReturnType<typeof useBinProblem>
@@ -145,37 +116,36 @@ const hunt = (problemToSolve:
         if (groupToAttack === 0 && center.length > 0) {
           attacker = center.shift();
           if (attacker) {
-            attacker = move(problemToSolve, attacker, prey, 0.25)
+            attacker.solution = problemToSolve.move(attacker.solution, prey, 0.25)
             newPack.push(attacker)
           }
         } else if (groupToAttack === 1 && leftWing.length > 0) {
           attacker = leftWing.shift();
           if (attacker) {
-            attacker = move(problemToSolve, attacker, prey, 0.5)
+            attacker.solution = problemToSolve.move(attacker.solution, prey, 0.5)
             newPack.push(attacker)
           }
         } else if (groupToAttack === 2 && rightWing.length > 0) {
           attacker = rightWing.shift();
           if (attacker) {
-            attacker = move(problemToSolve, attacker, prey, 0.5)
+            attacker.solution = problemToSolve.move(attacker.solution, prey, 0.5)
             newPack.push(attacker)
           }
         }
       }
       others.forEach(individual => {
         const direction = ([...pack].sort(() => Math.random() - 0.5)).slice(0, Math.ceil(pack.length / 10)).reduce((max, current) => current.territoryValue > max.territoryValue ? current : max);
-        const strider = move(problemToSolve, individual, direction.territory, 0.75)
-        newPack.push(strider);
+        individual.solution = problemToSolve.move(individual.solution, direction.solution, 0.75)
+        newPack.push(individual);
       })
       males.forEach(individual => {
-        let strider = { ...individual };
         const direction = ([...pack].sort(() => Math.random() - 0.5)).slice(0, Math.ceil(pack.length / 2))
         for (let i = 0; i < direction.length; i++) {
-          strider = move(problemToSolve, strider, direction[i]?.territory ?? [], 0.75)
+          individual.solution = problemToSolve.move(individual.solution, direction[i]?.territory ?? [], 0.75)
         }
-        strider.solution = strider.territory
-        strider.fitness = strider.territoryValue
-        newPack.push(strider)
+        individual.solution = individual.territory
+        individual.fitness = individual.territoryValue
+        newPack.push(individual)
       })
       newPopulation.push(newPack)
     }
@@ -184,8 +154,8 @@ const hunt = (problemToSolve:
       pack.forEach((individual) => {
         const direction = problemToSolve.createSolutions(1)[0];
         if (direction) {
-          const strider = move(problemToSolve, individual, direction, 0.75)
-          newPack.push(strider);
+          individual.solution = problemToSolve.move(individual.solution, direction, 0.75)
+          newPack.push(individual);
         }
       })
       newPopulation.push(newPack)
@@ -218,14 +188,10 @@ const breed = (problemToSolve:
     mothers.forEach(mother => {
       father = males[Math.floor(Math.random() * males.length)]
       if (father) {
-        const crossoverPoint = Math.floor(Math.random() * (father.solution.length - 2)) + 1;
-        const firstBreed = [...father.solution.slice(0, crossoverPoint), ...mother.solution.slice(crossoverPoint)]
-        const secondBreed = [...mother.solution.slice(0, crossoverPoint), ...father.solution.slice(crossoverPoint)]
-        const babyMale = new Lion(firstBreed, 1)
-        const babyFemale = new Lion(secondBreed, 0)
-        const babies = problemToSolve.mutate([babyFemale, babyMale], 3)
+        let babies = problemToSolve.breed(father, mother)
+        babies = problemToSolve.mutate(babies, 5) as Lion[]
         babies.forEach(baby => {
-          newPack.push(baby as Lion)
+          newPack.push(baby)
         })
       }
     })
