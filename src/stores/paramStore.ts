@@ -68,7 +68,7 @@ export const useParamStore = defineStore('paramStore', () => {
   const router = useRouter();
 
   // function to validate input data
-  const checkInputs = () => {
+  const checkInputs = async () => {
     let check = true;
     if (algorithm.value === 'genetic') {
       if (
@@ -142,7 +142,7 @@ export const useParamStore = defineStore('paramStore', () => {
       });
     }
     if (check && algorithm.value !== null && problem.value !== null) {
-      solve()
+      await solve()
       void router.push('/History');
     }
   };

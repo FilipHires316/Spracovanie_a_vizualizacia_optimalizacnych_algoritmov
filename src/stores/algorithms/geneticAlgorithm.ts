@@ -3,6 +3,7 @@ import type { useBinProblem } from 'stores/problems/binProblem'
 import type { useSalesmanProblem } from 'stores/problems/salesmanProblem'
 import { Chromosome } from 'stores/individuals/chromosome'
 import { useParamStore } from 'stores/paramStore'
+import { savePopulation } from 'stores/db'
 
 const createPopulation = (
   problemToSolve:
@@ -149,19 +150,13 @@ const createNewGeneration = (
   return newGeneration
 }
 
-const savePopulation = (populationHistory: Chromosome[][], population: Chromosome[]) => {
-  populationHistory.push(population)
-  return populationHistory
-}
-
-export const geneticAlgorithm = (
+export const geneticAlgorithm = async (
   problemToSolve:
     | ReturnType<typeof useKnapsackProblem>
     | ReturnType<typeof useBinProblem>
     | ReturnType<typeof useSalesmanProblem>,
 ) => {
   const paramStore = useParamStore()
-  let populationHistory: Chromosome[][] = []
   let population = createPopulation(problemToSolve, paramStore.population as number)
   population = evaluateIndividuals(problemToSolve, population)
   if (
@@ -185,8 +180,7 @@ export const geneticAlgorithm = (
         paramStore.mutation,
       )
       population = evaluateIndividuals(problemToSolve, population)
-      populationHistory = savePopulation(populationHistory, population)
+      await savePopulation(i, population)
     }
-    return populationHistory
   }
 }

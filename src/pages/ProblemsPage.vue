@@ -1,6 +1,11 @@
 <!-- layout of page where parameters are choosed -->
 <template>
   <div class="q-pa-md">
+    <!-- text while computing -->
+    <div v-if="isRunning" class="loading-text-overlay">
+      <div class="loading-text">OPTIMALIZÁCIA PREBIEHA...</div>
+    </div>
+
     <div class="row q-col-gutter-md items-stretch">
       <div class="col-md-6 col-xs-12">
         <!-- input parameters for algorithm -->
@@ -52,14 +57,14 @@
         size="20px"
         class="q-mb-md"
         style="margin-top: 1vw"
-        @click="checkInputs"
+        @click="runWithLoading"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, nextTick } from 'vue';
 import GeneticParams from 'components/paramSelection/GeneticParams.vue';
 import LionParams from 'components/paramSelection/LionParams.vue'
 import WhaleParams from 'components/paramSelection/WhaleParams.vue'
@@ -86,7 +91,33 @@ export default defineComponent({
     const paramStore = useParamStore();
     const checkInputs = paramStore.checkInputs;
 
-    return { selectedOptimization, selectedProblem, checkInputs };
+    const isRunning = ref(false);
+
+    const runWithLoading = async () => {
+      isRunning.value = true;
+      await nextTick();
+      setTimeout(() => {
+        (async () => {
+          try {
+            await checkInputs();
+          } catch (e) {
+            console.error(e);
+          } finally {
+            isRunning.value = false;
+          }
+        })().catch((error) => {
+          console.error('Error in async function:', error);
+        });
+      }, 50);
+    };
+
+    return {
+      selectedOptimization,
+      selectedProblem,
+      checkInputs,
+      runWithLoading,
+      isRunning,
+    };
   }
 });
 </script>
@@ -106,5 +137,28 @@ export default defineComponent({
   gap: 1vw;
   margin-top: 1vw;
   margin-bottom: 2vw;
+}
+
+.loading-text-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-text {
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  background-color: #027be3;
+  padding: 1.5rem 3rem;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
 }
 </style>
