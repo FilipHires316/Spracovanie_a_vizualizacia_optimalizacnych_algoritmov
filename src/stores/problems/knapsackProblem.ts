@@ -31,7 +31,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     if (paramStore.capacity && paramStore.capacity < totalSize) {
       return 1
     }
-    return (totalPrice * 10) - totalSize
+    return (totalPrice * 100) - totalSize
   };
 
   const onePointCrossover = (parent1: Chromosome, parent2: Chromosome) => {

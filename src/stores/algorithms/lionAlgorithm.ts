@@ -3,6 +3,7 @@ import type { useBinProblem } from 'stores/problems/binProblem'
 import type { useSalesmanProblem } from 'stores/problems/salesmanProblem'
 import { useParamStore } from 'stores/paramStore'
 import { Lion } from 'stores/individuals/lion'
+import { savePopulation } from 'stores/db'
 
 const createPopulation = (problemToSolve:
                             | ReturnType<typeof useKnapsackProblem>
@@ -338,41 +339,30 @@ const migration = (population: Lion[][], femalesNumber: number, malesNumber: num
   return newNewPopulation
 };
 
-const savePopulation = (populationHistory: Lion[][][], population: Lion[][]) => {
-  populationHistory.push(population)
-  return populationHistory;
-}
-
-const unpack = (populationHistory: Lion[][][]) => {
-  const unpack2: Lion[][] = []
-  populationHistory.forEach(generation => {
-    const unpack1: Lion[] = []
-    generation.forEach(pack => {
-      pack.forEach(individual => {
-        unpack1.push(individual)
-      });
+const unpack = (population: Lion[][]) => {
+  const unpack: Lion[] = []
+  population.forEach(pack => {
+    pack.forEach(individual => {
+      unpack.push(individual)
     });
-    unpack2.push(unpack1)
   });
-  return unpack2
+  return unpack
 }
 
-export const lionAlgorithm = (problemToSolve:
+export const lionAlgorithm = async (problemToSolve:
                                    | ReturnType<typeof useKnapsackProblem>
                                    | ReturnType<typeof useBinProblem>
                                    | ReturnType<typeof useSalesmanProblem>) => {
   const paramStore = useParamStore()
-  let populationHistory: Lion[][][] = []
   if (paramStore.packs != null && paramStore.males != null && paramStore.females != null && paramStore.hunters != null && paramStore.iterations) {
     let population = createPopulation(problemToSolve, paramStore.packs, paramStore.females, paramStore.males)
     population = evaluateIndividuals(problemToSolve, population)
     for (let i = 0; i < paramStore.iterations; i++) {
-      populationHistory = savePopulation(populationHistory, population)
       population = hunt(problemToSolve, population, paramStore.females / 100 * paramStore.hunters)
       population = breed(problemToSolve, population)
       population = evaluateIndividuals(problemToSolve, population)
       population = migration(population, paramStore.females, paramStore.males)
+      await savePopulation(i, unpack(population))
     }
-    return unpack(populationHistory)
   }
 }

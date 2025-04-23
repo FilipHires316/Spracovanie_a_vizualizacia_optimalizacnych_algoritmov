@@ -3,6 +3,7 @@ import type { useBinProblem } from 'stores/problems/binProblem'
 import type { useSalesmanProblem } from 'stores/problems/salesmanProblem'
 import { useParamStore } from 'stores/paramStore'
 import { Whale } from 'stores/individuals/whale'
+import { savePopulation } from 'stores/db'
 
 const createPopulation = (problemToSolve:
                             | ReturnType<typeof useKnapsackProblem>
@@ -133,25 +134,18 @@ const relocate = (problemToSolve:
   return newPopulation
 }
 
-const savePopulation = (populationHistory: Whale[][], population: Whale[]) => {
-  populationHistory.push(population)
-  return populationHistory;
-}
-
-export const whaleAlgorithm = (problemToSolve:
+export const whaleAlgorithm = async (problemToSolve:
                                 | ReturnType<typeof useKnapsackProblem>
                                 | ReturnType<typeof useBinProblem>
                                 | ReturnType<typeof useSalesmanProblem>) => {
   const paramStore = useParamStore()
-  let populationHistory: Whale[][] = []
   if (paramStore.population && paramStore.iterations) {
     let population = createPopulation(problemToSolve, paramStore.population)
     population = evaluateIndividuals(problemToSolve, population)
     for (let i = 0; i < paramStore.iterations; i++) {
-      populationHistory = savePopulation(populationHistory, population)
       population = relocate(problemToSolve, population, i, paramStore.iterations)
       population = evaluateIndividuals(problemToSolve, population)
+      await savePopulation(i, population)
     }
-    return populationHistory
   }
 }

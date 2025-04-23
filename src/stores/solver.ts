@@ -35,9 +35,9 @@ export const solve = async () => {
     if (algorithm.value === 'genetic') {
       await geneticAlgorithm(problemToSolve);
     } else if (algorithm.value === 'lion') {
-      lionAlgorithm(problemToSolve);
+      await lionAlgorithm(problemToSolve);
     } else if (algorithm.value === 'whale') {
-      whaleAlgorithm(problemToSolve);
+      await whaleAlgorithm(problemToSolve);
     }
     // creating and saving all data needed for visualisation based on algorithm and problem
     const { entries } = storeToRefs(history);

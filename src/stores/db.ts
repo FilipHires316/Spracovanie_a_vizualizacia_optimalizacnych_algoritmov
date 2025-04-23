@@ -1,5 +1,7 @@
 import { openDB } from 'idb'
 import type { Chromosome } from 'stores/individuals/chromosome'
+import type { Lion } from 'stores/individuals/lion'
+import type { Whale } from 'stores/individuals/whale'
 
 // DB create
 export const getDB = async () => {
@@ -14,7 +16,7 @@ export const getDB = async () => {
 }
 
 // Function to save generation to DB
-export const savePopulation = async (generationIndex: number, population: Chromosome[]) => {
+export const savePopulation = async (generationIndex: number, population: Chromosome[] | Lion[] | Whale[]) => {
   const db = await getDB()
   const transaction = db.transaction('generations', 'readwrite')
   const store = transaction.objectStore('generations')
@@ -26,14 +28,6 @@ export const savePopulation = async (generationIndex: number, population: Chromo
     })),
   })
   await transaction.done
-}
-
-// Function to retrieve all generations from the database
-export const getGenerationsFromDB = async () => {
-  const db = await getDB()
-  const transaction = db.transaction('generations', 'readonly')
-  const store = transaction.objectStore('generations')
-  return await store.getAll()
 }
 
 // Function to get one generation by index
