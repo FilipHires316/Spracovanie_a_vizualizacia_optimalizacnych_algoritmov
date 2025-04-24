@@ -25,12 +25,12 @@
           header-class="bg-primary"
         >
           <q-btn
-            v-for="(item, index) in history.entries"
+            v-for="(item, index) in history"
             :key="index"
             class="menuButton"
-            :label="item.algorithm + ' + ' + item.problem"
+            :label="'Výpočet ' + item"
             stack
-            @click="leftSolutionIndexSet(index)"
+            @click="leftSolutionIndexSet(item)"
           />
         </q-expansion-item>
       </div>
@@ -70,10 +70,10 @@
           header-class="bg-primary"
         >
           <q-btn
-            v-for="(item, index) in history.entries"
+            v-for="(item, index) in history"
             :key="index"
             class="menuButton"
-            :label="item.algorithm + ' + ' + item.problem"
+            :label="'Výpočet ' + item"
             stack
             @click="rightSolutionIndexSet(index)"
           />
@@ -82,40 +82,40 @@
     </q-scroll-area>
   </q-drawer>
 
-  <div class="page-container">
+  <div class="page-container" v-if="leftSolutionEntry && rightSolutionEntry">
     <!-- left page with visualisation of solution is filling entire page if screen is not split -->
     <div class="scroll-wrapper" :style="{ width: screenSplit ? '50vw' : '100vw' }">
       <q-page class="column items-center justify-evenly page">
         <!-- title of the problem solved and algorithm used -->
-        <div v-if="entries[leftSolutionIndex]" class="headerBanner">
+        <div class="headerBanner">
           <span class="title">
             {{
-              entries[leftSolutionIndex]?.algorithm + ' + ' + entries[leftSolutionIndex]?.problem
+             leftSolutionEntry.algorithm + ' + ' + leftSolutionEntry.problem
             }}
           </span>
         </div>
 
         <!-- parameters of chosen algorithm -->
-        <div v-if="entries[leftSolutionIndex]" class="row q-col-gutter-md" style="margin-top: 10px; width: 100%">
+        <div class="row q-col-gutter-md" style="margin-top: 10px; width: 100%">
           <div class="col-md-6 col-xs-12">
             <div
               class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="border-radius: 20px; height: 100%">
               <h4 class="section-title">Optimalizačný algoritmus</h4>
-              <span class="paramInfo">{{'Počet iterácií: ' + entries[leftSolutionIndex]?.solution.length}}</span>
-              <span class="paramInfo">{{'Velkosť populácie: ' + entries[leftSolutionIndex]?.solution[0]?.length}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický'" class="paramInfo">{{'Pravdepodobnosť mutácie: ' + entries[leftSolutionIndex]?.mutation + '%'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && entries[leftSolutionIndex]?.elitism" class="paramInfo">{{'Elitizmus: Áno'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && !entries[leftSolutionIndex]?.elitism" class="paramInfo">{{'Elitizmus: Nie'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && entries[leftSolutionIndex]?.elitism" class="paramInfo">{{'Miera elitizmu: ' + entries[leftSolutionIndex]?.elitismRate + '%'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && entries[leftSolutionIndex]?.choose == 'roulette'" class="paramInfo">{{'Spôsob výberu jedincov: Ruleta'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && entries[leftSolutionIndex]?.choose == 'tournament'" class="paramInfo">{{'Spôsob výberu jedincov: Turnaj'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && entries[leftSolutionIndex]?.crossing == 'one'" class="paramInfo">{{'Spôsob kríženia: Jednobodové'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && entries[leftSolutionIndex]?.crossing == 'two'" class="paramInfo">{{'Spôsob kríženia: Dvojbodové'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Genetický' && entries[leftSolutionIndex]?.crossing == 'uni'" class="paramInfo">{{'Spôsob kríženia: Uniformné'}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet svoriek: ' + entries[leftSolutionIndex]?.packs}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samíc v svorke: ' + entries[leftSolutionIndex]?.females}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samcov v svorke: ' + entries[leftSolutionIndex]?.males}}</span>
-              <span v-if="entries[leftSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Loviace samice: ' + entries[leftSolutionIndex]?.hunters + '%'}}</span>
+              <span class="paramInfo">{{'Počet iterácií: ' + leftSolutionEntry.solution.length}}</span>
+              <span class="paramInfo">{{'Velkosť populácie: ' + leftSolutionEntry.solution[0]?.length}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Genetický'" class="paramInfo">{{'Pravdepodobnosť mutácie: ' + leftSolutionEntry.mutation + '%'}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Genetický' && leftSolutionEntry.elitism" class="paramInfo">{{'Elitizmus: Áno'}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Genetický' && !leftSolutionEntry.elitism" class="paramInfo">{{'Elitizmus: Nie'}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Genetický' && leftSolutionEntry.elitism" class="paramInfo">{{'Miera elitizmu: ' + leftSolutionEntry.elitismRate + '%'}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Genetický' && leftSolutionEntry.choose == 'roulette'" class="paramInfo">{{'Spôsob výberu jedincov: Ruleta'}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Genetický' && leftSolutionEntry.choose == 'tournament'" class="paramInfo">{{'Spôsob výberu jedincov: Turnaj'}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Genetický' && leftSolutionEntry.crossing == 'one'" class="paramInfo">{{'Spôsob kríženia: Jednobodové'}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Genetický' && leftSolutionEntry.crossing == 'two'" class="paramInfo">{{'Spôsob kríženia: Dvojbodové'}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Genetický' && leftSolutionEntry.crossing == 'uni'" class="paramInfo">{{'Spôsob kríženia: Uniformné'}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Levy'" class="paramInfo">{{'Počet svoriek: ' + leftSolutionEntry.packs}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Levy'" class="paramInfo">{{'Počet samíc v svorke: ' + leftSolutionEntry.females}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Levy'" class="paramInfo">{{'Počet samcov v svorke: ' + leftSolutionEntry.males}}</span>
+              <span v-if="leftSolutionEntry.algorithm == 'Levy'" class="paramInfo">{{'Loviace samice: ' + leftSolutionEntry.hunters + '%'}}</span>
             </div>
           </div>
 
@@ -124,11 +124,11 @@
             <div
               class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="border-radius: 20px; height: 100%">
               <h4 class="section-title">Optimalizačný problém</h4>
-              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Kapacita: ' + entries[leftSolutionIndex]?.capacity }}</span>
-              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + entries[leftSolutionIndex]?.count}}</span>
-              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh' || entries[leftSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Priemerná velkosť predmetov: ' + entries[leftSolutionIndex]?.averageWeight}}</span>
-              <span v-if="entries[leftSolutionIndex]?.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + entries[leftSolutionIndex]?.averagePrice}}</span>
-              <span v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + entries[leftSolutionIndex]?.count }}</span>
+              <span v-if="leftSolutionEntry.problem == 'Batoh' || leftSolutionEntry.problem == 'Koše'" class="paramInfo">{{'Kapacita: ' + leftSolutionEntry.capacity }}</span>
+              <span v-if="leftSolutionEntry.problem == 'Batoh' || leftSolutionEntry.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + leftSolutionEntry.count}}</span>
+              <span v-if="leftSolutionEntry.problem == 'Batoh' || leftSolutionEntry.problem == 'Koše'" class="paramInfo">{{'Priemerná velkosť predmetov: ' + leftSolutionEntry.averageWeight}}</span>
+              <span v-if="leftSolutionEntry.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + leftSolutionEntry.averagePrice}}</span>
+              <span v-if="leftSolutionEntry.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + leftSolutionEntry.count }}</span>
             </div>
           </div>
         </div>
@@ -136,9 +136,8 @@
         <!-- fitness graph of entire population -->
         <GenerationGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
-          v-if="entries[leftSolutionIndex]"
-          :bestFitness="entries[leftSolutionIndex]?.bestFitness as number[]"
-          :averageFitness="entries[leftSolutionIndex]?.averageFitness as number[]"
+          :bestFitness="leftSolutionEntry.bestFitness as number[]"
+          :averageFitness="leftSolutionEntry.averageFitness as number[]"
           label="Vývoj Fitness"
           @bar-click="(genIndex) => (leftIteration = genIndex)"
         />
@@ -146,8 +145,7 @@
         <!-- fitness graph of one iteration -->
         <IndividualsGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
-          v-if="entries[leftSolutionIndex]"
-          :Fitness="entries[leftSolutionIndex]?.fitness[leftIteration] ?? []"
+          :Fitness="leftSolutionEntry.fitness[leftIteration] ?? []"
           :label="'Fitness Jedincov'"
           @bar-click="(genIndex) => { leftIndividual = genIndex }"
         />
@@ -155,24 +153,24 @@
         <!-- visualisation of traveling salesman problem solution -->
         <SalesmanVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
-          v-if="entries[leftSolutionIndex]?.problem == 'Obchodný cestujúci'"
-          :cities="entries[leftSolutionIndex]?.solution[leftIteration]?.[leftIndividual] ?? []"
+          v-if="leftSolutionEntry.problem == 'Obchodný cestujúci'"
+          :cities="leftSolutionEntry.solution[leftIteration]?.[leftIndividual] ?? []"
         />
 
         <!-- visualisation of knapsack problem solution -->
         <KnapsackVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
-          v-if="entries[leftSolutionIndex]?.problem == 'Batoh'"
-          :solution="entries[leftSolutionIndex]?.solution[leftIteration]?.[leftIndividual] ?? []"
-          :capacity="entries[leftSolutionIndex]?.capacity as number"
+          v-if="leftSolutionEntry.problem == 'Batoh'"
+          :solution="leftSolutionEntry.solution[leftIteration]?.[leftIndividual] ?? []"
+          :capacity="leftSolutionEntry.capacity as number"
         />
 
         <!-- visualisation of bin packing problem solution -->
         <BinVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
-          v-if="entries[leftSolutionIndex]?.problem == 'Koše'"
-          :solution="entries[leftSolutionIndex]?.solution[leftIteration]?.[leftIndividual] ?? []"
-          :capacity="entries[leftSolutionIndex]?.capacity as number"
+          v-if="leftSolutionEntry.problem == 'Koše'"
+          :solution="leftSolutionEntry.solution[leftIteration]?.[leftIndividual] ?? []"
+          :capacity="leftSolutionEntry.capacity as number"
         />
       </q-page>
     </div>
@@ -181,35 +179,35 @@
     <div v-if="screenSplit" class="scroll-wrapper" :style="{ width: screenSplit ? '50vw' : '100vw' }">
       <q-page class="column items-center justify-evenly page">
         <!-- title of the problem solved and algorithm used -->
-        <div v-if="entries[rightSolutionIndex]" class="headerBanner">
+        <div class="headerBanner">
           <span class="title">
             {{
-              entries[rightSolutionIndex]?.algorithm + ' + ' + entries[rightSolutionIndex]?.problem
+              rightSolutionEntry.algorithm + ' + ' + rightSolutionEntry.problem
             }}
           </span>
         </div>
 
         <!-- parameters of chosen algorithm -->
-        <div v-if="entries[rightSolutionIndex]" class="row q-col-gutter-md" style="margin-top: 10px; width: 100%">
+        <div class="row q-col-gutter-md" style="margin-top: 10px; width: 100%">
           <div class="col-md-6 col-xs-12">
             <div
               class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="border-radius: 20px; height: 100%">
               <h4 class="section-title">Optimalizačný algoritmus</h4>
-              <span class="paramInfo">{{'Počet iterácií: ' + entries[rightSolutionIndex]?.solution.length}}</span>
-              <span class="paramInfo">{{'Velkosť populácie: ' + entries[rightSolutionIndex]?.solution[0]?.length}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický'" class="paramInfo">{{'Pravdepodobnosť mutácie: ' + entries[rightSolutionIndex]?.mutation + '%'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.elitism" class="paramInfo">{{'Elitizmus: Áno'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && !entries[rightSolutionIndex]?.elitism" class="paramInfo">{{'Elitizmus: Nie'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.elitism" class="paramInfo">{{'Miera elitizmu: ' + entries[rightSolutionIndex]?.elitismRate + '%'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.choose == 'roulette'" class="paramInfo">{{'Spôsob výberu jedincov: Ruleta'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.choose == 'tournament'" class="paramInfo">{{'Spôsob výberu jedincov: Turnaj'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.crossing == 'one'" class="paramInfo">{{'Spôsob kríženia: Jednobodové'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.crossing == 'two'" class="paramInfo">{{'Spôsob kríženia: Dvojbodové'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Genetický' && entries[rightSolutionIndex]?.crossing == 'uni'" class="paramInfo">{{'Spôsob kríženia: Uniformné'}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet svoriek: ' + entries[rightSolutionIndex]?.packs}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samíc v svorke: ' + entries[rightSolutionIndex]?.females}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Počet samcov v svorke: ' + entries[rightSolutionIndex]?.males}}</span>
-              <span v-if="entries[rightSolutionIndex]?.algorithm == 'Levy'" class="paramInfo">{{'Loviace samice: ' + entries[rightSolutionIndex]?.hunters + '%'}}</span>
+              <span class="paramInfo">{{'Počet iterácií: ' + rightSolutionEntry.solution.length}}</span>
+              <span class="paramInfo">{{'Velkosť populácie: ' + rightSolutionEntry.solution[0]?.length}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Genetický'" class="paramInfo">{{'Pravdepodobnosť mutácie: ' + rightSolutionEntry.mutation + '%'}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Genetický' && rightSolutionEntry.elitism" class="paramInfo">{{'Elitizmus: Áno'}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Genetický' && !rightSolutionEntry.elitism" class="paramInfo">{{'Elitizmus: Nie'}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Genetický' && rightSolutionEntry.elitism" class="paramInfo">{{'Miera elitizmu: ' + rightSolutionEntry.elitismRate + '%'}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Genetický' && rightSolutionEntry.choose == 'roulette'" class="paramInfo">{{'Spôsob výberu jedincov: Ruleta'}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Genetický' && rightSolutionEntry.choose == 'tournament'" class="paramInfo">{{'Spôsob výberu jedincov: Turnaj'}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Genetický' && rightSolutionEntry.crossing == 'one'" class="paramInfo">{{'Spôsob kríženia: Jednobodové'}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Genetický' && rightSolutionEntry.crossing == 'two'" class="paramInfo">{{'Spôsob kríženia: Dvojbodové'}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Genetický' && rightSolutionEntry.crossing == 'uni'" class="paramInfo">{{'Spôsob kríženia: Uniformné'}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Levy'" class="paramInfo">{{'Počet svoriek: ' + rightSolutionEntry.packs}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Levy'" class="paramInfo">{{'Počet samíc v svorke: ' + rightSolutionEntry.females}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Levy'" class="paramInfo">{{'Počet samcov v svorke: ' + rightSolutionEntry.males}}</span>
+              <span v-if="rightSolutionEntry.algorithm == 'Levy'" class="paramInfo">{{'Loviace samice: ' + rightSolutionEntry.hunters + '%'}}</span>
             </div>
           </div>
 
@@ -218,11 +216,11 @@
             <div
               class="q-pa-md bg-primary text-white shadow-2 rounded-borders flex column items-center" style="border-radius: 20px; height: 100%">
               <h4 class="section-title">Optimalizačný problém</h4>
-              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh' || entries[rightSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Kapacita: ' + entries[rightSolutionIndex]?.capacity }}</span>
-              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh' || entries[rightSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + entries[rightSolutionIndex]?.count}}</span>
-              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh' || entries[rightSolutionIndex]?.problem == 'Koše'" class="paramInfo">{{'Priemerná velkosť predmetov: ' + entries[rightSolutionIndex]?.averageWeight}}</span>
-              <span v-if="entries[rightSolutionIndex]?.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + entries[rightSolutionIndex]?.averagePrice}}</span>
-              <span v-if="entries[rightSolutionIndex]?.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + entries[rightSolutionIndex]?.count }}</span>
+              <span v-if="rightSolutionEntry.problem == 'Batoh' || rightSolutionEntry.problem == 'Koše'" class="paramInfo">{{'Kapacita: ' + rightSolutionEntry.capacity }}</span>
+              <span v-if="rightSolutionEntry.problem == 'Batoh' || rightSolutionEntry.problem == 'Koše'" class="paramInfo">{{'Počet predmetov: ' + rightSolutionEntry.count}}</span>
+              <span v-if="rightSolutionEntry.problem == 'Batoh' || rightSolutionEntry.problem == 'Koše'" class="paramInfo">{{'Priemerná velkosť predmetov: ' + rightSolutionEntry.averageWeight}}</span>
+              <span v-if="rightSolutionEntry.problem == 'Batoh'" class="paramInfo">{{'Priemerná cena predmetov: ' + rightSolutionEntry.averagePrice}}</span>
+              <span v-if="rightSolutionEntry.problem == 'Obchodný cestujúci'" class="paramInfo">{{'Počet miest: ' + rightSolutionEntry.count }}</span>
             </div>
           </div>
         </div>
@@ -230,9 +228,8 @@
         <!-- fitness graph of entire population -->
         <GenerationGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
-          v-if="entries[rightSolutionIndex]"
-          :bestFitness="entries[rightSolutionIndex]?.bestFitness as number[]"
-          :averageFitness="entries[rightSolutionIndex]?.averageFitness as number[]"
+          :bestFitness="rightSolutionEntry.bestFitness as number[]"
+          :averageFitness="rightSolutionEntry.averageFitness as number[]"
           label="Vývoj Fitness"
           @bar-click="(genIndex) => (rightIteration = genIndex)"
         />
@@ -240,8 +237,7 @@
         <!-- fitness graph of one iteration -->
         <IndividualsGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
-          v-if="entries[rightSolutionIndex]"
-          :Fitness="entries[rightSolutionIndex]?.fitness[rightIteration] ?? []"
+          :Fitness="rightSolutionEntry.fitness[rightIteration] ?? []"
           :label="'Fitness Jedincov'"
           @bar-click="(genIndex) => { rightIndividual = genIndex}"
         />
@@ -249,24 +245,24 @@
         <!-- visualisation of traveling salesman problem solution -->
         <SalesmanVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
-          v-if="entries[rightSolutionIndex]?.problem == 'Obchodný cestujúci'"
-          :cities="entries[rightSolutionIndex]?.solution[rightIteration]?.[rightIndividual] ?? []"
+          v-if="rightSolutionEntry.problem == 'Obchodný cestujúci'"
+          :cities="rightSolutionEntry.solution[rightIteration]?.[rightIndividual] ?? []"
         />
 
         <!-- visualisation of knapsack problem solution -->
         <KnapsackVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
-          v-if="entries[rightSolutionIndex]?.problem == 'Batoh'"
-          :solution="entries[rightSolutionIndex]?.solution[rightIteration]?.[rightIndividual] ?? []"
-          :capacity="entries[rightSolutionIndex]?.capacity as number"
+          v-if="rightSolutionEntry.problem == 'Batoh'"
+          :solution="rightSolutionEntry.solution[rightIteration]?.[rightIndividual] ?? []"
+          :capacity="rightSolutionEntry.capacity as number"
         />
 
         <!-- visualisation of bin packing problem solution -->
         <BinVisualisation
           style="width: 98%; margin-top: 20px; margin-bottom: 20px"
-          v-if="entries[rightSolutionIndex]?.problem == 'Koše'"
-          :solution="entries[rightSolutionIndex]?.solution[rightIteration]?.[rightIndividual] ?? []"
-          :capacity="entries[rightSolutionIndex]?.capacity as number"
+          v-if="rightSolutionEntry.problem == 'Koše'"
+          :solution="rightSolutionEntry.solution[rightIteration]?.[rightIndividual] ?? []"
+          :capacity="rightSolutionEntry.capacity as number"
         />
       </q-page>
     </div>
@@ -282,14 +278,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useHistory } from 'stores/history'
-import { storeToRefs } from 'pinia'
+import { defineComponent, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue'
+import { getEntryFromDB, getAllEntryIndexes } from 'stores/db'
 import GenerationGraph from 'components/visualisation/GenerationGraph.vue'
 import IndividualsGraph from 'components/visualisation/IndividualsGraph.vue'
 import SalesmanVisualisation from 'components/visualisation/SalesmanVisualisation.vue'
 import KnapsackVisualisation from 'components/visualisation/KnapsackVisualisation.vue'
 import BinVisualisation from 'components/visualisation/BinVisualisation.vue'
+import type { HistoryEntry } from 'stores/individuals/HistoryEntry'
 
 export default defineComponent({
   name: 'HistoryPage',
@@ -301,9 +297,6 @@ export default defineComponent({
     BinVisualisation
   },
   setup() {
-    const history = useHistory()
-    const { entries } = storeToRefs(history)
-
     const leftDrawerOpen = ref(false)
     const rightDrawerOpen = ref(false)
     const isMobile = ref(false)
@@ -311,8 +304,11 @@ export default defineComponent({
     const leftIteration = ref(0)
     const rightIteration = ref(0)
 
-    const leftSolutionIndex = ref(history.entries.length - 1)
-    const rightSolutionIndex = ref(history.entries.length - 1)
+    // Initialize history state
+    const history = ref<number[]>([])
+
+    const leftSolutionIndex = ref(0)
+    const rightSolutionIndex = ref(0)
 
     const leftIndividual = ref(0)
     const rightIndividual = ref(0)
@@ -337,20 +333,48 @@ export default defineComponent({
       isMobile.value = window.innerWidth <= 768
     }
 
-    onMounted(() => {
+    // Use onMounted lifecycle hook to load history
+    onMounted(async () => {
       checkMobile()
       window.addEventListener('resize', checkMobile)
-      leftDrawerOpen.value = false
-      rightDrawerOpen.value = false
+
+      // Fetch history when component is mounted
+      history.value = await getAllEntryIndexes()
+      leftSolutionIndex.value = history.value.length - 1
+      rightSolutionIndex.value = history.value.length - 1
     })
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', checkMobile)
     })
 
+    // Define the left and right solution entries with the correct type
+    const leftSolutionEntry = ref<HistoryEntry | null>(null)
+    const rightSolutionEntry = ref<HistoryEntry | null>(null)
+
+    // Watch the solution index and fetch the corresponding entry
+    watchEffect(() => {
+      // Fetch the left solution entry and handle any promise rejection
+      getEntryFromDB(leftSolutionIndex.value)
+        .then(entry => {
+          leftSolutionEntry.value = entry
+        })
+        .catch(error => {
+          console.error('Error fetching left solution entry:', error)
+        })
+
+      // Fetch the right solution entry and handle any promise rejection
+      getEntryFromDB(rightSolutionIndex.value)
+        .then(entry => {
+          rightSolutionEntry.value = entry
+        })
+        .catch(error => {
+          console.error('Error fetching right solution entry:', error)
+        })
+    })
+
     return {
       history,
-      entries,
       toggleLeftDrawer,
       leftDrawerOpen,
       toggleRightDrawer,
@@ -366,10 +390,14 @@ export default defineComponent({
       rightIteration,
       leftIndividual,
       rightIndividual,
+      leftSolutionEntry,
+      rightSolutionEntry
     }
   },
 })
 </script>
+
+
 
 <style scoped>
 .Menu {

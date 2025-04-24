@@ -6,9 +6,8 @@ import { geneticAlgorithm } from 'stores/algorithms/geneticAlgorithm';
 import { lionAlgorithm } from 'stores/algorithms/lionAlgorithm';
 import { whaleAlgorithm } from 'stores/algorithms/whaleAlgorithm';
 import { useParamStore } from 'stores/paramStore'
-import { useHistory } from 'stores/history'
 import { HistoryEntry } from 'stores/individuals/HistoryEntry'
-import {getGenerationFromDB, getAllGenerationIndexes, clearGenerations} from 'stores/db'
+import {saveEntry, getGenerationFromDB, getAllGenerationIndexes, clearGenerations} from 'stores/db'
 
 let problemToSolve:
   | ReturnType<typeof useKnapsackProblem>
@@ -19,7 +18,6 @@ let problemToSolve:
 // function that decides which algorithm function will be called and for which problem also saves results to history
 export const solve = async () => {
   const paramStore = useParamStore();
-  const history = useHistory();
   const { algorithm, problem } = storeToRefs(paramStore);
   let result: HistoryEntry = new HistoryEntry([], 'none', 'none', [])
  // defining which problem is being solved
@@ -40,7 +38,6 @@ export const solve = async () => {
       await whaleAlgorithm(problemToSolve);
     }
     // creating and saving all data needed for visualisation based on algorithm and problem
-    const { entries } = storeToRefs(history);
     const generationKeys = await getAllGenerationIndexes()
     const fitness: number[][] = []
     const visSolution: number[][][][] = []
@@ -171,9 +168,9 @@ export const solve = async () => {
       result.bestFitness.push(max)
       result.averageFitness.push(avg)
     }
-
     await clearGenerations()
-    entries.value.push(result)
-
+    console.log('c')
+    await saveEntry(result)
+    console.log('c')
   }
 };
