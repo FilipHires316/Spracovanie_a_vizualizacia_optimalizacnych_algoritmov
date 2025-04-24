@@ -277,7 +277,6 @@ const migration = (population: Lion[][], malesNumber: number, femalesNumber: num
   exiled.sort((a, b) => b.fitness - a.fitness);
   newNomad.push(...exiled.slice(0, femalesNumber))
   newPopulation.push(newNomad)
-  console.log(newPopulation)
   return newPopulation
 }
 

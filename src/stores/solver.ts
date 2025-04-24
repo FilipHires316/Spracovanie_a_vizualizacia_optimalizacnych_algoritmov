@@ -168,9 +168,8 @@ export const solve = async () => {
       result.bestFitness.push(max)
       result.averageFitness.push(avg)
     }
+    // save to database
     await clearGenerations()
-    console.log('c')
     await saveEntry(result)
-    console.log('c')
   }
 };

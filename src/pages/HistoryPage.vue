@@ -24,13 +24,29 @@
           expand-icon-class="text-white"
           header-class="bg-primary"
         >
+          <div v-for="(item, index) in history" :key="index">
+            <q-item>
+              <q-btn
+                class="deleteButton"
+                stack
+                round
+                icon="cancel"
+                @click="deleteEntryByIndex(item)"
+              />
+              <q-btn
+                class="menuButton"
+                :label="'Výpočet ' + item"
+                stack
+                @click="leftSolutionIndexSet(item)"
+              />
+            </q-item>
+          </div>
           <q-btn
-            v-for="(item, index) in history"
-            :key="index"
-            class="menuButton"
-            :label="'Výpočet ' + item"
-            stack
-            @click="leftSolutionIndexSet(item)"
+            class="deleteButton"
+            style="margin-left: 120px; margin-top: 20px; "
+            round
+            icon="delete"
+            @click="resetDB()"
           />
         </q-expansion-item>
       </div>
@@ -69,13 +85,29 @@
           expand-icon-class="text-white"
           header-class="bg-primary"
         >
+          <div v-for="(item, index) in history" :key="index">
+            <q-item>
+              <q-btn
+                class="deleteButton"
+                stack
+                round
+                icon="cancel"
+                @click="deleteEntryByIndex(item)"
+              />
+              <q-btn
+                class="menuButton"
+                :label="'Výpočet ' + item"
+                stack
+                @click="rightSolutionIndexSet(item)"
+              />
+            </q-item>
+          </div>
           <q-btn
-            v-for="(item, index) in history"
-            :key="index"
-            class="menuButton"
-            :label="'Výpočet ' + item"
-            stack
-            @click="rightSolutionIndexSet(index)"
+            class="deleteButton"
+            style="margin-left: 120px; margin-top: 20px; "
+            round
+            icon="delete"
+            @click="resetDB()"
           />
         </q-expansion-item>
       </div>
@@ -279,7 +311,7 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue'
-import { getEntryFromDB, getAllEntryIndexes } from 'stores/db'
+import { getEntryFromDB, getAllEntryIndexes, deleteEntry, resetEntriesObjectStore } from 'stores/db'
 import GenerationGraph from 'components/visualisation/GenerationGraph.vue'
 import IndividualsGraph from 'components/visualisation/IndividualsGraph.vue'
 import SalesmanVisualisation from 'components/visualisation/SalesmanVisualisation.vue'
@@ -304,7 +336,6 @@ export default defineComponent({
     const leftIteration = ref(0)
     const rightIteration = ref(0)
 
-    // Initialize history state
     const history = ref<number[]>([])
 
     const leftSolutionIndex = ref(0)
@@ -324,6 +355,16 @@ export default defineComponent({
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
+    const deleteEntryByIndex = async (index: number) => {
+      await deleteEntry(index)
+      history.value = await getAllEntryIndexes()
+    }
+
+    const resetDB = async () => {
+      await resetEntriesObjectStore()
+      history.value = await getAllEntryIndexes()
+    }
+
     const rightSolutionIndexSet = (index: number) => {
       rightSolutionIndex.value = index
       window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -333,28 +374,23 @@ export default defineComponent({
       isMobile.value = window.innerWidth <= 768
     }
 
-    // Use onMounted lifecycle hook to load history
     onMounted(async () => {
       checkMobile()
       window.addEventListener('resize', checkMobile)
 
-      // Fetch history when component is mounted
       history.value = await getAllEntryIndexes()
-      leftSolutionIndex.value = history.value.length - 1
-      rightSolutionIndex.value = history.value.length - 1
+      leftSolutionIndex.value = history.value[history.value.length - 1]!
+      rightSolutionIndex.value = history.value[history.value.length - 1]!
     })
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', checkMobile)
     })
 
-    // Define the left and right solution entries with the correct type
     const leftSolutionEntry = ref<HistoryEntry | null>(null)
     const rightSolutionEntry = ref<HistoryEntry | null>(null)
 
-    // Watch the solution index and fetch the corresponding entry
     watchEffect(() => {
-      // Fetch the left solution entry and handle any promise rejection
       getEntryFromDB(leftSolutionIndex.value)
         .then(entry => {
           leftSolutionEntry.value = entry
@@ -363,7 +399,6 @@ export default defineComponent({
           console.error('Error fetching left solution entry:', error)
         })
 
-      // Fetch the right solution entry and handle any promise rejection
       getEntryFromDB(rightSolutionIndex.value)
         .then(entry => {
           rightSolutionEntry.value = entry
@@ -391,7 +426,9 @@ export default defineComponent({
       leftIndividual,
       rightIndividual,
       leftSolutionEntry,
-      rightSolutionEntry
+      rightSolutionEntry,
+      deleteEntryByIndex,
+      resetDB
     }
   },
 })
@@ -404,6 +441,7 @@ export default defineComponent({
   position: relative;
   margin-top: 3vw;
   margin-bottom: 1vw;
+  align-items: center;
 }
 
 .MenuBanner {
@@ -418,15 +456,23 @@ export default defineComponent({
 }
 
 .menuButton {
-  width: 16.5vw;
-  background: white;
+  width: 95%;
+  background: whitesmoke;
   color: black;
   border-radius: 20px;
   margin-top: 0.5vw;
   margin-left: 1vw;
   text-align: left;
-  min-width: 250px;
-  max-width: 250px;
+}
+
+.deleteButton {
+  width: 5%;
+  background: whitesmoke;
+  color: red;
+  border-radius: 20px;
+  margin-top: 0.5vw;
+  margin-left: 1vw;
+  text-align: left;
 }
 
 .page-container {
