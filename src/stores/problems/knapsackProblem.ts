@@ -7,6 +7,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
 
   const paramStore = useParamStore();
 
+  //creating random solutions - each solution is set of 0s and 1s - 0 not included 1 included
   const createSolutions = (size: number): number[][] => {
     const solutions: number[][] = [];
     while (solutions.length < size) {
@@ -19,6 +20,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return solutions;
   };
 
+  // calculating fitness as total price * 100 - total weight
   const calculateFitness = (solution: number[]) => {
     let totalSize = 0;
     let totalPrice = 0;
@@ -34,6 +36,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return (totalPrice * 100) - totalSize
   };
 
+  // crossover with one point
   const onePointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
     const crossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 2)) + 1
     const firstBreed = [
@@ -47,6 +50,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
   }
 
+  // crossover with two points
   const twoPointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
     const firstCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 3)) + 1
     let secondCrossoverPoint = 0
@@ -66,6 +70,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
   }
 
+  // randomly based crossover
   const uniformCrossover = (parent1: Chromosome, parent2: Chromosome) => {
     const firstBreed = []
     const secondBreed = []
@@ -82,6 +87,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return [new Chromosome(firstBreed as number[]), new Chromosome(secondBreed as number[])]
   }
 
+  // breeding function used for lion inspired algorithm
   const breed = (parent1: Lion, parent2: Lion) => {
     const firstCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 3)) + 1
     let secondCrossoverPoint = 0
@@ -101,6 +107,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return [new Lion(firstBreed, 1), new Lion(secondBreed, 0)]
   }
 
+  // moving solution closer to a solution
   const move = (solution: number[], target: number[], probability: number): number[] => {
     const moved = [...solution]; // Clone input
     for (let i = 0; i < moved.length; i++) {
@@ -111,7 +118,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return moved;
   };
 
-
+  // generating solution around a solution to simulate whale movement or determining where the prey is
   const spiralMove = (target: number[]): number[] => {
     const mutated = [...target];
     for (let i = 0; i < mutated.length; i++) {
@@ -122,6 +129,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return mutated;
   };
 
+  // small mutation of each solution to maintain diversity - randomly including and excluding items
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
     population.forEach(individual => {
       for (let index = 0; index < individual.solution.length; index++) {
@@ -133,7 +141,7 @@ export const useKnapsackProblem = defineStore('knapsackProblem', () => {
     return population;
   };
 
-
+  // returning problems name
   const getProblemType = () => {
     return 'Batoh'
   };

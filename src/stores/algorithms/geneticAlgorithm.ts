@@ -5,6 +5,7 @@ import { Chromosome } from 'stores/individuals/chromosome'
 import { useParamStore } from 'stores/paramStore'
 import { savePopulation } from 'stores/db'
 
+// Creating starting population based on its size
 const createPopulation = (
   problemToSolve:
     | ReturnType<typeof useKnapsackProblem>
@@ -22,6 +23,7 @@ const createPopulation = (
   return population
 }
 
+// evaluating solutions to determine which are best
 const evaluateIndividuals = (
   problemToSolve:
     | ReturnType<typeof useKnapsackProblem>
@@ -38,12 +40,16 @@ const evaluateIndividuals = (
   return population
 }
 
+
+// Elitism function to preserve best solutions
 const applyElitism = (population: Chromosome[], elitismRate: number) => {
   const eliteNumber = Math.ceil((population.length / 100) * elitismRate)
   const sortedPopulation = [...population].sort((a, b) => b.fitness - a.fitness)
   return sortedPopulation.slice(0, eliteNumber)
 }
 
+
+// Choosing best solution from X solutions
 const tournamentSelection = (population: Chromosome[], tournamentSize: number) => {
   const shuffled = [...population]
   let currentIndex = shuffled.length;
@@ -58,6 +64,7 @@ const tournamentSelection = (population: Chromosome[], tournamentSize: number) =
   return selected.reduce((best, current) => (current.fitness > best.fitness ? current : best))
 }
 
+// Choosing solution randomly but better fitness has higher chance to be chosen
 const rouletteSelection = (population: Chromosome[]) => {
   const available = [...population]
   const totalFitness = available.reduce((sum, chromosome) => sum + chromosome.fitness, 0)
@@ -71,6 +78,7 @@ const rouletteSelection = (population: Chromosome[]) => {
   }
 }
 
+// making new generation by crossing parents
 const crossover = (
   problemToSolve:
     | ReturnType<typeof useKnapsackProblem>
@@ -119,6 +127,7 @@ const crossover = (
   return newGeneration
 }
 
+// Function that maintains entire evolutionary process from one generation to another by calling functions above
 const createNewGeneration = (
   problemToSolve:
     | ReturnType<typeof useKnapsackProblem>
@@ -150,6 +159,7 @@ const createNewGeneration = (
   return newGeneration
 }
 
+// Main layout of genetic algorithm process
 export const geneticAlgorithm = async (
   problemToSolve:
     | ReturnType<typeof useKnapsackProblem>

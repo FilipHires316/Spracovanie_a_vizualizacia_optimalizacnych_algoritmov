@@ -7,6 +7,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
 
   const paramStore = useParamStore();
 
+  // generating solutions as sequence of cities in visit order
   const createSolutions = (size: number): number[][] => {
     const solutions: number[][] = [];
     while (solutions.length < size) {
@@ -22,6 +23,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return solutions;
   };
 
+  // calculating fitness as 1 / total distance traveled
   const calculateFitness = (solution: number[]) => {
     let totalDistance = 0
     let previousCity = paramStore.start[0]
@@ -45,6 +47,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return Math.round((1 / totalDistance) * 10000000);
   }
 
+  // crossover with one point
   const onePointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
     const len = parent1.solution.length;
     const point = Math.floor(Math.random() * (len - 1)) + 1;
@@ -58,6 +61,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return [new Chromosome(child1), new Chromosome(child2)];
   }
 
+  // crossover with two points
   const twoPointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
     const len = parent1.solution.length;
     const start = Math.floor(Math.random() * len);
@@ -79,6 +83,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return [new Chromosome(child1), new Chromosome(child2)];
   }
 
+  // randomly based crossover
   const uniformCrossover = (parent1: Chromosome, parent2: Chromosome) => {
     const len = parent1.solution.length;
     const child1 = Array(len).fill(null);
@@ -104,6 +109,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return [new Chromosome(child1 as number[]), new Chromosome(child2 as number[])];
   };
 
+  // breeding function used for lion inspired algorithm
   const breed = (parent1: Lion, parent2: Lion) => {
     const len = parent1.solution.length;
     const start = Math.floor(Math.random() * len);
@@ -125,6 +131,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return [new Lion(child1, 1), new Lion(child2, 0)];
   }
 
+  // moving solution closer to a solution
   const move = (solution: number[], target: number[], probability: number): number[] => {
     const len = solution.length;
     const newSolution = Array(len).fill(null);
@@ -145,7 +152,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return newSolution;
   };
 
-
+  // generating solution around a solution to simulate whale movement or determining where the prey is
   const spiralMove = (solution: number[]): number[] => {
     const len = solution.length;
     const i = Math.floor(Math.random() * (len - 1));
@@ -157,6 +164,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return newSolution;
   };
 
+  // small mutation of each solution to maintain diversity - swapping cities
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
     population.forEach(individual => {
       for (let index = 0; index < individual.solution.length; index++) {
@@ -173,6 +181,7 @@ export const useSalesmanProblem = defineStore('salesmanProblem', () => {
     return population;
   };
 
+  // returning problems name
   const getProblemType = () => {
     return 'Obchodný cestujúci'
   };

@@ -5,6 +5,7 @@ import { useParamStore } from 'stores/paramStore'
 import { Whale } from 'stores/individuals/whale'
 import { savePopulation } from 'stores/db'
 
+// creating starting population based on its size
 const createPopulation = (
   problemToSolve:
     | ReturnType<typeof useKnapsackProblem>
@@ -22,6 +23,7 @@ const createPopulation = (
   return population
 }
 
+// Creating starting population based on its size
 const evaluateIndividuals = (
   problemToSolve:
     | ReturnType<typeof useKnapsackProblem>
@@ -35,6 +37,7 @@ const evaluateIndividuals = (
   return population
 }
 
+// Logic for moving whales trough search space each whale make 1 out of 3 possible moves
 const relocate = (problemToSolve:
                     | ReturnType<typeof useKnapsackProblem>
                     | ReturnType<typeof useBinProblem>
@@ -60,11 +63,13 @@ const relocate = (problemToSolve:
         if (A < 1) {
           target = bestIndividual;
         }
+        // moving towards best or random solution - later iterations supports moving to best while sooner are supporting exploration more
         if (target) {
           individual.solution = problemToSolve.move(individual.solution, target.solution, 0.3)
           newPopulation.push(individual)
         }
       }
+      //or making spiral movement around target
       else {
         const target = bestIndividual
         if (target) {
@@ -79,6 +84,7 @@ const relocate = (problemToSolve:
   return newPopulation
 }
 
+// main layout for whale inspired algorithm
 export const whaleAlgorithm = async (
   problemToSolve:
     | ReturnType<typeof useKnapsackProblem>

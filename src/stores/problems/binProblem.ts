@@ -7,6 +7,7 @@ export const useBinProblem = defineStore('binProblem', () => {
 
   const paramStore = useParamStore();
 
+  // generating solutions - each solution is set of items paired with bin number in which they are assigned
   const createSolutions = (size: number): number[][] => {
     const solutions: number[][] = [];
     while (solutions.length < size) {
@@ -19,6 +20,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return solutions;
   };
 
+  // calculating fitness as 1 / number of bins used
   const calculateFitness = (solution: number[]) => {
     let binsUsed = 0;
     const sizes = new Array(solution.length).fill(0);
@@ -38,6 +40,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return Math.round((1 / binsUsed) * 10000);
   }
 
+  // crossover with one point
   const onePointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
     const crossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 2)) + 1
     const firstBreed = [
@@ -51,6 +54,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
   }
 
+  // crossover with two points
   const twoPointCrossover = (parent1: Chromosome, parent2: Chromosome) => {
     const firstCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 3)) + 1
     let secondCrossoverPoint = 0
@@ -70,6 +74,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return [new Chromosome(firstBreed), new Chromosome(secondBreed)]
   }
 
+  // randomly based crossover
   const uniformCrossover = (parent1: Chromosome, parent2: Chromosome) => {
     const firstBreed = []
     const secondBreed = []
@@ -86,6 +91,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return [new Chromosome(firstBreed as number[]), new Chromosome(secondBreed as number[])]
   }
 
+  // breeding function used for lion inspired algorithm
   const breed = (parent1: Lion, parent2: Lion) => {
     const firstCrossoverPoint = Math.floor(Math.random() * (parent1.solution.length - 3)) + 1
     let secondCrossoverPoint = 0
@@ -105,6 +111,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return [new Lion(firstBreed, 1), new Lion(secondBreed, 0)]
   }
 
+  // moving solution closer to a solution
   const move = (solution: number[], target: number[], probability: number): number[] => {
     const moved = [...solution]; // Clone input
     for (let i = 0; i < moved.length; i++) {
@@ -115,6 +122,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return moved;
   };
 
+  // generating solution around a solution to simulate whale movement or determining where the prey is
   const spiralMove = (target: number[]): number[] => {
     const mutated = [...target];
     const sizes = new Array(mutated.length).fill(0);
@@ -137,6 +145,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return mutated;
   };
 
+  // small mutation of each solution to maintain diversity - relocating items between bins
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
     population.forEach(individual => {
       const sizes = new Array(individual.solution.length).fill(0);
@@ -160,6 +169,7 @@ export const useBinProblem = defineStore('binProblem', () => {
     return population;
   };
 
+  // returning problems name
   const getProblemType = () => {
     return 'Koše'
   };

@@ -5,6 +5,7 @@ import { useParamStore } from 'stores/paramStore'
 import { Lion } from 'stores/individuals/lion'
 import { savePopulation } from 'stores/db'
 
+// Creating starting population based on its size including pack size and number of males and females
 const createPopulation = (problemToSolve:
                             | ReturnType<typeof useKnapsackProblem>
                             | ReturnType<typeof useBinProblem>
@@ -42,6 +43,7 @@ const createPopulation = (problemToSolve:
   return population
 }
 
+// Evaluating individuals by fitness also if the lion has better fitness than it has before it updates its territory value
 const evaluateIndividuals = (problemToSolve:
                                | ReturnType<typeof useKnapsackProblem>
                                | ReturnType<typeof useBinProblem>
@@ -62,6 +64,7 @@ const evaluateIndividuals = (problemToSolve:
   return population;
 }
 
+// Entire movement of lions including hunt, roaming of males and females and also nomads
 const hunt = (problemToSolve:
                 | ReturnType<typeof useKnapsackProblem>
                 | ReturnType<typeof useBinProblem>
@@ -71,6 +74,7 @@ const hunt = (problemToSolve:
   const packs: Lion[][] = population.slice(0, - 1)
   const [nomad] = population.slice(-1);
   packs.forEach(pack => {
+    // moving hunting females
     const newPack: Lion[] = []
     const females = pack.filter(ind => ind.sex === 0)
     const males = pack.filter(ind => ind.sex === 1)
@@ -115,6 +119,7 @@ const hunt = (problemToSolve:
         newPack.push(attacker as Lion);
       }
     }
+    // moving non hunting females
     others.forEach((lion) => {
       const shuffled = [...pack]
       let currentIndex = shuffled.length;
@@ -131,6 +136,7 @@ const hunt = (problemToSolve:
       lion.solution = problemToSolve.move(lion.solution, target!.territory, 0.4)
       newPack.push(lion);
     })
+    // moving males in territory
     males.forEach((lion) => {
       const shuffled = [...pack]
       let currentIndex = shuffled.length;
@@ -156,6 +162,7 @@ const hunt = (problemToSolve:
     })
     newPopulation.push(newPack)
   })
+  // exploring search space by nomads
   const newNomad: Lion[] = []
   nomad!.forEach(ind => {
     const target = (problemToSolve.createSolutions(1))[0]
@@ -166,6 +173,7 @@ const hunt = (problemToSolve:
   return newPopulation;
 }
 
+// breeding lions to create new offsprings
 const breed = (problemToSolve:
                 | ReturnType<typeof useKnapsackProblem>
                 | ReturnType<typeof useBinProblem>
@@ -209,6 +217,7 @@ const breed = (problemToSolve:
   return newPopulation;
 }
 
+// Recreating generation structure for visualisation purposes
 const unpack = (population: Lion[][]) => {
   const unpack: Lion[] = []
   population.forEach(pack => {
@@ -219,6 +228,7 @@ const unpack = (population: Lion[][]) => {
   return unpack
 }
 
+// Logic for maintaining population size, only strongest will survive
 const migration = (population: Lion[][], malesNumber: number, femalesNumber: number) => {
   const newPopulation: Lion[][] = []
   const tempPopulation: Lion[][] = []
@@ -226,6 +236,7 @@ const migration = (population: Lion[][], malesNumber: number, femalesNumber: num
   const [nomad] = population.slice(-1);
   let newNomad = [...nomad!]
   packs.forEach(pack => {
+    //each pack gives some females to other packs and nomads to support diversity
     const females = pack.filter(ind => ind.sex === 0)
     const males = pack.filter(ind => ind.sex === 1)
     const newPack: Lion[] = [...males]
@@ -247,9 +258,11 @@ const migration = (population: Lion[][], malesNumber: number, femalesNumber: num
   })
   const females = newNomad.filter(ind => ind.sex === 0)
   const males = newNomad.filter(ind => ind.sex === 1)
+  // nomad males are distributed to packs to simulate attacks
   males.forEach(male => {
     tempPopulation[Math.floor(Math.random() * tempPopulation.length)]!.push(male)
   })
+  // weakest individuals are eliminated
   females.sort((a, b) => b.fitness - a.fitness);
   const renew = females.slice(0, tempPopulation.length * Math.ceil(femalesNumber * 0.9))
   let currentIndex = renew.length;
@@ -280,6 +293,7 @@ const migration = (population: Lion[][], malesNumber: number, femalesNumber: num
   return newPopulation
 }
 
+// main layout for lion inspired algorithm
 export const lionAlgorithm = async (problemToSolve:
                                    | ReturnType<typeof useKnapsackProblem>
                                    | ReturnType<typeof useBinProblem>
