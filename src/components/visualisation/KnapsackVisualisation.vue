@@ -1,7 +1,7 @@
 <!-- visualisation of knapsack problem solution -->
 <template>
   <q-card class="q-pa-md" style="width: 98vw; height: auto">
-    <h6 class="text-h6">Vizualizácia riešenia</h6>
+    <h6 class="text-h6">Celková hodnota zvolených predmetov: {{totalUsedPrice}}</h6>
     <!-- bar representing knapsack -->
     <q-card class="q-pa-md bg-grey-1" style="width: 100%; border: 2px solid #555; height: auto">
       <div class="relative h-10 w-full flex">
@@ -45,6 +45,10 @@ function getColor(index: number): string {
 
 const totalUsedWeight = computed(() =>
   props.solution.reduce((sum, [, weight]) => sum + (weight ?? 0), 0)
+);
+
+const totalUsedPrice = computed(() =>
+  props.solution.reduce((sum, [price,]) => sum + (price ?? 0), 0)
 );
 
 const filledItems = computed(() => {

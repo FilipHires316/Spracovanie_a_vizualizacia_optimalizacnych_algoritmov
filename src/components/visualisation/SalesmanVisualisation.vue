@@ -2,7 +2,7 @@
 <template>
   <q-card class="q-pa-md">
     <q-card-section>
-      <h6 class="text-h6">Vizualizácia riešenia</h6>
+      <h6 class="text-h6">Celková prejdená vzdialenosť: {{totalDistance}}</h6>
     </q-card-section>
     <q-card-section>
       <v-chart :option="chartOptions" autoresize style="height: 500px;" />
@@ -30,6 +30,21 @@ interface TooltipFormatterParams {
   dataIndex: number;
   data: { name?: string };
 }
+
+const totalDistance = computed(() => {
+  if (props.cities.length < 2) return 0;
+  let distance = 0;
+  for (let i = 0; i < props.cities.length - 1; i++) {
+    const dx = props.cities[i]![0]! - props.cities[i + 1]![0]!;
+    const dy = props.cities[i]![1]! - props.cities[i + 1]![1]!;
+    distance += Math.sqrt(dx * dx + dy * dy);
+  }
+  // Closing the path (last to first)
+  const dx = props.cities[0]![0]! - props.cities[props.cities.length - 1]![0]!;
+  const dy = props.cities[0]![1]! - props.cities[props.cities.length - 1]![1]!;
+  distance += Math.sqrt(dx * dx + dy * dy);
+  return Math.round(distance);
+});
 
 const chartOptions: ComputedRef<EChartsOption> = computed(() => {
   const scatterData = props.cities.map((city, i) => ({
