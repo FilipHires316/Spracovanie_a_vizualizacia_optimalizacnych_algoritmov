@@ -2,7 +2,7 @@
 export const lionPresets = {
   // optimal values
   optimum: {
-    iterations: 20,
+    iterations: 150,
     packs: 15,
     females: 8,
     males: 2,
@@ -10,7 +10,7 @@ export const lionPresets = {
   },
   // big population
   big: {
-    iterations: 30,
+    iterations: 200,
     packs: 20,
     females: 12,
     males: 3,
@@ -18,7 +18,7 @@ export const lionPresets = {
   },
   // small population
   small: {
-    iterations: 15,
+    iterations: 80,
     packs: 10,
     females: 7,
     males: 1,

@@ -117,9 +117,21 @@ export const useBinProblem = defineStore('binProblem', () => {
 
   const spiralMove = (target: number[]): number[] => {
     const mutated = [...target];
+    const sizes = new Array(mutated.length).fill(0);
+    for (let i = 0; i < mutated.length; i++) {
+      sizes[mutated[i] as number] += paramStore.binItems[i]?.size;
+    }
     for (let i = 0; i < mutated.length; i++) {
       if (Math.random() < 0.1) {
-        mutated[i] = Math.floor(Math.random() * mutated.length);
+        const nonZeroSizes = sizes
+          .map((val, idx) => ({ val, idx }))
+          .filter(item => item.val !== 0);
+        const newBin = nonZeroSizes.reduce((min, curr) =>
+          curr.val < min.val ? curr : min
+        ).idx;
+        sizes[mutated[i]!] -= paramStore.binItems[i]!.size;
+        sizes[newBin] += paramStore.binItems[i]!.size;
+        mutated[i] = newBin
       }
     }
     return mutated;
@@ -127,13 +139,21 @@ export const useBinProblem = defineStore('binProblem', () => {
 
   const mutate = (population: Chromosome[] | Lion[], mutationRate: number) => {
     population.forEach(individual => {
+      const sizes = new Array(individual.solution.length).fill(0);
+      for (let i = 0; i < individual.solution.length; i++) {
+        sizes[individual.solution[i] as number] += paramStore.binItems[i]?.size;
+      }
       for (let index = 0; index < individual.solution.length; index++) {
         if (Math.random() * 100 < mutationRate) {
-          let newValue;
-          do {
-            newValue = Math.round(Math.random() * (paramStore.binItems.length - 1));
-          } while (newValue === individual.solution[index]);
-          individual.solution[index] = newValue;
+          const nonZeroSizes = sizes
+            .map((val, idx) => ({ val, idx }))
+            .filter(item => item.val !== 0);
+          const newBin = nonZeroSizes.reduce((min, curr) =>
+            curr.val < min.val ? curr : min
+          ).idx;
+          sizes[individual.solution[index]!] -= paramStore.binItems[index]!.size;
+          sizes[newBin] += paramStore.binItems[index]!.size;
+          individual.solution[index] = newBin
         }
       }
     });

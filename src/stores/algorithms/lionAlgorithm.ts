@@ -66,244 +66,148 @@ const hunt = (problemToSolve:
                 | ReturnType<typeof useKnapsackProblem>
                 | ReturnType<typeof useBinProblem>
                 | ReturnType<typeof useSalesmanProblem>,
-              population: Lion[][], huntersNumber: number) => {
+              population: Lion[][], hunterRate: number) => {
   const newPopulation: Lion[][] = []
-  population.forEach((pack, index) => {
-    if (index < population.length - 1) {
-      const newPack: Lion[] = []
-      const males: Lion[] = []
-      let females: Lion[] = []
-      pack.forEach(individual => {
-        if (individual.sex === 1) {
-          males.push(individual)
+  const packs: Lion[][] = population.slice(0, - 1)
+  const [nomad] = population.slice(-1);
+  packs.forEach(pack => {
+    const newPack: Lion[] = []
+    const females = pack.filter(ind => ind.sex === 0)
+    const males = pack.filter(ind => ind.sex === 1)
+    const shuffled = [...females]
+    let currentIndex = shuffled.length;
+    while (currentIndex !== 0) {
+      const randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      const temp = shuffled[currentIndex];
+      shuffled[currentIndex] = shuffled[randomIndex] as Lion;
+      shuffled[randomIndex] = temp as Lion;
+    }
+    const hunters = shuffled.slice(0, hunterRate)
+    const others = shuffled.slice(hunterRate)
+    const possibleTargets = [...hunters];
+    possibleTargets.forEach(target => {
+      target.solution = problemToSolve.spiralMove(target.solution)
+      target.fitness = problemToSolve.calculateFitness(target.solution)
+    })
+    possibleTargets.sort((a, b) => b.fitness - a.fitness);
+    const target = possibleTargets[0];
+    const splitSize = Math.ceil(hunterRate / 3);
+    const divide = []
+    divide.push(hunters.slice(0, splitSize));
+    divide.push(hunters.slice(splitSize, splitSize * 2));
+    divide.push(hunters.slice(splitSize * 2));
+    divide.sort((a, b) => {
+      const sumA = a.reduce((acc, lion) => acc + lion.fitness, 0);
+      const sumB = b.reduce((acc, lion) => acc + lion.fitness, 0);
+      return sumB - sumA;
+    });
+    while (divide.some(sub => sub.length > 0)) {
+      const index = Math.floor(Math.random() * divide.length);
+      if (divide[index]!.length > 0) {
+        const attacker = divide[index]!.shift()
+        if (index == 0) {
+          attacker!.solution = problemToSolve.move(attacker!.solution, target!.solution, 0.3)
         }
         else {
-          females.push(individual)
+          attacker!.solution = problemToSolve.move(attacker!.solution, target!.solution, 0.4)
         }
-      })
-      females = [...females].sort(() => Math.random() - 0.5);
-      const hunters = females.slice(0, huntersNumber);
-      const others = females.slice(huntersNumber);
-      const third = Math.round(huntersNumber / 3);
-      const group1 = hunters.slice(0, third);
-      const group2 = hunters.slice(third, third * 2);
-      const group3 = hunters.slice(third * 2);
-      const group1fitness = group1.reduce((sum, h) => sum + h.fitness, 0);
-      const group2fitness = group2.reduce((sum, h) => sum + h.fitness, 0);
-      const group3fitness = group3.reduce((sum, h) => sum + h.fitness, 0);
-      const groups = [
-        { group: group1, fitness: group1fitness },
-        { group: group2, fitness: group2fitness },
-        { group: group3, fitness: group3fitness }
-      ].sort((a, b) => b.fitness - a.fitness);
-      let center: Lion[] = [], leftWing: Lion[] = [], rightWing: Lion[] = [];
-      if (groups[0] && groups[1] && groups[2]) {
-        center = [...groups[0].group];
-        leftWing = [...groups[1].group];
-        rightWing = [...groups[2].group];
+        newPack.push(attacker as Lion);
       }
-      const prey: number[] = [];
-      if (females[0]) {
-        for (let i = 0; i < females[0].solution.length; i++) {
-          const randomHunter = females[Math.floor(Math.random() * huntersNumber)];
-          prey.push(randomHunter?.solution[i] ?? 0);
-        }
-      }
-      while (center.length !== 0 || leftWing.length !== 0 || rightWing.length !== 0) {
-        const groupToAttack = Math.floor(Math.random() * 3);
-        let attacker;
-        // let fitnessBeforeHunt;
-        if (groupToAttack === 0 && center.length > 0) {
-          attacker = center.shift();
-          if (attacker) {
-            attacker.solution = problemToSolve.move(attacker.solution, prey, 0.25)
-            newPack.push(attacker)
-          }
-        } else if (groupToAttack === 1 && leftWing.length > 0) {
-          attacker = leftWing.shift();
-          if (attacker) {
-            attacker.solution = problemToSolve.move(attacker.solution, prey, 0.5)
-            newPack.push(attacker)
-          }
-        } else if (groupToAttack === 2 && rightWing.length > 0) {
-          attacker = rightWing.shift();
-          if (attacker) {
-            attacker.solution = problemToSolve.move(attacker.solution, prey, 0.5)
-            newPack.push(attacker)
-          }
-        }
-      }
-      others.forEach(individual => {
-        const direction = ([...pack].sort(() => Math.random() - 0.5)).slice(0, Math.ceil(pack.length / 10)).reduce((max, current) => current.territoryValue > max.territoryValue ? current : max);
-        individual.solution = problemToSolve.move(individual.solution, direction.solution, 0.75)
-        newPack.push(individual);
-      })
-      males.forEach(individual => {
-        const direction = ([...pack].sort(() => Math.random() - 0.5)).slice(0, Math.ceil(pack.length / 2))
-        for (let i = 0; i < direction.length; i++) {
-          individual.solution = problemToSolve.move(individual.solution, direction[i]?.territory ?? [], 0.75)
-        }
-        individual.solution = individual.territory
-        individual.fitness = individual.territoryValue
-        newPack.push(individual)
-      })
-      newPopulation.push(newPack)
     }
-    else {
-      const newPack: Lion[] = []
-      pack.forEach((individual) => {
-        const direction = problemToSolve.createSolutions(1)[0];
-        if (direction) {
-          individual.solution = problemToSolve.move(individual.solution, direction, 0.75)
-          newPack.push(individual);
+    others.forEach((lion) => {
+      const shuffled = [...pack]
+      let currentIndex = shuffled.length;
+      while (currentIndex !== 0) {
+        const randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        const temp = shuffled[currentIndex];
+        shuffled[currentIndex] = shuffled[randomIndex] as Lion;
+        shuffled[randomIndex] = temp as Lion;
+      }
+      const possibleTargets = shuffled.slice(0, 3);
+      possibleTargets.sort((a, b) => b.territoryValue - a.territoryValue);
+      const target = possibleTargets[0]
+      lion.solution = problemToSolve.move(lion.solution, target!.territory, 0.4)
+      newPack.push(lion);
+    })
+    males.forEach((lion) => {
+      const shuffled = [...pack]
+      let currentIndex = shuffled.length;
+      while (currentIndex !== 0) {
+        const randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        const temp = shuffled[currentIndex];
+        shuffled[currentIndex] = shuffled[randomIndex] as Lion;
+        shuffled[randomIndex] = temp as Lion;
+      }
+      const targets = shuffled.slice(0, shuffled.length / 2);
+      targets.forEach((target) => {
+        lion.solution = problemToSolve.move(lion.solution, target.territory, 0.6)
+        lion.fitness = problemToSolve.calculateFitness(lion.solution)
+        if (lion.fitness > lion.territoryValue) {
+          lion.territoryValue = lion.fitness;
+          lion.territory = lion.solution
         }
       })
-      newPopulation.push(newPack)
-    }
-  })
-  return newPopulation
-};
-
-const breed = (problemToSolve:
-                      | ReturnType<typeof useKnapsackProblem>
-                      | ReturnType<typeof useBinProblem>
-                      | ReturnType<typeof useSalesmanProblem>,
-                    population: Lion[][]) => {
-  const newPopulation: Lion[][] = []
-  population.forEach((pack) => {
-    const newPack: Lion[] = []
-    const males: Lion[] = []
-    let females: Lion[] = []
-    let father
-    pack.forEach(individual => {
-      if (individual.sex === 1) {
-        males.push(individual)
-      }
-      else {
-        females.push(individual)
-      }
-    })
-    females = [...females].sort(() => Math.random() - 0.5);
-    const mothers = [...females].slice(0, Math.ceil(females.length / 3))
-    mothers.forEach(mother => {
-      father = males[Math.floor(Math.random() * males.length)]
-      if (father) {
-        let babies = problemToSolve.breed(father, mother)
-        babies = problemToSolve.mutate(babies, 5) as Lion[]
-        babies.forEach(baby => {
-          newPack.push(baby)
-        })
-      }
-    })
-    pack.forEach(individual => {
-      newPack.push(individual)
+      lion.solution = lion.territory
+      lion.fitness = lion.territoryValue
+      newPack.push(lion);
     })
     newPopulation.push(newPack)
   })
-  return newPopulation
+  const newNomad: Lion[] = []
+  nomad!.forEach(ind => {
+    const target = (problemToSolve.createSolutions(1))[0]
+    ind.solution = problemToSolve.move(ind.solution, target as number[], 0.5)
+    newNomad.push(ind)
+  })
+  newPopulation.push(newNomad)
+  return newPopulation;
 }
 
-const migration = (population: Lion[][], femalesNumber: number, malesNumber: number) => {
+const breed = (problemToSolve:
+                | ReturnType<typeof useKnapsackProblem>
+                | ReturnType<typeof useBinProblem>
+                | ReturnType<typeof useSalesmanProblem>,
+              population: Lion[][]) => {
   const newPopulation: Lion[][] = []
-  const newNewPopulation: Lion[][] = []
-  const exiledFemales: Lion[] = []
-  let exiledMales: Lion[] = []
-  let nomadFemales: Lion[] = []
-  let reExiledFemales: Lion[] = []
-  population.forEach((pack, index) => {
-    const newPack: Lion[] = []
-    const males: Lion[] = []
-    let females: Lion[] = []
-    pack.forEach(individual => {
-      if (individual.sex === 1) {
-        males.push(individual)
-      }
-      else {
-        females.push(individual)
-      }
+  const packs: Lion[][] = population.slice(0, - 1)
+  const [nomad] = population.slice(-1);
+  packs.forEach(pack => {
+    const newPack = [...pack]
+    const females = pack.filter(ind => ind.sex === 0)
+    const males = pack.filter(ind => ind.sex === 1)
+    const shuffled = [...females]
+    let currentIndex = shuffled.length;
+    while (currentIndex !== 0) {
+      const randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      const temp = shuffled[currentIndex];
+      shuffled[currentIndex] = shuffled[randomIndex] as Lion;
+      shuffled[randomIndex] = temp as Lion;
+    }
+    const mothers = shuffled.slice(0, shuffled.length / 2);
+    mothers.forEach(mother => {
+      const father = males[Math.floor(Math.random() * males.length)] as Lion;
+      let breeds = problemToSolve.breed(mother, father)
+      breeds = problemToSolve.mutate(breeds, 3) as Lion[]
+      newPack.push(...breeds)
     })
-    if (index < population.length - 1) {
-      females = [...females].sort(() => Math.random() - 0.5);
-      females.forEach((female, index) => {
-        if (index < femalesNumber - Math.ceil(femalesNumber / 33)) {
-          newPack.push(female)
-        }
-        else {
-          exiledFemales.push(female)
-        }
-      })
-      males.forEach(male => {
-        newPack.push(male)
-      })
-      newPopulation.push(newPack)
-    }
-    else {
-      females.forEach((female) => {
-        nomadFemales.push(female)
-      })
-      exiledFemales.forEach(female => {
-        nomadFemales.push(female)
-      })
-      nomadFemales.sort((a, b) => b.fitness - a.fitness);
-      reExiledFemales = nomadFemales.slice(0, (Math.ceil(femalesNumber / 33) * newPopulation.length))
-      reExiledFemales = [...reExiledFemales].sort(() => Math.random() - 0.5);
-      nomadFemales = nomadFemales.slice((Math.ceil(femalesNumber / 33) * newPopulation.length), (Math.ceil(femalesNumber / 33) * newPopulation.length) + malesNumber)
-      nomadFemales.forEach((female) => {
-        newPack.push(female)
-      })
-      males.forEach(male => {
-        const attackedPack = Math.floor(Math.random() * newPopulation.length);
-        if (newPopulation[attackedPack]) {
-          newPopulation[attackedPack].push(male)
-        }
-      })
-      newPopulation.push(newPack)
-    }
+    newPopulation.push(newPack)
   })
-  newPopulation.forEach((pack, index) => {
-    const newPack: Lion[] = []
-    const males: Lion[] = []
-    const females: Lion[] = []
-    pack.forEach(individual => {
-      if (individual.sex === 1) {
-        males.push(individual)
-      }
-      else {
-        females.push(individual)
-      }
-    })
-    if (index < population.length - 1) {
-      while (females.length < femalesNumber) {
-        females.push(reExiledFemales.shift() as Lion)
-      }
-      females.forEach(female => {
-        newPack.push(female)
-      })
-      males.sort((a, b) => b.fitness - a.fitness);
-      males.forEach((male, index) => {
-        if (index < malesNumber) {
-          newPack.push(male)
-        }
-        else {
-          exiledMales.push(male)
-        }
-      })
-      newNewPopulation.push(newPack)
-    }
-    else {
-      exiledMales.sort((a, b) => b.fitness - a.fitness);
-      exiledMales = exiledMales.slice(0, femalesNumber)
-      females.forEach(female => {
-        newPack.push(female)
-      })
-      exiledMales.forEach(male => {
-        newPack.push(male)
-      })
-      newNewPopulation.push(newPack)
-    }
+  const newPack = [...nomad!]
+  const females = nomad!.filter(ind => ind.sex === 0)
+  const males = nomad!.filter(ind => ind.sex === 1)
+  females.forEach(mother => {
+    const father = males[Math.floor(Math.random() * males.length)] as Lion;
+    let breeds = problemToSolve.breed(mother, father)
+    breeds = problemToSolve.mutate(breeds, 3) as Lion[]
+    newPack.push(...breeds)
   })
-  return newNewPopulation
-};
+  newPopulation.push(newPack)
+  return newPopulation;
+}
 
 const unpack = (population: Lion[][]) => {
   const unpack: Lion[] = []
@@ -315,6 +219,68 @@ const unpack = (population: Lion[][]) => {
   return unpack
 }
 
+const migration = (population: Lion[][], malesNumber: number, femalesNumber: number) => {
+  const newPopulation: Lion[][] = []
+  const tempPopulation: Lion[][] = []
+  const packs: Lion[][] = population.slice(0, - 1)
+  const [nomad] = population.slice(-1);
+  let newNomad = [...nomad!]
+  packs.forEach(pack => {
+    const females = pack.filter(ind => ind.sex === 0)
+    const males = pack.filter(ind => ind.sex === 1)
+    const newPack: Lion[] = [...males]
+    const shuffled = [...females]
+    let currentIndex = shuffled.length;
+    while (currentIndex !== 0) {
+      const randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      const temp = shuffled[currentIndex];
+      shuffled[currentIndex] = shuffled[randomIndex] as Lion;
+      shuffled[randomIndex] = temp as Lion;
+    }
+    const separator = femalesNumber - Math.ceil(femalesNumber * 0.1)
+    const kept = shuffled.slice(0, separator);
+    const exiled = shuffled.slice(separator);
+    newPack.push(...kept)
+    newNomad.push(...exiled)
+    tempPopulation.push(newPack)
+  })
+  const females = newNomad.filter(ind => ind.sex === 0)
+  const males = newNomad.filter(ind => ind.sex === 1)
+  males.forEach(male => {
+    tempPopulation[Math.floor(Math.random() * tempPopulation.length)]!.push(male)
+  })
+  females.sort((a, b) => b.fitness - a.fitness);
+  const renew = females.slice(0, tempPopulation.length * Math.ceil(femalesNumber * 0.9))
+  let currentIndex = renew.length;
+  while (currentIndex !== 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    const temp = renew[currentIndex];
+    renew[currentIndex] = renew[randomIndex] as Lion;
+    renew[randomIndex] = temp as Lion;
+  }
+  newNomad = females.slice(tempPopulation.length * Math.ceil(femalesNumber * 0.9), tempPopulation.length * Math.ceil(femalesNumber * 0.9) + malesNumber)
+  const exiled: Lion[] = []
+  tempPopulation.forEach(pack => {
+    const females = pack.filter(ind => ind.sex === 0)
+    const males = pack.filter(ind => ind.sex === 1)
+    males.sort((a, b) => b.fitness - a.fitness);
+    while (females.length < femalesNumber) {
+      females.push(renew.shift() as Lion)
+    }
+    const newPack: Lion[] = [...females]
+    newPack.push(...males.slice(0, malesNumber))
+    exiled.push(...males.slice(malesNumber))
+    newPopulation.push(newPack)
+  })
+  exiled.sort((a, b) => b.fitness - a.fitness);
+  newNomad.push(...exiled.slice(0, femalesNumber))
+  newPopulation.push(newNomad)
+  console.log(newPopulation)
+  return newPopulation
+}
+
 export const lionAlgorithm = async (problemToSolve:
                                    | ReturnType<typeof useKnapsackProblem>
                                    | ReturnType<typeof useBinProblem>
@@ -324,10 +290,10 @@ export const lionAlgorithm = async (problemToSolve:
     let population = createPopulation(problemToSolve, paramStore.packs, paramStore.females, paramStore.males)
     population = evaluateIndividuals(problemToSolve, population)
     for (let i = 0; i < paramStore.iterations; i++) {
-      population = hunt(problemToSolve, population, paramStore.females / 100 * paramStore.hunters)
+      population = hunt(problemToSolve, population, Math.ceil(paramStore.females / 100 * paramStore.hunters))
       population = breed(problemToSolve, population)
       population = evaluateIndividuals(problemToSolve, population)
-      population = migration(population, paramStore.females, paramStore.males)
+      population = migration(population, paramStore.males, paramStore.females)
       await savePopulation(i, unpack(population))
     }
   }
