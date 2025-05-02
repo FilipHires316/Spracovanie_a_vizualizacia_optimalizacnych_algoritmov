@@ -100,7 +100,7 @@ export const useParamStore = defineStore('paramStore', () => {
     if (algorithm.value === 'whale') {
       if (
         (iterations.value === null || iterations.value < 1) ||
-        (population.value === null || population.value < 2)
+        (population.value === null || population.value < 20)
       ) {
         check = false;
       }

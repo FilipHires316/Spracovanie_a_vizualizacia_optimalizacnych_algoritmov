@@ -43,7 +43,7 @@
       type="number"
       class="bg-white text-primary"
       style="margin-top: 10px;"
-      :rules="[val => (val !== null && val >= 2) || 'Velkosť populácie musí byť aspoň 2']"
+      :rules="[val => (val !== null && val >= 20) || 'Velkosť populácie musí byť aspoň 20']"
       hide-bottom-space
     />
   </div>

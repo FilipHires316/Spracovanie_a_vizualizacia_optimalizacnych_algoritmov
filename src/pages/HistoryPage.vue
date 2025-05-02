@@ -379,8 +379,10 @@ export default defineComponent({
       window.addEventListener('resize', checkMobile)
 
       history.value = await getAllEntryIndexes()
-      leftSolutionIndex.value = history.value[history.value.length - 1]!
-      rightSolutionIndex.value = history.value[history.value.length - 1]!
+      if (history.value.length > 0) {
+        leftSolutionIndex.value = history.value[history.value.length - 1]!
+        rightSolutionIndex.value = history.value[history.value.length - 1]!
+      }
     })
 
     onBeforeUnmount(() => {
