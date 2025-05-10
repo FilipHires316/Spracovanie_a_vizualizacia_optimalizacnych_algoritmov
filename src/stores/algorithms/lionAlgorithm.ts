@@ -279,8 +279,9 @@ const migration = (population: Lion[][], malesNumber: number, femalesNumber: num
     const females = pack.filter(ind => ind.sex === 0)
     const males = pack.filter(ind => ind.sex === 1)
     males.sort((a, b) => b.fitness - a.fitness);
-    while (females.length < femalesNumber) {
-      females.push(renew.shift() as Lion)
+    while (females.length < femalesNumber && renew.length > 0) {
+      const lion = renew.shift()
+      if (lion) females.push(lion)
     }
     const newPack: Lion[] = [...females]
     newPack.push(...males.slice(0, malesNumber))
