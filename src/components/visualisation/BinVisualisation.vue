@@ -1,6 +1,7 @@
 <!-- visualisation of bin packing solution -->
 <template>
   <q-card class="q-pa-md" style="width: 98vw; height: auto">
+    <h6 class="text-h6">Vizualizácia riešenia zvoleného jedinca:</h6>
     <h6 class="text-h6">Počet použitých košov: {{solution.length}}</h6>
     <div class="column q-gutter-md">
       <!-- dynamic bars representing bins -->

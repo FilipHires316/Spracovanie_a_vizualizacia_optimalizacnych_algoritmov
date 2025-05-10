@@ -170,7 +170,7 @@
           style="width: 98%; margin-top: 20px; height: 20vw"
           :bestFitness="leftSolutionEntry.bestFitness as number[]"
           :averageFitness="leftSolutionEntry.averageFitness as number[]"
-          label="Vývoj Fitness"
+          label="Fitness hodnoty všetkých iterácií"
           @bar-click="(genIndex) => (leftIteration = genIndex)"
         />
 
@@ -178,7 +178,7 @@
         <IndividualsGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
           :Fitness="leftSolutionEntry.fitness[leftIteration] ?? []"
-          :label="'Fitness Jedincov'"
+          :label="'Fitness hodnoty všetkých jedincov zvolenej iterácie'"
           @bar-click="(genIndex) => { leftIndividual = genIndex }"
         />
 
@@ -262,7 +262,7 @@
           style="width: 98%; margin-top: 20px; height: 20vw"
           :bestFitness="rightSolutionEntry.bestFitness as number[]"
           :averageFitness="rightSolutionEntry.averageFitness as number[]"
-          label="Vývoj Fitness"
+          label="Fitness hodnoty všetkých iterácií"
           @bar-click="(genIndex) => (rightIteration = genIndex)"
         />
 
@@ -270,7 +270,7 @@
         <IndividualsGraph
           style="width: 98%; margin-top: 20px; height: 20vw"
           :Fitness="rightSolutionEntry.fitness[rightIteration] ?? []"
-          :label="'Fitness Jedincov'"
+          :label="'Fitness hodnoty všetkých jedincov zvolenej iterácie'"
           @bar-click="(genIndex) => { rightIndividual = genIndex}"
         />
 

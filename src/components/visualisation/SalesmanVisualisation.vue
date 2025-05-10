@@ -2,6 +2,7 @@
 <template>
   <q-card class="q-pa-md">
     <q-card-section>
+      <h6 class="text-h6">Vizualizácia riešenia zvoleného jedinca:</h6>
       <h6 class="text-h6">Celková prejdená vzdialenosť: {{totalDistance}}</h6>
     </q-card-section>
     <q-card-section>

@@ -12,23 +12,23 @@
     </p>
 
     <h4 class="section-title">Funkcie aplikácie</h4>
-    <ul class="section-list">
-      <li><strong>Riešenie optimalizačných problémov pomocou algoritmov inšpirovaných prírodou:</strong> Problém batohu, balenia košov a obchodného cestujúceho. Algoritmus inšpirovaný správaním veľrýb, algoritmus inšpirovaný správaním levov a genetický algoritmus.</li>
-      <li><strong>Vizualizácia výsledkov:</strong> Interaktívne grafy a tabuľky ukazujúce priebeh optimalizácie.</li>
-      <li><strong>Porovnanie výsledkov:</strong> Jednoduché porovnanie viacerých optimalizačných procesov.</li>
-      <li><strong>Vzdelávacie materiály:</strong> Informácie o princípoch fungovania algoritmov a optimalizačných problémov.</li>
-    </ul>
-
-    <h4 class="section-title">Ako to funguje?</h4>
-    <ul class="section-list">
-      <li>Vyberte si problém, ktorý chcete optimalizovať.</li>
-      <li>Zvoľte algoritmus, ktorým ho chcete riešiť.</li>
-      <li>Zadajte vstupné parametre alebo si vyberte z našej ponuky parametrov.</li>
-      <li>Spustite proces a sledujte, ako algoritmus postupne zlepšuje riešenie.</li>
-      <li>Prezrite si vizualizáciu a analyzujte výsledky.</li>
-      <li>Prezrite podrobný popis fungovania jednotlivých algoritmov a optimalizačných problémov.</li>
-    </ul>
-
+      <p class="section-paragraph">
+        Nižšie je stručný prehlad ako pracovať s aplikáciou. V prípade potreby sa môžete obrátiť na <a href="/documents/Prirucka.pdf" target="_blank">kompletnú používatelskú príručku</a>.
+      </p>
+    <p class="section-paragraph">
+      V sekcii 'O algoritmoch' nájdete virtuálnu knižnicu, v ktorej je
+      možné prezerať teoretické základy a princípy fungovania jednotlivých
+      optimalizačných algoritmov a optimalizačných problémov. Medzi jednotlivými kapitolami sa dá navigovať pomocou záložiek v ľavej časti aplikácie.
+    </p>
+    <p class="section-paragraph">
+      V sekcii 'Riešenie optimalizačných problémov' si môžete zvoliť ľubovolnú kombináciu optimalizačných problémov a algoritmov a experimentovať so vstupnými parametrami. Je možné si tiež zvoliť z prednastavených hodnôt. Keď ste s výberom parametrov spokojný, spustite výpočet pomocou tlačidla a počkajte na výsledok.
+    </p>
+    <p class="section-paragraph">
+      V sekcii 'História výpočtov' si môžete prezerať výsledky výpočtov. Výpočty môžete nájsť v bočnej lište. Pokiaľ pre vás niektorý z výpočtov už nie je užitočný, môžete ho z histórie jednoducho odstrániť.
+      Vizualizované výsledky si možno prezerať pomocou interaktívnych grafov. Prvý graf zobrazuje výsledky fitness jednotlivých iterácií. Po kliknutí na ktorýkoľvek stĺpec grafu, si v druhom grafe môžete pozrieť
+      výsledky všetkých jedincov zvolenej iterácie. V druhom grafe si môžete rovnakým spôsobom zvoliť, ktorého jedinca z danej generácie chcete vizualizovať. Vizualizácia riešenia je zobrazená v spodnej časti stránky.
+      Je možné porovnávať výsledky dvoch výpočtov pomocou tlačidla '+'.
+    </p>
     <!-- navigation buttons -->
     <div class="button-container">
       <q-btn class="button" color="white" text-color="black" label="O algoritmoch" to="/AboutAlgorithms" style="width: 40vw;"/>

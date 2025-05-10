@@ -1,6 +1,7 @@
 <!-- visualisation of knapsack problem solution -->
 <template>
   <q-card class="q-pa-md" style="width: 98vw; height: auto">
+    <h6 class="text-h6">Vizualizácia riešenia zvoleného jedinca:</h6>
     <h6 class="text-h6">Celková hodnota zvolených predmetov: {{totalUsedPrice}}</h6>
     <!-- bar representing knapsack -->
     <q-card class="q-pa-md bg-grey-1" style="width: 100%; border: 2px solid #555; height: auto">
